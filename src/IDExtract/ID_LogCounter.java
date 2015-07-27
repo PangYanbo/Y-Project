@@ -67,7 +67,7 @@ public class ID_LogCounter {
 
 			int bigusers = 0;
 			for(String str : id_count.keySet()){
-				if(id_count.get(str)>10){
+				if((id_count.get(str)>20)&&(id_count.get(str)<60)){
 					bw.write(str + "," + id_count.get(str));
 					bw.newLine();
 					bigusers++;

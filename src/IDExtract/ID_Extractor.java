@@ -14,6 +14,7 @@ public class ID_Extractor {
 	 * param
 	 * 	args[0] : All Data File
 	 * 	args[1] : ID_File
+	 *  args[2] : OutFile
 	 * 
 	 */
 	public static void main(String args[]) throws IOException{
@@ -31,7 +32,8 @@ public class ID_Extractor {
 			if(tokens.length>1){
 				String id = tokens[0];
 				if(IDmap.contains(id)){
-					bw.write(line);
+					String newline = LineModifier(line);
+					bw.write(newline);
 					counter++;
 				}
 			}
@@ -56,5 +58,20 @@ public class ID_Extractor {
 		br.close();
 		return IDmap;
 	}
-
+	
+	public static String LineModifier(String line){
+		String[] tokens = line.split("\t");
+		String id = tokens[0];
+//		String fakeID = tokens[1];
+		String lon = tokens[2];
+		String lat = tokens[3];
+		String timestamp = tokens[4];
+		String[] ele = timestamp.split("SOMETHING"); //TODO Check the Delimiter!
+ 		String date = ele[0];
+ 		String time = ele[1];
+		
+		String res = String.join("\t", id, lon, lat, date, time);
+		return res;
+	}
+	
 }
