@@ -7,11 +7,9 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 
 import jp.ac.ut.csis.pflow.geom.LonLat;
 import jp.ac.ut.csis.pflow.geom.STPoint;
@@ -40,34 +38,15 @@ public class HomeDetector {
 			numberofLogs.put(id, days);
 		}
 
-		HashMap<String,HashMap<LonLat,Double>> id_SP_visitcount = ExcludeLowFrequentSPsbyVisitRate(SPmap,numberofLogs,10);
-		HashMap<String,LonLat> resmap = getHomePointsbyVisitRate(id_SP_visitcount);
+		HashMap<String,HashMap<LonLat,Integer>> id_SP_visitcount = 
+				StayPointTools.ExcludeLowFrequentSPsbyNumberofPoints(SPmap,numberofLogs,0.5);
+		HashMap<String,LonLat> resmap = StayPointTools.getHomePointsbyNumberofPoints(id_SP_visitcount);
 
 		File res = new File (args[1]);
 		writeOut(resmap, res);
 	}
 
-	public static HashMap<String,HashMap<LonLat,Double>> ExcludeLowFrequentSPsbyVisitRate
-	(HashMap<String,HashMap<LonLat,ArrayList<STPoint>>> map, HashMap<String,Integer> totaldays, int minpoints){
-		HashMap<String,HashMap<LonLat,Double>> res = new HashMap<String,HashMap<LonLat,Double>>();
-		for(String id : map.keySet()){
-			HashMap<LonLat,Double> tempmap = new HashMap<LonLat,Double>();
-			for(LonLat sp : map.get(id).keySet()){
-				HashSet<String> temp = new HashSet<String>();
-				for(STPoint stp : map.get(id).get(sp)){
-					String date = (new SimpleDateFormat("yyyy-MM-dd")).format(stp.getTimeStamp());
-					String[] youso = date.split("-");
-					temp.add(youso[2]);
-				}
-				if(map.get(id).get(sp).size()>minpoints){
-					double rate = (double)temp.size()/(double)totaldays.get(id);
-					tempmap.put(sp, rate);
-				}
-			}
-			res.put(id, tempmap);
-		}
-		return res;
-	}
+
 
 	public static HashMap<Integer,HashMap<LonLat,Integer>> FrequentStayPointsintoMap(File in) throws IOException{
 		HashMap<Integer,HashMap<LonLat,Integer>> res = new HashMap<Integer,HashMap<LonLat,Integer>>();
@@ -91,35 +70,6 @@ public class HomeDetector {
 		return res;
 	}
 
-	public static HashMap<String,LonLat> getHomePointsbyNumberofPoints(HashMap<String,HashMap<LonLat,Integer>> map){
-		HashMap<String,LonLat> res = new HashMap<String,LonLat>();
-		for(String id : map.keySet()){
-			if(map.get(id).size()>0){
-				HashMap<LonLat,Integer> mapofID = map.get(id);
-				LonLat point = getHome(mapofID);
-				if(point!=null){
-					res.put(id, point);
-				}
-			}
-		}
-		return res;
-	}
-
-	public static HashMap<String,LonLat> getHomePointsbyVisitRate(HashMap<String,HashMap<LonLat,Double>> map){
-		HashMap<String,LonLat> res = new HashMap<String,LonLat>();
-		for(String id : map.keySet()){
-			if(map.get(id).size()>0){
-				HashMap<LonLat,Double> mapofID = map.get(id);
-				LonLat point = getHomebyVisitRate(mapofID);
-				if(point!=null){
-					res.put(id, point);
-				}
-			}
-		}
-		return res;
-	}
-
-
 	public static LonLat sortbyOrder(HashMap<LonLat,Integer> map, int rank){
 		ArrayList<Integer> list = new ArrayList<Integer>();
 		for(LonLat p:map.keySet()){
@@ -140,40 +90,6 @@ public class HomeDetector {
 		else{
 			return null;
 		}
-	}
-
-	public static LonLat getHome(HashMap<LonLat,Integer> map){
-		ArrayList<Integer> list = new ArrayList<Integer>();
-		for(LonLat p:map.keySet()){
-			list.add(map.get(p));
-		}
-		Collections.sort(list);
-		Collections.reverse(list);
-		int count = list.get(0);
-		LonLat point = null;
-		for(LonLat p :map.keySet()){
-			if(map.get(p)==count){
-				point = p;
-			}
-		}
-		return point;
-	}
-
-	public static LonLat getHomebyVisitRate(HashMap<LonLat,Double> map){
-		ArrayList<Double> list = new ArrayList<Double>();
-		for(LonLat p:map.keySet()){
-			list.add(map.get(p));
-		}
-		Collections.sort(list);
-		Collections.reverse(list);
-		Double count = list.get(0);
-		LonLat point = null;
-		for(LonLat p :map.keySet()){
-			if(map.get(p)==count){
-				point = p;
-			}
-		}
-		return point;
 	}
 
 	public static File writeOut(HashMap<String,LonLat> map, File out) throws IOException{

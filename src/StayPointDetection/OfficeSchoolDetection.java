@@ -43,7 +43,7 @@ public class OfficeSchoolDetection {
 		File id_home = new File (args[2]);
 		HashMap<String,LonLat> idhome = StayPointTools.getHomeMap(id_home);
 
-		HashMap<String,HashMap<LonLat,Integer>> id_SP_visitcount = ExcludeLowFrequentSPsbyNumberofPoints(SPmap,idhome,numberofDays,0.3);
+		HashMap<String,HashMap<LonLat,Integer>> id_SP_visitcount = ExcludeLowFrequentSPsbyNumberofPoints(SPmap,idhome,numberofDays,0.4);
 
 		HashMap<String,LonLat> resmap = getOfficePoints(id_SP_visitcount,idhome,1000);
 		writeOut(resmap, result);
@@ -59,8 +59,8 @@ public class OfficeSchoolDetection {
 				for(STPoint stp : map.get(id).get(sp)){
 					String date = (new SimpleDateFormat("yyyy-MM-dd")).format(stp.getTimeStamp());
 					String[] youso = date.split("-");
-					Integer d = Integer.valueOf(youso[2]);
-					if(!((d==3)||(d==10)||(d==17)||(d==24)||(d==2)||(d==9)||(d==16)||(d==23)||(d==11))){
+					String youbi = (new SimpleDateFormat("u")).format(stp.getTimeStamp());
+					if(!(youbi.equals(6)||youbi.equals(7))){
 						temp.add(youso[2]);
 					}
 				}
@@ -87,8 +87,8 @@ public class OfficeSchoolDetection {
 				for(STPoint stp : map.get(id).get(sp)){
 					String date = (new SimpleDateFormat("yyyy-MM-dd")).format(stp.getTimeStamp());
 					String[] youso = date.split("-");
-					Integer d = Integer.valueOf(youso[2]);
-					if(!((d==3)||(d==10)||(d==17)||(d==24)||(d==2)||(d==9)||(d==16)||(d==23)||(d==11))){
+					String youbi = (new SimpleDateFormat("u")).format(stp.getTimeStamp());
+					if(!(youbi.equals(6)||youbi.equals(7))){
 						temp.add(youso[2]);
 					}
 				}
@@ -160,7 +160,7 @@ public class OfficeSchoolDetection {
 												if(map.get(p3)==count){
 													point = p3;
 													if((point.distance(home)<homedis)){
-														System.out.println("OMGOMGOMGOMGOMGOMG");
+//														System.out.println("OMGOMGOMGOMGOMGOMG");
 														return null;
 													}
 													else{
@@ -257,7 +257,7 @@ public class OfficeSchoolDetection {
 		int count = 0;
 		for(String id:map.keySet()){
 			if(map.get(id)!=null){
-				bw.write(id + "," + map.get(id).getLon() + "," + map.get(id).getLat());
+				bw.write(id + "\t" + map.get(id).getLon() + "\t" + map.get(id).getLat());
 				bw.newLine();
 				count++;
 			}

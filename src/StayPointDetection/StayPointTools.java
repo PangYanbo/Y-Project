@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -47,7 +48,7 @@ public class StayPointTools {
 		double avgpoints = sum/(double)counter;
 		return avgpoints;
 	}
-	
+
 	public static File getHistogramofSPs(File out, HashSet<Integer> set,HashMap<Integer, ArrayList<STPoint>> map, double d, double r, int min) throws NumberFormatException, ParseException, IOException{
 		int counter = 0;
 		HashMap<LonLat, ArrayList<STPoint>> SPmap = null;
@@ -115,7 +116,7 @@ public class StayPointTools {
 		}
 		return out;
 	}
-	
+
 	public static Integer NumberofDays(ArrayList<STPoint> list){
 		int days = 0;
 		HashSet<String> set = new HashSet<String>();
@@ -129,7 +130,7 @@ public class StayPointTools {
 		days = set.size();
 		return days;
 	}
-	
+
 	//TODO change the logic
 	public static Integer NumberofWeekDays(ArrayList<STPoint> list){
 		int days = 0;
@@ -139,16 +140,17 @@ public class StayPointTools {
 			String d1 =  (new SimpleDateFormat("yyyy-MM-dd")).format(date);
 			String[] x = d1.split("-");
 			String xd = x[2];
-			Integer d = Integer.valueOf(xd);
-			if(!((d==3)||(d==10)||(d==17)||(d==24)||(d==2)||(d==9)||(d==16)||(d==23)||(d==11))){
+			String youbi = (new SimpleDateFormat("u")).format(p.getTimeStamp());
+			if(!(youbi.equals(6)||youbi.equals(7))){
 				set.add(xd);
 			}
 		}
 		days = set.size();
 		return days;
 	}
-	
-	public static HashMap<String,HashMap<LonLat,Integer>> ExcludeLowFrequentSPsbyNumberofPoints(HashMap<String,HashMap<LonLat,ArrayList<STPoint>>> map, HashMap<String,Integer> totaldays, double minrate){
+
+	public static HashMap<String,HashMap<LonLat,Integer>> ExcludeLowFrequentSPsbyNumberofPoints
+	(HashMap<String,HashMap<LonLat,ArrayList<STPoint>>> map, HashMap<String,Integer> totaldays, double minrate){
 		HashMap<String,HashMap<LonLat,Integer>> res = new HashMap<String,HashMap<LonLat,Integer>>();
 		for(String id : map.keySet()){
 			HashMap<LonLat,Integer> tempmap = new HashMap<LonLat,Integer>();
@@ -168,7 +170,29 @@ public class StayPointTools {
 		}
 		return res;
 	}
-	
+
+	public static HashMap<String,HashMap<LonLat,Double>> ExcludeLowFrequentSPsbyVisitRate
+	(HashMap<String,HashMap<LonLat,ArrayList<STPoint>>> map, HashMap<String,Integer> totaldays, int minpoints){
+		HashMap<String,HashMap<LonLat,Double>> res = new HashMap<String,HashMap<LonLat,Double>>();
+		for(String id : map.keySet()){
+			HashMap<LonLat,Double> tempmap = new HashMap<LonLat,Double>();
+			for(LonLat sp : map.get(id).keySet()){
+				HashSet<String> temp = new HashSet<String>();
+				for(STPoint stp : map.get(id).get(sp)){
+					String date = (new SimpleDateFormat("yyyy-MM-dd")).format(stp.getTimeStamp());
+					String[] youso = date.split("-");
+					temp.add(youso[2]);
+				}
+				if(map.get(id).get(sp).size()>minpoints){
+					double rate = (double)temp.size()/(double)totaldays.get(id);
+					tempmap.put(sp, rate);
+				}
+			}
+			res.put(id, tempmap);
+		}
+		return res;
+	}
+
 	public static HashMap<String,LonLat> getHomeMap(File in) throws IOException{
 		HashMap<String,LonLat> res = new HashMap<String,LonLat>();
 		BufferedReader br = new BufferedReader(new FileReader(in));
@@ -182,5 +206,67 @@ public class StayPointTools {
 		br.close();
 		return res;
 	}
-	
+
+	public static HashMap<String,LonLat> getHomePointsbyNumberofPoints(HashMap<String,HashMap<LonLat,Integer>> map){
+		HashMap<String,LonLat> res = new HashMap<String,LonLat>();
+		for(String id : map.keySet()){
+			if(map.get(id).size()>0){
+				HashMap<LonLat,Integer> mapofID = map.get(id);
+				LonLat point = getHome(mapofID);
+				if(point!=null){
+					res.put(id, point);
+				}
+			}
+		}
+		return res;
+	}
+
+	public static HashMap<String,LonLat> getHomePointsbyVisitRate(HashMap<String,HashMap<LonLat,Double>> map){
+		HashMap<String,LonLat> res = new HashMap<String,LonLat>();
+		for(String id : map.keySet()){
+			if(map.get(id).size()>0){
+				HashMap<LonLat,Double> mapofID = map.get(id);
+				LonLat point = getHomebyVisitRate(mapofID);
+				if(point!=null){
+					res.put(id, point);
+				}
+			}
+		}
+		return res;
+	}
+
+	public static LonLat getHome(HashMap<LonLat,Integer> map){
+		ArrayList<Integer> list = new ArrayList<Integer>();
+		for(LonLat p:map.keySet()){
+			list.add(map.get(p));
+		}
+		Collections.sort(list);
+		Collections.reverse(list);
+		int count = list.get(0);
+		LonLat point = null;
+		for(LonLat p :map.keySet()){
+			if(map.get(p)==count){
+				point = p;
+			}
+		}
+		return point;
+	}
+
+	public static LonLat getHomebyVisitRate(HashMap<LonLat,Double> map){
+		ArrayList<Double> list = new ArrayList<Double>();
+		for(LonLat p:map.keySet()){
+			list.add(map.get(p));
+		}
+		Collections.sort(list);
+		Collections.reverse(list);
+		Double count = list.get(0);
+		LonLat point = null;
+		for(LonLat p :map.keySet()){
+			if(map.get(p)==count){
+				point = p;
+			}
+		}
+		return point;
+	}
+
 }
