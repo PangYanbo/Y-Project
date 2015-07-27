@@ -3,6 +3,9 @@
 	<name>YahooProject</name>
 	<comment></comment>
 	<projects>
+		<project>KDDIProject</project>
+		<project>pflow</project>
+		<project>ZDCgpsProject</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
