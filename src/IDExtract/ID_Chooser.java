@@ -10,20 +10,22 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.HashMap;
 
-public class ID_LogCounter {
+public class ID_Chooser {
 
+	/*
+	 * param 
+	 * args[0] : All logs of 1 day
+	 * args[1] : Output file (Selected IDs)
+	 * args[2] : Matome File (not necessarily needed...)
+	 * args[3] : Number of Wanted Samples
+	 * 
+	 */
 	public static void main(String args[]) throws NumberFormatException, ParseException, IOException{
-		IdCounter(args[0],args[1],args[2]);
+		Id_CountGetter(args[0],args[1],args[2], args[3]);
 		System.out.println("finished "+ args[0]);
 	}
 
-	//	public static void main(String args[]) throws NumberFormatException, ParseException, IOException{
-	//		String in = "c:/users/yabetaka/desktop/test.txt";
-	//		String out = "c:/users/yabetaka/desktop/testres.txt";
-	//		IdCounter(in,out);
-	//	}
-
-	public static void IdCounter(String in, String out, String matomeres){
+	public static void Id_CountGetter(String in, String out, String matomeres, String SampleNumber){
 		int counter = 0;
 		int errorLine = 0;
 		int samelog = 0;
@@ -35,7 +37,7 @@ public class ID_LogCounter {
 			String line = br.readLine();
 			String prevline = null;
 			while ((line=br.readLine())!=null){
-				if(SameLogCheck(line,prevline)==true){
+				if(ID_Extract_Tools.SameLogCheck(line,prevline)==true){
 					String[] tokens = line.split("\t");
 					if(tokens.length>1){
 						String id = tokens[0];
@@ -68,6 +70,9 @@ public class ID_LogCounter {
 					bw.write(str + "," + id_count.get(str));
 					bw.newLine();
 					bigusers++;
+					if(bigusers==Integer.parseInt(SampleNumber)){
+						break;
+					}
 				}
 			}
 			bw2.write(in + ":" + counter + "," + errorLine + "," + samelog + "," + bigusers);
@@ -84,12 +89,4 @@ public class ID_LogCounter {
 		}
 	}
 
-	public static boolean SameLogCheck(String line, String prevline){
-		if(line.equals(prevline)){
-			return false;
-		}
-		else{
-			return true;
-		}
-	}
 }

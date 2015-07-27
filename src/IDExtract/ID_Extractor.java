@@ -29,13 +29,14 @@ public class ID_Extractor {
 		int counter = 0;
 		String prevline = null;
 		while ((line=br.readLine())!=null){
-			if(ID_LogCounter.SameLogCheck(line,prevline)==true){
+			if(ID_Extract_Tools.SameLogCheck(line,prevline)==true){
 				String[] tokens = line.split("\t");
 				if(tokens.length>1){
 					String id = tokens[0];
 					if(IDmap.contains(id)){
 						String newline = LineModifier(line);
 						bw.write(newline);
+						bw.newLine();
 						counter++;
 						prevline = line;
 					}
@@ -70,12 +71,23 @@ public class ID_Extractor {
 		String lon = tokens[2];
 		String lat = tokens[3];
 		String timestamp = tokens[4];
-		String[] ele = timestamp.split("SOMETHING"); //TODO Check the Delimiter!
-		String date = ele[0];
-		String time = ele[1];
-
-		String res = String.join("\t", id, lon, lat, date, time);
+		String newtime = TimeModifier(timestamp);
+		String res = String.join("\t", id, lon, lat, newtime);
 		return res;
+	}
+	
+	public static String TimeModifier(String line){
+		String[] ele = line.split("SOMETHING"); //TODO Check the Delimiter!
+		String date = ele[0];
+		String jikan = ele[1];
+		String year = date.substring(0, 4);
+		String month = date.substring(4,6);
+		String day = date.substring(6,8);
+		String hour = jikan.substring(0,2);
+		String mins = jikan.substring(2,4);
+		String secs = jikan.substring(4,6);
+		String newtime = year+"-"+month+"-"+day+" "+hour+":"+mins+":"+secs;
+		return newtime;
 	}
 
 }
