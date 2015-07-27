@@ -48,9 +48,6 @@ public class ID_LogCounter {
 								id_count.put(id, 1);
 							}
 							counter++;
-							//						if(counter % 1 ==0){
-							//							System.out.println("#done " + counter);
-							//						}
 						}
 					}
 					else{
