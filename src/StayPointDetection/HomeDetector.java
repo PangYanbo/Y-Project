@@ -28,10 +28,10 @@ public class HomeDetector {
 		File in = new File(args[0]);
 
 		HashMap<String,HashMap<LonLat,ArrayList<STPoint>>> SPmap = 
-				StayPointGetter.getSPs(in, "00:00:00", "08:00:00", 10, 2000, 1000);
+				StayPointGetter.getSPs(in, "00:00:00", "10:00:00", 10, 2000, 1000);
 
 		HashMap<String, ArrayList<STPoint>> alldatamap = StayPointGetter.sortintoMap(in);
-		HashMap<String, ArrayList<STPoint>> targetmap = StayPointGetter.getTargetMap(alldatamap,"00:00:00","08:00:00");
+		HashMap<String, ArrayList<STPoint>> targetmap = StayPointGetter.getTargetMap(alldatamap,"00:00:00","10:00:00");
 		HashMap<String,Integer> numberofLogs = new HashMap<String,Integer>();
 		for(String id : targetmap.keySet()){
 			int days = StayPointTools.NumberofDays(targetmap.get(id));
@@ -39,7 +39,7 @@ public class HomeDetector {
 		}
 
 		HashMap<String,HashMap<LonLat,Integer>> id_SP_visitcount = 
-				StayPointTools.ExcludeLowFrequentSPsbyNumberofPoints(SPmap,numberofLogs,0.5);
+				StayPointTools.ExcludeLowFrequentSPsbyNumberofPoints(SPmap,numberofLogs,0.4);
 		HashMap<String,LonLat> resmap = StayPointTools.getHomePointsbyNumberofPoints(id_SP_visitcount);
 
 		File res = new File (args[1]);

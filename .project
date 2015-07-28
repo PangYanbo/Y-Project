@@ -4,7 +4,6 @@
 	<comment></comment>
 	<projects>
 		<project>pflow</project>
-		<project>RemoteSystemsTempFiles</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

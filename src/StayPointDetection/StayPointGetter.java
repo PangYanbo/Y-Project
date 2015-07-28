@@ -54,7 +54,9 @@ public class StayPointGetter {
 		while ((line=br.readLine())!=null){
 			String[] tokens = line.split("\t");
 			String id = tokens[0];
-			STPoint point = new STPoint(SDF_TS2.parse(tokens[1]),Double.parseDouble(tokens[2]),Double.parseDouble(tokens[3]));
+			Date dt = SDF_TS2.parse(tokens[3]);
+//			System.out.println(dt);
+			STPoint point = new STPoint(dt,Double.parseDouble(tokens[1]),Double.parseDouble(tokens[2]));
 			if(id_count.containsKey(id)){
 				id_count.get(id).add(point);
 			}
