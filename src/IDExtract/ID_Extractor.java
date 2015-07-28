@@ -54,7 +54,7 @@ public class ID_Extractor {
 		String line = null;
 		int count = 0;
 		while ((line=br.readLine())!=null){
-			String[] tokens = line.split("\t");
+			String[] tokens = line.split(",");
 			String id = tokens[0];
 			IDmap.add(id);
 			count++;
@@ -72,21 +72,16 @@ public class ID_Extractor {
 		String lat = tokens[3];
 		String timestamp = tokens[4];
 		String newtime = TimeModifier(timestamp);
-		String res = String.join("\t", id, lon, lat, newtime);
+		String res = String.join("\t",id,lon,lat,newtime);
 		return res;
 	}
 	
 	public static String TimeModifier(String line){
-		String[] ele = line.split("SOMETHING"); //TODO Check the Delimiter!
+		String[] ele = line.split("T"); //TODO Check the Delimiter!
 		String date = ele[0];
 		String jikan = ele[1];
-		String year = date.substring(0, 4);
-		String month = date.substring(4,6);
-		String day = date.substring(6,8);
-		String hour = jikan.substring(0,2);
-		String mins = jikan.substring(2,4);
-		String secs = jikan.substring(4,6);
-		String newtime = year+"-"+month+"-"+day+" "+hour+":"+mins+":"+secs;
+		String hms = jikan.substring(0,8);
+		String newtime = date+" "+hms;
 		return newtime;
 	}
 

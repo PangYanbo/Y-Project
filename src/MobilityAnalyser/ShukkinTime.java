@@ -14,53 +14,47 @@ import java.util.HashMap;
 
 import jp.ac.ut.csis.pflow.geom.LonLat;
 
-public class KitakuTime {
+public class ShukkinTime {
 
-	/*
-	 * param 
-	 * args[0] : id-home
-	 * args[1] : id-office
-	 * args[2] : all data file
-	 * args[3] : resultfile (id-seconds)
-	 * 	
-	 */
-	
 	public static void main (String args[]) throws NumberFormatException, IOException, ParseException{
-
-//		File homes = new File (args[0]);
+	
+		File homes = new File (args[0]);
 		File offices = new File (args[1]);
-		File filepath = new File (args[2]);
+		String filepath = args[2];
 		File out = new File (args[3]);
 		
 		HashMap<Integer, HashMap<Integer, Integer>> map = createMap(offices,filepath); //this is the MAIN Map for Kitaku times
-
-//		HashMap<Integer,Double> HODistance = HomeOfficeDistance.getDistance(homes, offices);
+		
 		writeout(map,21,out);
+		//writeoutALL(map,out);
 	}
 
 	protected static final SimpleDateFormat SDF_TS = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//change time format
 	protected static final SimpleDateFormat SDF_MDS = new SimpleDateFormat("HH:mm:ss");//change time format
 
-	public static HashMap<Integer, HashMap<Integer, Integer>> createMap(File offices,File path) throws IOException, NumberFormatException, ParseException{
+	public static HashMap<Integer, HashMap<Integer, Integer>> createMap(File offices, String path) throws IOException, NumberFormatException, ParseException{
 		HashMap<Integer, HashMap<Integer, Integer>> result = new HashMap<Integer, HashMap<Integer, Integer>>();
 
 		HashMap<Integer,LonLat> id_offices = getOfficeMap(offices);
+		//		System.out.println("id_offices : "+id_offices.size());
 
 		for(int i=10; i<=22; i++){
 			String day = String.format("%02d", i);
-			HashMap<Integer,ArrayList<Integer>> id_logs = getLogsnearOffice(path,id_offices,day); //get id_logsnearOffice from TargetDayLogs
+			File TargetDayLogs = new File (path+day+".csv");
+
+			HashMap<Integer,ArrayList<Integer>> id_logs = getLogsnearOffice(TargetDayLogs,id_offices,day); //get id_logsnearOffice from TargetDayLogs
 			//			System.out.println("id_logs : "+id_logs.size());
 
-			HashMap<Integer, Integer> id_lastlogofday = getLastLogofDay(id_logs); //loop for all ids, and get last log of day
+			HashMap<Integer, Integer> id_firstlogofday = getFirstLogofDay(id_logs); //loop for all ids, and get last log of day
 			//			System.out.println("id_lastlog : "+id_lastlogofday.size());
 
-			for(Integer id: id_lastlogofday.keySet()){
+			for(Integer id: id_firstlogofday.keySet()){
 				if(result.containsKey(id)){
-					result.get(id).put(Integer.parseInt(day), id_lastlogofday.get(id));
+					result.get(id).put(Integer.parseInt(day), id_firstlogofday.get(id));
 				}
 				else{
 					HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
-					map.put(Integer.parseInt(day), id_lastlogofday.get(id));
+					map.put(Integer.parseInt(day), id_firstlogofday.get(id));
 					result.put(id, map);
 				}
 			}
@@ -121,12 +115,11 @@ public class KitakuTime {
 		return res;
 	}
 
-	public static HashMap<Integer, Integer> getLastLogofDay(HashMap<Integer,ArrayList<Integer>> alllogs) throws ParseException{
+	public static HashMap<Integer, Integer> getFirstLogofDay(HashMap<Integer,ArrayList<Integer>> alllogs) throws ParseException{
 		HashMap<Integer, Integer> id_lastlog = new HashMap<Integer, Integer>();
 		for(Integer id : alllogs.keySet()){
 			ArrayList<Integer> list = alllogs.get(id);
 			Collections.sort(list);
-			Collections.reverse(list);
 			if(list.size()>=3){
 				id_lastlog.put(id,list.get(0));
 			}
@@ -154,44 +147,13 @@ public class KitakuTime {
 					bw.write(map.get(id).get(d) + "," + 1);
 					bw.newLine();
 				}
-				//				else if(((d==13)||(d==12)||(d==5)||(d==6)||(d==19)||(d==20))){
-				//					bw.write(map.get(id).get(d) + "," + 2);
-				//					bw.newLine();
-				//				}
+//				else if(((d==13)||(d==12)||(d==5)||(d==6)||(d==19)||(d==20))){
+//					bw.write(map.get(id).get(d) + "," + 2);
+//					bw.newLine();
+//				}
 				else{
 					bw.write(map.get(id).get(d) + "," + 0);
 					bw.newLine();
-				}
-			}
-			lines++;
-		}
-		//		}
-		bw.close();
-		System.out.println("number of lines : " + lines);
-		return out;
-	}
-
-	public static File writeoutDistance(HashMap<Integer, HashMap<Integer, Integer>> map, int day, File out, HashMap<Integer,Double> id_dis) throws IOException{
-		int lines = 0;
-		BufferedWriter bw = new BufferedWriter(new FileWriter(out));
-//		int count =0;
-		for (Integer id:map.keySet()){
-			//			if(map.get(id).size()>=5){
-			for (Integer d : map.get(id).keySet()){
-				if(d==day){
-					bw.write(map.get(id).get(d) + "," + 1 + "," + id_dis.get(id));
-					bw.newLine();
-				}
-				//				else if(((d==13)||(d==12)||(d==5)||(d==6)||(d==19)||(d==20))){
-				//					bw.write(map.get(id).get(d) + "," + 2);
-				//					bw.newLine();
-				//				}
-				else{
-//					count++;
-//					if(count%6==0){
-						bw.write(map.get(id).get(d) + "," + 0 + "," + id_dis.get(id));
-						bw.newLine();
-//					}
 				}
 			}
 			lines++;
@@ -226,9 +188,9 @@ public class KitakuTime {
 		for(Integer id : map.keySet()){
 			ArrayList<Integer> list = new ArrayList<Integer>();
 			for(Integer d : map.get(id).keySet()){
-				//				if(!((d==13)||(d==12)||(d==5)||(d==6)||(d==19)||(d==20)||(d==14))){
-				list.add(map.get(id).get(d));
-				//				}
+				if(!((d==13)||(d==12)||(d==5)||(d==6)||(d==19)||(d==20)||(d==14))){
+					list.add(map.get(id).get(d));
+				}
 			}
 			if(!list.isEmpty()){
 				bw.write(id + "," + getavg(list));	bw.newLine();
@@ -247,5 +209,4 @@ public class KitakuTime {
 		return avg;
 	}
 
-	
 }
