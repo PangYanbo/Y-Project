@@ -23,7 +23,6 @@ public class AreaChecker {
 	 */
 	
 	public static void main(String args[]) throws IOException{
-//		System.out.println("#start");
 		WriteonlyGcheckedLogs(args[0],args[1],args[2]);
 	}
 	
