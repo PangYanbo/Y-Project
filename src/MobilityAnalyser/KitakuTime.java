@@ -23,6 +23,8 @@ public class KitakuTime {
 	 * args[2] : all data file
 	 * args[3] : resultfile (id-seconds)
 	 * 	
+	 * Gets the time of leaving office
+	 * 
 	 */
 	
 	public static void main (String args[]) throws NumberFormatException, IOException, ParseException{
