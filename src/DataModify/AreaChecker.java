@@ -25,7 +25,7 @@ public class AreaChecker {
 		WriteonlyGcheckedLogs(args[0],args[1]);
 	}
 	
-	static File shapedir = new File("/home/c-tyabe/Data/JpnShp");
+	static File shapedir = new File("/home/c-tyabe/Data/jpnshp");
 	static GeometryChecker gchecker = new GeometryChecker(shapedir);
 	
 	public static boolean AreaOverlap(LonLat point){
