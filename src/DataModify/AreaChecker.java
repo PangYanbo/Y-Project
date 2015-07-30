@@ -45,8 +45,8 @@ public class AreaChecker {
 		String line = null;
 		while((line = br.readLine())!=null){
 			String[] tokens = line.split("\t");
-			Double lon = Double.parseDouble(tokens[1]);
-			Double lat = Double.parseDouble(tokens[2]);
+			Double lon = Double.parseDouble(tokens[2]);
+			Double lat = Double.parseDouble(tokens[1]);
 			LonLat p = new LonLat(lon,lat);
 			if(AreaOverlap(p)==true){
 				bw.write(line);
