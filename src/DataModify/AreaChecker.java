@@ -56,6 +56,9 @@ public class AreaChecker {
 					System.out.println("#done : " + counter);
 				}
 			}
+			else{
+				System.out.println("nope ... lon:" + lon + " lat: "+ lat);
+			}
 		}
 		br.close();
 		bw.close();
