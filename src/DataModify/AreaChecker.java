@@ -59,7 +59,6 @@ public class AreaChecker {
 				counter++;
 				if(counter%100000==0){
 					System.out.println("#done : " + counter);
-					break;
 				}
 			}
 			else{
