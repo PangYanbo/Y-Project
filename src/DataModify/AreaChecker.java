@@ -52,7 +52,7 @@ public class AreaChecker {
 				bw.write(line);
 				bw.newLine();
 				counter++;
-				if(counter%100000==0){
+				if(counter%10==0){
 					System.out.println("#done : " + counter);
 				}
 			}
