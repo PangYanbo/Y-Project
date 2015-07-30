@@ -22,13 +22,14 @@ public class HomeDetector {
 	 * args[1] : outfile for 'id \t homepoint'
 	 * 	
 	 */
-	
+
 	public static void main(String args[]) throws IOException, NumberFormatException, ParseException{
 
 		File in = new File(args[0]);
 
 		HashMap<String,HashMap<LonLat,ArrayList<STPoint>>> SPmap = 
 				StayPointGetter.getSPs(in, "00:00:00", "10:00:00", 5, 2000, 1000);
+
 
 		HashMap<String, ArrayList<STPoint>> alldatamap = StayPointGetter.sortintoMap(in);
 		HashMap<String, ArrayList<STPoint>> targetmap = StayPointGetter.getTargetMap(alldatamap,"00:00:00","10:00:00");
@@ -39,7 +40,7 @@ public class HomeDetector {
 		}
 
 		HashMap<String,HashMap<LonLat,Integer>> id_SP_visitcount = 
-				StayPointTools.ExcludeLowFrequentSPsbyNumberofPoints(SPmap,numberofLogs,0.5);
+				StayPointTools.ExcludeLowFrequentSPsbyNumberofPoints(SPmap,numberofLogs,0.4);
 		HashMap<String,LonLat> resmap = StayPointTools.getHomePointsbyNumberofPoints(id_SP_visitcount);
 
 		File res = new File (args[1]);
