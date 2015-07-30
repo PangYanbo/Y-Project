@@ -22,6 +22,7 @@ public class AreaChecker {
 	 */
 	
 	public static void main(String args[]) throws IOException{
+		System.out.println("#start");
 		WriteonlyGcheckedLogs(args[0],args[1]);
 	}
 	
@@ -43,10 +44,12 @@ public class AreaChecker {
 		BufferedReader br = new BufferedReader(new FileReader(new File(args)));
 		BufferedWriter bw = new BufferedWriter(new FileWriter(new File(args2)));
 		String line = null;
+		System.out.println("#start reading lines");
 		while((line = br.readLine())!=null){
 			String[] tokens = line.split("\t");
 			Double lon = Double.parseDouble(tokens[2]);
 			Double lat = Double.parseDouble(tokens[1]);
+			System.out.println("#read ... lon:" + lon + " lat: "+ lat);
 			LonLat p = new LonLat(lon,lat);
 			if(AreaOverlap(p)==true){
 				bw.write(line);
