@@ -22,6 +22,10 @@ public interface Day_Divider {
 	public static void main(String args[]) throws IOException{
 		DividebyDay(args[0], args[1]);
 	}
+	
+//	public static void main(String args[]) throws IOException{
+//		DividebyDay("c:/users/yabetaka/desktop/test2.txt", "c:/users/yabetaka/desktop/");
+//	}
 
 	public static void DividebyDay(String in, String outpath) throws IOException{
 		HashMap<Integer,ArrayList<String>> res = new HashMap<Integer,ArrayList<String>>();
@@ -43,9 +47,9 @@ public interface Day_Divider {
 		br.close();
 
 		for(Integer i : res.keySet()){
-			String path = outpath + "_" +String.valueOf(i);
+			String path = outpath + "_" +String.valueOf(i)+".txt";
 			BufferedWriter bw = new BufferedWriter(new FileWriter(new File(path)));
-			if(res.get(i).size()>300){
+			if(res.get(i).size()>100){
 				for(String l : res.get(i)){
 					bw.write(l);
 					bw.newLine();
