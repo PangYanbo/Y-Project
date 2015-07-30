@@ -17,13 +17,14 @@ public class AreaChecker {
 	 * params 
 	 * args [0] : all data file
 	 * args [1] : result data file 
+	 * args [2] : error file
 	 * CHECK : shape file of area
 	 * 
 	 */
 	
 	public static void main(String args[]) throws IOException{
 //		System.out.println("#start");
-		WriteonlyGcheckedLogs(args[0],args[1]);
+		WriteonlyGcheckedLogs(args[0],args[1],args[2]);
 	}
 	
 	static File shapedir = new File("/home/c-tyabe/Data/jpnshp");
@@ -39,10 +40,11 @@ public class AreaChecker {
 		}
 	}
 	
-	public static void WriteonlyGcheckedLogs(String args, String args2) throws IOException{
+	public static void WriteonlyGcheckedLogs(String args, String args2, String args3) throws IOException{
 		int counter = 0;
 		BufferedReader br = new BufferedReader(new FileReader(new File(args)));
 		BufferedWriter bw = new BufferedWriter(new FileWriter(new File(args2)));
+		BufferedWriter bw2 = new BufferedWriter(new FileWriter(new File(args3)));
 		String line = null;
 //		System.out.println("#start reading lines");
 		while((line = br.readLine())!=null){
@@ -57,14 +59,17 @@ public class AreaChecker {
 				counter++;
 				if(counter%100000==0){
 					System.out.println("#done : " + counter);
+					break;
 				}
 			}
 			else{
-				System.out.println("nope ... lon:" + lon + " lat: "+ lat);
+				bw2.write(line);
+				bw2.newLine();
 			}
 		}
 		br.close();
 		bw.close();
+		bw2.close();
 	}
 	
 }
