@@ -13,6 +13,15 @@ public class Analyzer {
 
 	public static void main(String args[]) throws NumberFormatException, IOException, ParseException{
 		
+		/*
+		 * param 
+		 * args[0] : file for all logs
+		 * args[1] : file for id_home
+		 * args[2] : file for id_office
+		 * args[3] : filepath for output directory
+		 *  
+		 */
+		
 		File in = new File(args[0]);
 		File Home = new File(args[1]);
 		File Office = new File(args[2]);
