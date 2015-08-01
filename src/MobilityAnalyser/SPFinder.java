@@ -8,6 +8,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 
 import jp.ac.ut.csis.pflow.geom.LonLat;
@@ -24,7 +25,7 @@ public class SPFinder {
 	 */
 
 	public static void main(String args[]) throws IOException, ParseException{
-		HashMap<String, HashMap<String, HashMap<Integer, LonLat>>> map = intomap(args[0]);
+		HashMap<String, HashMap<String, HashMap<Integer, LonLat>>> map = intomap(args[0], "all");
 		HashMap<String,HashMap<String,ArrayList<LonLat>>> res = getAllIDsSP(map);
 
 		Tools.writeout(res,args[1]);
@@ -32,7 +33,20 @@ public class SPFinder {
 
 	protected static final SimpleDateFormat SDF_TS2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//change time format
 
-	public static HashMap<String, HashMap<String, HashMap<Integer, LonLat>>> intomap(String in) throws IOException, ParseException{
+	public static HashMap<String, HashMap<String, HashMap<Integer, LonLat>>> intomap(String in, String mode) throws IOException, ParseException{
+		ArrayList<String> daycodes = new ArrayList<String>();
+		if(mode.equals("weekday")){
+			daycodes.add("1");daycodes.add("2");daycodes.add("3");daycodes.add("4");daycodes.add("5");
+		}
+		else if(mode.equals("weekend")){
+			daycodes.add("6");daycodes.add("7");
+		}
+		else if(mode.equals("all")){
+			daycodes.add("1");daycodes.add("2");daycodes.add("3");daycodes.add("4");daycodes.add("5");daycodes.add("6");daycodes.add("7");
+		}
+		else{
+			System.out.println("weekend or weekday or all??");
+		}
 		int count=0;
 		File infile = new File(in);
 		BufferedReader br = new BufferedReader(new FileReader(infile));
@@ -42,30 +56,34 @@ public class SPFinder {
 			String[] tokens = line.split(",");
 			String id = tokens[0];
 			String dt = tokens[1];
-			String day = dt.substring(8,10);
-			Integer time = Tools.converttoSecs(dt.substring(11,19));
-			Double lon = Double.parseDouble(tokens[2]);
-			Double lat = Double.parseDouble(tokens[3]);
-			if(res.containsKey(id)){
-				if(res.get(id).containsKey(day)){
-					res.get(id).get(day).put(time, new LonLat(lon,lat));
+			Date date = SDF_TS2.parse(dt);
+			String youbi = (new SimpleDateFormat("u")).format(date);
+			if(daycodes.contains(youbi)){
+				String day = dt.substring(8,10);
+				Integer time = Tools.converttoSecs(dt.substring(11,19));
+				Double lon = Double.parseDouble(tokens[2]);
+				Double lat = Double.parseDouble(tokens[3]);
+				if(res.containsKey(id)){
+					if(res.get(id).containsKey(day)){
+						res.get(id).get(day).put(time, new LonLat(lon,lat));
+					}
+					else{
+						HashMap<Integer, LonLat> smap = new HashMap<Integer, LonLat>();
+						smap.put(time, new LonLat(lon,lat));
+						res.get(id).put(day, smap);
+					}
 				}
 				else{
-					HashMap<Integer, LonLat> smap = new HashMap<Integer, LonLat>();
-					smap.put(time, new LonLat(lon,lat));
-					res.get(id).put(day, smap);
+					HashMap<Integer, LonLat> map2 = new HashMap<Integer, LonLat>();
+					map2.put(time, new LonLat(lon,lat));
+					HashMap<String, HashMap<Integer, LonLat>> map3 = new HashMap<String, HashMap<Integer, LonLat>>();
+					map3.put(day, map2);
+					res.put(id, map3);
 				}
-			}
-			else{
-				HashMap<Integer, LonLat> map2 = new HashMap<Integer, LonLat>();
-				map2.put(time, new LonLat(lon,lat));
-				HashMap<String, HashMap<Integer, LonLat>> map3 = new HashMap<String, HashMap<Integer, LonLat>>();
-				map3.put(day, map2);
-				res.put(id, map3);
-			}
-			count++;
-			if(count%1000000==0){
-				System.out.println("#done sorting " + count);
+				count++;
+				if(count%1000000==0){
+					System.out.println("#done sorting " + count);
+				}
 			}
 		}
 		br.close();
