@@ -7,4 +7,6 @@ public class DisasterLogs {
 	 * 
 	 */
 	
+	
+	
 }
