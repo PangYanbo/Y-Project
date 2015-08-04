@@ -39,12 +39,12 @@ public class Analyzer {
 		HashMap<String, HashMap<String, Integer>> officetime  = officeStayTimes(officeenter, officeexit);
 		
 		writeout(officeenter, outputpath, "office_enter.txt");
-		writeout(officeexit, outputpath, "office_exit.txt");
-		writeout(homeexit, outputpath, "home_exit.txt");
-		writeout(homereturn, outputpath, "home_return.txt");
-		writeout(tsukintime, outputpath, "tsukin_time.txt");
-		writeout(kitakutime, outputpath, "kitaku_time.txt");
-		writeout(officetime, outputpath, "office_time.txt");
+		writeout(officeexit,  outputpath, "office_exit.txt");
+		writeout(homeexit,    outputpath, "home_exit.txt");
+		writeout(homereturn,  outputpath, "home_return.txt");
+		writeout(tsukintime,  outputpath, "tsukin_time.txt");
+		writeout(kitakutime,  outputpath, "kitaku_time.txt");
+		writeout(officetime,  outputpath, "office_time.txt");
 		
 	}
 	
