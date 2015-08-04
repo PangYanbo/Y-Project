@@ -13,11 +13,11 @@ public class MotifFinder {
 		/*
 		 * test file
 		 */
-		String in = "c:/users/yabetaka/Desktop/dataforExp.csv";
+//		String in = "c:/users/yabetaka/Desktop/dataforExp.csv";
 		
-//		String in = args[0];
+		String in = args[0];
 
-		HashMap<String, HashMap<String, HashMap<Integer, LonLat>>> map = SPFinder.intomap(in,"weekend");
+		HashMap<String, HashMap<String, HashMap<Integer, LonLat>>> map = SPFinder.intomap(in,"weekday");
 		HashMap<String,HashMap<String,ArrayList<LonLat>>> res = SPFinder.getAllIDsSP(map);
 		HashMap<String, HashMap<String,Integer>> id_day_motif = getID_day_motif(res); //[id|day|motifnumber]
 		
