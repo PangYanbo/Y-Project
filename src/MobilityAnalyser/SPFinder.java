@@ -55,14 +55,14 @@ public class SPFinder {
 		while((line=br.readLine())!=null){
 			String[] tokens = line.split("\t");
 			String id = tokens[0];
-			String dt = tokens[1];
+			String dt = tokens[3];
 			Date date = SDF_TS2.parse(dt);
 			String youbi = (new SimpleDateFormat("u")).format(date);
 			if(daycodes.contains(youbi)){
 				String day = dt.substring(8,10);
 				Integer time = Tools.converttoSecs(dt.substring(11,19));
 				Double lon = Double.parseDouble(tokens[2]);
-				Double lat = Double.parseDouble(tokens[3]);
+				Double lat = Double.parseDouble(tokens[1]);
 				if(res.containsKey(id)){
 					if(res.get(id).containsKey(day)){
 						res.get(id).get(day).put(time, new LonLat(lon,lat));
