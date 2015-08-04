@@ -53,7 +53,7 @@ public class SPFinder {
 		HashMap<String, HashMap<String, HashMap<Integer, LonLat>>> res = new HashMap<String, HashMap<String, HashMap<Integer, LonLat>>>();
 		String line = null;
 		while((line=br.readLine())!=null){
-			String[] tokens = line.split(",");
+			String[] tokens = line.split("\t");
 			String id = tokens[0];
 			String dt = tokens[1];
 			Date date = SDF_TS2.parse(dt);
