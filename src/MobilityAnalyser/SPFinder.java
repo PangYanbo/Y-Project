@@ -25,7 +25,7 @@ public class SPFinder {
 	 */
 
 	public static void main(String args[]) throws IOException, ParseException{
-		HashMap<String, HashMap<String, HashMap<Integer, LonLat>>> map = intomap(args[0], "all");
+		HashMap<String, HashMap<String, HashMap<Integer, LonLat>>> map = intomapY(args[0], "all");
 		HashMap<String,HashMap<String,ArrayList<LonLat>>> res = getAllIDsSP(map);
 
 		Tools.writeout(res,args[1]);
@@ -33,7 +33,7 @@ public class SPFinder {
 
 	protected static final SimpleDateFormat SDF_TS2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//change time format
 
-	public static HashMap<String, HashMap<String, HashMap<Integer, LonLat>>> intomap(String in, String mode) throws IOException, ParseException{
+	public static HashMap<String, HashMap<String, HashMap<Integer, LonLat>>> intomapY(String in, String mode) throws IOException, ParseException{
 		ArrayList<String> daycodes = new ArrayList<String>();
 		if(mode.equals("weekday")){
 			daycodes.add("1");daycodes.add("2");daycodes.add("3");daycodes.add("4");daycodes.add("5");
@@ -89,6 +89,63 @@ public class SPFinder {
 		br.close();
 		return res;
 	}
+	
+	public static HashMap<String, HashMap<String, HashMap<Integer, LonLat>>> intomapZDC(String in, String mode) throws IOException, ParseException{
+		ArrayList<String> daycodes = new ArrayList<String>();
+		if(mode.equals("weekday")){
+			daycodes.add("1");daycodes.add("2");daycodes.add("3");daycodes.add("4");daycodes.add("5");
+		}
+		else if(mode.equals("weekend")){
+			daycodes.add("6");daycodes.add("7");
+		}
+		else if(mode.equals("all")){
+			daycodes.add("1");daycodes.add("2");daycodes.add("3");daycodes.add("4");daycodes.add("5");daycodes.add("6");daycodes.add("7");
+		}
+		else{
+			System.out.println("weekend or weekday or all??");
+		}
+		int count=0;
+		File infile = new File(in);
+		BufferedReader br = new BufferedReader(new FileReader(infile));
+		HashMap<String, HashMap<String, HashMap<Integer, LonLat>>> res = new HashMap<String, HashMap<String, HashMap<Integer, LonLat>>>();
+		String line = null;
+		while((line=br.readLine())!=null){
+			String[] tokens = line.split(",");
+			String id = tokens[0];
+			String dt = tokens[1];
+			Date date = SDF_TS2.parse(dt);
+			String youbi = (new SimpleDateFormat("u")).format(date);
+			if(daycodes.contains(youbi)){
+				String day = dt.substring(8,10);
+				Integer time = Tools.converttoSecs(dt.substring(11,19));
+				Double lon = Double.parseDouble(tokens[2]);
+				Double lat = Double.parseDouble(tokens[3]);
+				if(res.containsKey(id)){
+					if(res.get(id).containsKey(day)){
+						res.get(id).get(day).put(time, new LonLat(lon,lat));
+					}
+					else{
+						HashMap<Integer, LonLat> smap = new HashMap<Integer, LonLat>();
+						smap.put(time, new LonLat(lon,lat));
+						res.get(id).put(day, smap);
+					}
+				}
+				else{
+					HashMap<Integer, LonLat> map2 = new HashMap<Integer, LonLat>();
+					map2.put(time, new LonLat(lon,lat));
+					HashMap<String, HashMap<Integer, LonLat>> map3 = new HashMap<String, HashMap<Integer, LonLat>>();
+					map3.put(day, map2);
+					res.put(id, map3);
+				}
+				count++;
+				if(count%1000000==0){
+					System.out.println("#done sorting " + count);
+				}
+			}
+		}
+		br.close();
+		return res;
+	}
 
 	//for all IDs [time | staypoint]
 	public static ArrayList<LonLat> staypoints(HashMap<Integer, LonLat> map){
@@ -99,13 +156,13 @@ public class SPFinder {
 		Integer endtime = 0;
 		ArrayList<LonLat> temp = new ArrayList<LonLat>();
 		for(Integer t : sortedtime){
-			if(map.get(t).distance(startpoint)<2000){
+			if(map.get(t).distance(startpoint)<500){
 				endtime = t;
 				temp.add(map.get(t));
 				LonLat sp = Tools.getave(temp);
 				startpoint = sp;
 			}
-			else if ((map.get(t).distance(startpoint)>=2000)&&(temp.size()>1)){
+			else if ((map.get(t).distance(startpoint)>=500)&&(temp.size()>1)){
 				if(endtime-starttime>600){
 					LonLat sp = Tools.getave(temp);
 					res.add(sp);
@@ -145,7 +202,7 @@ public class SPFinder {
 		for(String id : map.keySet()){
 			HashMap<String,ArrayList<LonLat>> temp = new HashMap<String,ArrayList<LonLat>>();
 			for(String day : map.get(id).keySet()){
-				if(map.get(id).get(day).size()>10){
+				if(map.get(id).get(day).size()>8){
 					ArrayList<LonLat> sps = staypoints(map.get(id).get(day));
 					if(sps.size()>0){
 						temp.put(day, sps);

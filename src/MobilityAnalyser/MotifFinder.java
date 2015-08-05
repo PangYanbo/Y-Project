@@ -13,11 +13,11 @@ public class MotifFinder {
 		/*
 		 * test file
 		 */
-//		String in = "c:/users/yabetaka/Desktop/dataforExp.csv";
+		String in = "c:/users/yabetaka/Desktop/dataforExp.csv";
 		
-		String in = args[0];
+//		String in = args[0];
 
-		HashMap<String, HashMap<String, HashMap<Integer, LonLat>>> map = SPFinder.intomap(in,"weekday");
+		HashMap<String, HashMap<String, HashMap<Integer, LonLat>>> map = SPFinder.intomapZDC(in,"weekday");
 		HashMap<String,HashMap<String,ArrayList<LonLat>>> res = SPFinder.getAllIDsSP(map);
 		HashMap<String, HashMap<String,Integer>> id_day_motif = getID_day_motif(res); //[id|day|motifnumber]
 		
@@ -33,9 +33,6 @@ public class MotifFinder {
 			for(String day : map.get(id).keySet()){
 				ArrayList<Integer> temp_locchain = getLocChain(map.get(id).get(day));
 				ArrayList<Integer> locchain = continueChecker(temp_locchain);
-				if(locchain.size()==1){
-					stay++;
-				}
 				count++;
 				if(count%10000==0){
 					System.out.println("#done " + count + " ID*days");
@@ -74,7 +71,7 @@ public class MotifFinder {
 
 	public static Integer overlapchecker(HashMap<Integer,LonLat> map, LonLat point){
 		for(Integer i : map.keySet()){
-			if(map.get(i).distance(point)<500){
+			if(map.get(i).distance(point)<300){
 				return i;
 			}
 		}
