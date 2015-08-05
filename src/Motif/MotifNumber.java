@@ -1,4 +1,4 @@
-package MobilityAnalyser;
+package Motif;
 
 import java.util.ArrayList;
 

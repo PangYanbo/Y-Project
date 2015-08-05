@@ -1,4 +1,4 @@
-package MobilityAnalyser;
+package Motif;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -10,6 +10,7 @@ import jp.ac.ut.csis.pflow.geom.LonLat;
 public class MotifFinder {
 
 	public static void main(String args[]) throws IOException, ParseException{
+		
 		/*
 		 * test file
 		 */
@@ -18,8 +19,8 @@ public class MotifFinder {
 //		String in = args[0];
 
 		HashMap<String, HashMap<String, HashMap<Integer, LonLat>>> map = SPFinder.intomapZDC(in,"weekday");
-		HashMap<String,HashMap<String,ArrayList<LonLat>>> res = SPFinder.getAllIDsSP(map);
-		HashMap<String, HashMap<String,Integer>> id_day_motif = getID_day_motif(res); //[id|day|motifnumber]
+		HashMap<String,HashMap<String, ArrayList<LonLat>>> res = SPFinder.getAllIDsSP(map);
+		HashMap<String, HashMap<String, Integer>> id_day_motif = getID_day_motif(res); //[id|day|motifnumber]
 		
 		motifPercentage(id_day_motif);
 	}
