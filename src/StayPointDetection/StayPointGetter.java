@@ -64,7 +64,6 @@ public class StayPointGetter {
 				res.put(id, SPlist);
 			}
 			count++;
-			System.out.println(" ");
 			if(count%1000==0){
 				System.out.println("#done getting SPs of " + count);
 //				break;
