@@ -269,4 +269,13 @@ public class StayPointTools {
 		return point;
 	}
 
+	public static int converttoSecs(String time){
+		String[] tokens = time.split(":");
+		int hour = Integer.parseInt(tokens[0]);
+		int min  = Integer.parseInt(tokens[1]);
+		int sec  = Integer.parseInt(tokens[2]);
+
+		int totalsec = hour*3600+min*60+sec;		
+		return totalsec;
+	}
 }

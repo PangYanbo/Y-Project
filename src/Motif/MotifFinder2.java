@@ -1,51 +1,59 @@
 package Motif;
 
+import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import jp.ac.ut.csis.pflow.geom.LonLat;
+import DataModify.Over8TimeSlots;
+import StayPointDetection.StayPointGetter;
 
-public class MotifFinder {
+public class MotifFinder2 {
 
 	public static void main(String args[]) throws IOException, ParseException{
-		
+
 		/*
 		 * test file
 		 */
 		String in = "c:/users/yabetaka/Desktop/dataforExp.csv";
-		
-//		String in = args[0];
+
+		//		String in = args[0];
+
+		HashMap<String,ArrayList<LonLat>> id_SPs = StayPointGetter.getSPs2(new File(in), 500, 300);
 
 		//TODO change mode Y <-> ZDC
-		HashMap<String, HashMap<String, HashMap<Integer, LonLat>>> map = SPFinder.intomapZDC(in,"all"); 
-		HashMap<String,HashMap<String, ArrayList<LonLat>>> res = SPFinder.getAllIDsSP(map, 500);
-		HashMap<String, HashMap<String, Integer>> id_day_motif = getID_day_motif(res); //[id|day|motifnumber]
-		
+		HashMap<String, HashMap<String, ArrayList<LonLat>>> map = SPFinder.intomapZDC2(in,"weekday"); 
+		HashMap<String, ArrayList<String>> id_days = Over8TimeSlots.OKAY_id_days(in);
+		HashMap<String, HashMap<String, Integer>> id_day_motif = getID_day_motif2(map, id_SPs, id_days); //[id|day|motifnumber]
+
 		motifPercentage(id_day_motif);
 	}
 
-	public static HashMap<String, HashMap<String,Integer>> getID_day_motif(HashMap<String,HashMap<String,ArrayList<LonLat>>> map){
+	public static HashMap<String, HashMap<String,Integer>> getID_day_motif2
+	(HashMap<String, HashMap<String, ArrayList<LonLat>>> map, HashMap<String,ArrayList<LonLat>> id_SPs, HashMap<String, ArrayList<String>> id_days){
 		HashMap<String, HashMap<String,Integer>> res = new HashMap<String, HashMap<String,Integer>>();
 		int count = 0;
-		int stay = 0;
 		for(String id : map.keySet()){
 			HashMap<String,Integer> temp = new HashMap<String,Integer>();
 			for(String day : map.get(id).keySet()){
-				ArrayList<Integer> temp_locchain = getLocChain(map.get(id).get(day));
-				ArrayList<Integer> locchain = continueChecker(temp_locchain);
-				count++;
-				if(count%10000==0){
-					System.out.println("#done " + count + " ID*days");
+				if(id_SPs.get(id)!=null){
+					if(id_days.containsKey(day)&&(id_days.get(id).contains(day))){
+						ArrayList<Integer> temp_locchain = getLocChain2(map.get(id).get(day), id_SPs.get(id));
+						ArrayList<Integer> locchain = continueChecker(temp_locchain);
+						count++;
+						if(count%10000==0){
+							System.out.println("#done " + count + " ID*days");
+						}
+//						System.out.println(id + ","+day+","+locchain);
+						Integer motif = MotifNumber.motifs(locchain);
+						temp.put(day, motif);
+						res.put(id, temp);
+					}
 				}
-				
-				Integer motif = MotifNumber.motifs(locchain);
-				temp.put(day, motif);
-				res.put(id, temp);
 			}
 		}
-		System.out.println("#Stay rate = "+(double)stay/(double)count);
 		return res;
 	}
 
@@ -71,15 +79,41 @@ public class MotifFinder {
 		return res;
 	}
 
+	public static ArrayList<Integer> getLocChain2(ArrayList<LonLat> list, ArrayList<LonLat> id_SPs){
+		HashMap<Integer,LonLat> temp = new HashMap<Integer,LonLat>();
+		ArrayList<Integer> res = new ArrayList<Integer>();
+		//		System.out.println("id_SP: " + id_SPs);
+		int count = 1;
+		for(int i = 0; i<list.size(); i++){
+			for(LonLat sp : id_SPs){
+				if(list.get(i).distance(sp)<500){
+					if(overlapchecker(temp,sp)==0){ //new point
+						res.add(count);
+						temp.put(count,sp);
+						count++;
+					}
+					else{
+						res.add(overlapchecker(temp,sp));
+					}
+					break;
+				}
+			}
+		}
+		res.add(1);
+		return res;
+	}
+
 	public static Integer overlapchecker(HashMap<Integer,LonLat> map, LonLat point){
-		for(Integer i : map.keySet()){
-			if(map.get(i).distance(point)<300){
-				return i;
+		if(map.size()>0){
+			for(Integer i : map.keySet()){
+				if(map.get(i).distance(point)<500){
+					return i;
+				}
 			}
 		}
 		return 0;
 	}
-	
+
 	public static ArrayList<Integer> continueChecker(ArrayList<Integer> locchain){
 		ArrayList<Integer> res = new ArrayList<Integer>();
 		int prev = 99;
@@ -91,7 +125,7 @@ public class MotifFinder {
 		}
 		return res;
 	}
-	
+
 	public static void motifPercentage(HashMap<String, HashMap<String,Integer>> map){
 		HashMap<Integer,Double> res = new HashMap<Integer,Double>();
 		HashMap<Integer,Integer> temp = new HashMap<Integer,Integer>();

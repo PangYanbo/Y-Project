@@ -31,7 +31,7 @@ public class OfficeSchoolDetection {
 
 		HashMap<String,HashMap<LonLat,ArrayList<STPoint>>> SPmap = StayPointGetter.getSPs(in,"08:00:00", "18:00:00", 5, 2000, 1000);
 
-		HashMap<String, ArrayList<STPoint>> alldatamap = StayPointGetter.sortintoMap(in);
+		HashMap<String, ArrayList<STPoint>> alldatamap = StayPointGetter.sortintoMapZDC(in);
 		HashMap<String, ArrayList<STPoint>> targetmap = StayPointGetter.getTargetMap(alldatamap,"08:00:00","18:00:00");
 		
 		HashMap<String,Integer> numberofDays = new HashMap<String,Integer>();

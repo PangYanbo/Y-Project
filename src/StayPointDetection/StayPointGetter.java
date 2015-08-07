@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -16,7 +17,7 @@ import jp.ac.ut.csis.pflow.geom.clustering.MeanShift;
 import jp.ac.ut.csis.pflow.geom.clustering.MeanShift.IKernel;
 
 public class StayPointGetter {
-	
+
 	/*
 	 * param 
 	 * in : File of all data
@@ -26,12 +27,12 @@ public class StayPointGetter {
 	 * sigma & threshold : params used in clustering
 	 * 
 	 */
-	
+
 	public static HashMap<String,HashMap<LonLat,ArrayList<STPoint>>> getSPs
 	(File in, String start, String end, int min, double sigma, double threshold) 
 			throws NumberFormatException, ParseException, IOException{
 
-		HashMap<String, ArrayList<STPoint>> alldatamap = sortintoMap(in);
+		HashMap<String, ArrayList<STPoint>> alldatamap = sortintoMapZDC(in);
 		HashMap<String, ArrayList<STPoint>> targetmap = getTargetMap(alldatamap,start,end);
 
 		HashMap<String,HashMap<LonLat,ArrayList<STPoint>>> res = new HashMap<String,HashMap<LonLat,ArrayList<STPoint>>>();
@@ -43,11 +44,34 @@ public class StayPointGetter {
 		}
 		return res;
 	}
-	
-	protected static final SimpleDateFormat SDF_TS = new SimpleDateFormat("HH:mm:ss");//change time format
+
+	public static HashMap<String,ArrayList<LonLat>> getSPs2(File in, double r, double threshold) 
+			throws NumberFormatException, ParseException, IOException{
+
+		HashMap<String, ArrayList<STPoint>> alldatamap = sortintoMapZDC(in);
+		System.out.println("#done sorting all data into maps");
+
+		HashMap<String,ArrayList<LonLat>> res = new HashMap<String,ArrayList<LonLat>>();
+		int count = 0;
+		for(String id:alldatamap.keySet()){
+			ArrayList<LonLat> SPlist = getStayPointsUni(alldatamap.get(id),r,threshold);
+			if(SPlist.size()>0){
+				res.put(id, SPlist);
+			}
+			count++;
+			if(count%10000==0){
+				System.out.println("#done getting SPs of " + count);
+			}
+		}
+		return res;
+	}
+
+	protected static final SimpleDateFormat SDF_TS  = new SimpleDateFormat("HH:mm:ss");//change time format
 	protected static final SimpleDateFormat SDF_TS2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//change time format
-	
-	public static HashMap<String, ArrayList<STPoint>> sortintoMap(File in) throws ParseException, NumberFormatException, IOException{
+	protected static final SimpleDateFormat SDF_TS3 = new SimpleDateFormat("dd");//change time format
+
+
+	public static HashMap<String, ArrayList<STPoint>> sortintoMapY(File in) throws ParseException, NumberFormatException, IOException{
 		HashMap<String, ArrayList<STPoint>> id_count = new HashMap<String, ArrayList<STPoint>>();
 		BufferedReader br = new BufferedReader(new FileReader(in));
 		String line = null;
@@ -55,8 +79,31 @@ public class StayPointGetter {
 			String[] tokens = line.split("\t");
 			String id = tokens[0];
 			Date dt = SDF_TS2.parse(tokens[3]);
-//			System.out.println(dt);
+			//			System.out.println(dt);
 			STPoint point = new STPoint(dt,Double.parseDouble(tokens[1]),Double.parseDouble(tokens[2]));
+			if(id_count.containsKey(id)){
+				id_count.get(id).add(point);
+			}
+			else{
+				ArrayList<STPoint> list = new ArrayList<STPoint>();
+				list.add(point);
+				id_count.put(id, list);
+			}
+		}
+		br.close();	
+		return id_count;
+	}
+
+	public static HashMap<String, ArrayList<STPoint>> sortintoMapZDC(File in) throws ParseException, NumberFormatException, IOException{
+		HashMap<String, ArrayList<STPoint>> id_count = new HashMap<String, ArrayList<STPoint>>();
+		BufferedReader br = new BufferedReader(new FileReader(in));
+		String line = null;
+		while ((line=br.readLine())!=null){
+			String[] tokens = line.split(",");
+			String id = tokens[0];
+			Date dt = SDF_TS2.parse(tokens[1]);
+			//			System.out.println(dt);
+			STPoint point = new STPoint(dt,Double.parseDouble(tokens[2]),Double.parseDouble(tokens[3]));
 			if(id_count.containsKey(id)){
 				id_count.get(id).add(point);
 			}
@@ -100,6 +147,14 @@ public class StayPointGetter {
 		return Cutmap;
 	}
 
+	public static ArrayList<LonLat> getStayPointsUni(ArrayList<STPoint> list, double h, double e){
+		HashMap<LonLat, ArrayList<STPoint>> map = new HashMap<LonLat, ArrayList<STPoint>>();
+		map = clustering2dUni(list,h,e);
+		//		System.out.println("#map size " + map.size());
+		ArrayList<LonLat> Cutmap = cutbyPointsbyStayTime(map);		
+		return Cutmap;
+	}
+
 	public static HashMap<LonLat, ArrayList<STPoint>> cutbyPoints(HashMap<LonLat, ArrayList<STPoint>> in, int min){
 		HashMap<LonLat, ArrayList<STPoint>> res = new HashMap<LonLat, ArrayList<STPoint>>();
 		for(LonLat p : in.keySet()){
@@ -108,6 +163,42 @@ public class StayPointGetter {
 			}
 		}
 		return res;
+	}
+
+	public static ArrayList<LonLat> cutbyPointsbyStayTime(HashMap<LonLat, ArrayList<STPoint>> in){
+		ArrayList<LonLat> res = new ArrayList<LonLat>();
+		for(LonLat p : in.keySet()){
+			if(in.get(p).size()>5){
+				if(overtenmins(in.get(p))==true){  //TODO change to "if staytime > 10mins"
+					res.add(p);
+				}
+			}
+		}
+		return res;
+	}
+
+	public static boolean overtenmins(ArrayList<STPoint> list){
+		ArrayList<Integer> sortedtime = new ArrayList<Integer>();
+		for(STPoint p : list){
+			Date d = p.getTimeStamp();
+			Integer day = Integer.valueOf(SDF_TS3.format(d))*86400;
+			Integer time = StayPointTools.converttoSecs(SDF_TS.format(d));
+			sortedtime.add(day+time);
+		}
+		Collections.sort(sortedtime);
+		Integer starttime = 0;
+		//		System.out.println("sorted array : " + sortedtime);
+		if(sortedtime.size()>2){
+			for(int i = 0; i<sortedtime.size(); i++){
+				if((sortedtime.get(i)-starttime>1800)&&(sortedtime.get(i)-starttime<43200)){
+					return true;
+				}
+				else if((sortedtime.get(i)-starttime>=43200)){
+					starttime = sortedtime.get(i);
+				}
+			}
+		}
+		return false;
 	}
 
 	//h:determines how far points can influence eachother, e:determines closeness of same cluster
@@ -151,4 +242,46 @@ public class StayPointGetter {
 		return result;
 	}
 
+	public static HashMap<LonLat,ArrayList<STPoint>> clustering2dUni(ArrayList<STPoint> data, double r, double e) {
+		HashMap<LonLat,ArrayList<STPoint>> result = new HashMap<LonLat,ArrayList<STPoint>>();
+		int N = data.size();
+		//		System.out.println("#number of points : "+N);
+
+		for(STPoint point:data) {
+			// seek mean value //////////////////
+			LonLat mean = new LonLat(point.getLon(),point.getLat());
+
+			//loop from here for meanshift
+			while(true) {
+				double numx = 0d;
+				double numy = 0d;
+				double din = 0d;
+				for(int j=0;j<N;j++) {
+					LonLat p = new LonLat(data.get(j).getLon(),data.get(j).getLat());
+					double k = 0;
+					if(p.distance(mean)<r){
+						k = 1;
+					}
+					numx += k * p.getLon();
+					numy += k * p.getLat();
+					din  += k;
+				}
+				LonLat m = new LonLat(numx/din,numy/din);
+				if( mean.distance(m) < e ) { mean = m; break; }
+				mean = m;
+			}
+			//			System.out.println("#mean is : " + mean);
+			// make cluster /////////////////////
+			ArrayList<STPoint> cluster = null;
+			for(LonLat p:result.keySet()) {
+				if( mean.distance(p) < e ) { cluster = result.get(p); break; }
+			}
+			if( cluster == null ) {
+				cluster = new ArrayList<STPoint>();
+				result.put(mean,cluster);
+			}
+			cluster.add(point);
+		}
+		return result;
+	}
 }

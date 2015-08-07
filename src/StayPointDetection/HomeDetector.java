@@ -31,7 +31,7 @@ public class HomeDetector {
 				StayPointGetter.getSPs(in, "00:00:00", "10:00:00", 5, 2000, 1000);
 
 
-		HashMap<String, ArrayList<STPoint>> alldatamap = StayPointGetter.sortintoMap(in);
+		HashMap<String, ArrayList<STPoint>> alldatamap = StayPointGetter.sortintoMapZDC(in);
 		HashMap<String, ArrayList<STPoint>> targetmap = StayPointGetter.getTargetMap(alldatamap,"00:00:00","10:00:00");
 		HashMap<String,Integer> numberofLogs = new HashMap<String,Integer>();
 		for(String id : targetmap.keySet()){

@@ -32,7 +32,8 @@ public class HomeOfficeMaps {
 				Double lon = Double.parseDouble(tokens[2]);
 				Double lat = Double.parseDouble(tokens[1]);
 				LonLat point = new LonLat(lon,lat);
-				String date = tokens[1];
+				String date = tokens[3];
+				
 				String[] youso = date.split(" ");
 				String ymd = youso[0];
 				String[] youso2 = ymd.split("-");
@@ -41,7 +42,7 @@ public class HomeOfficeMaps {
 				String hour = hms.substring(0,2);
 
 				if(point.distance(id_X.get(id))<2000){
-					Integer time = converttoSecs(SDF_MDS.format(SDF_TS.parse(tokens[1])));
+					Integer time = converttoSecs(SDF_MDS.format(SDF_TS.parse(tokens[3])));
 					if(Integer.valueOf(hour)<3){
 						time = time + 86400;
 					}
