@@ -28,6 +28,11 @@ public class StayPointGetter {
 	 * 
 	 */
 
+	public static void main(String args[]) throws NumberFormatException, ParseException, IOException{
+		File in = new File("c:/users/yabetaka/Desktop/dataforExp.csv");
+		getSPs2(in,500,300);
+	}
+
 	public static HashMap<String,HashMap<LonLat,ArrayList<STPoint>>> getSPs
 	(File in, String start, String end, int min, double sigma, double threshold) 
 			throws NumberFormatException, ParseException, IOException{
@@ -59,8 +64,10 @@ public class StayPointGetter {
 				res.put(id, SPlist);
 			}
 			count++;
-			if(count%10000==0){
+			System.out.println(" ");
+			if(count%1000==0){
 				System.out.println("#done getting SPs of " + count);
+//				break;
 			}
 		}
 		return res;
@@ -125,7 +132,7 @@ public class StayPointGetter {
 			for(STPoint p: alldata.get(id)){
 				String date = (new SimpleDateFormat("HH:mm:ss")).format(p.getTimeStamp());
 				Date date1 = SDF_TS.parse(date);
-				if( (date1.after(startdate))&&(date1.before(finishdate)) ){
+				if( (date1.after(startdate))&&(date1.before(finishdate))){
 					if(targetmap.containsKey(id)){
 						targetmap.get(id).add(p);
 					}
@@ -151,8 +158,33 @@ public class StayPointGetter {
 		HashMap<LonLat, ArrayList<STPoint>> map = new HashMap<LonLat, ArrayList<STPoint>>();
 		map = clustering2dUni(list,h,e);
 		//		System.out.println("#map size " + map.size());
-		ArrayList<LonLat> Cutmap = cutbyPointsbyStayTime(map);		
-		return Cutmap;
+		ArrayList<LonLat> Cutmap = cutbyPointsbyStayTime(map);
+//		System.out.println("cutmap: " + Cutmap.size());
+		if(Cutmap.size()>0){
+			ArrayList<LonLat> resmap = matome(Cutmap);
+//			System.out.println("resmap: " + resmap.size());
+			return resmap;
+		}
+		else{
+			return Cutmap;
+		}
+	}
+
+	public static ArrayList<LonLat> matome(ArrayList<LonLat> list){
+		ArrayList<LonLat> res = new ArrayList<LonLat>();
+		res.add(list.get(0));
+		for(LonLat point : list){
+			int count = 0;
+			for(LonLat p : res){
+				if(point.distance(p)<1500){
+					count++;
+				}
+			}
+			if(count==0){
+				res.add(point);
+			}
+		}
+		return res;
 	}
 
 	public static HashMap<LonLat, ArrayList<STPoint>> cutbyPoints(HashMap<LonLat, ArrayList<STPoint>> in, int min){

@@ -66,7 +66,6 @@ public class Over8TimeSlots {
 			set.add(sho);
 		}
 		if(set.size()>=8){
-			System.out.println("#set:" + set);
 			return true;
 		}
 		else{
@@ -77,11 +76,9 @@ public class Over8TimeSlots {
 	public static HashMap<String, ArrayList<String>> OKAY_id_days(String in) throws IOException, ParseException{
 		HashMap<String, ArrayList<String>> id_days = new HashMap<String, ArrayList<String>>();
 		HashMap<String, HashMap<String, ArrayList<Integer>>> id_day_array =  id_day_arrayTime(in);
-		int count = 0;
 		for(String id : id_day_array.keySet()){
 			for(String day : id_day_array.get(id).keySet()){
 				if(numberofSlots(id_day_array.get(id).get(day))==true){
-					System.out.println("time list : " + id_day_array.get(id).get(day));
 					if(id_days.containsKey(id)){
 						id_days.get(id).add(day);
 					}
@@ -91,10 +88,6 @@ public class Over8TimeSlots {
 						id_days.put(id, list);
 					}
 				}
-			}
-			count++;
-			if(count==10){
-				break;
 			}
 		}
 		return id_days;

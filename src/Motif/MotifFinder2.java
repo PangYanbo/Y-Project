@@ -12,6 +12,10 @@ import StayPointDetection.StayPointGetter;
 
 public class MotifFinder2 {
 
+	/**
+	 * @param args[0] : infile 
+	 *
+	 */
 	public static void main(String args[]) throws IOException, ParseException{
 
 		/*
@@ -39,7 +43,7 @@ public class MotifFinder2 {
 			HashMap<String,Integer> temp = new HashMap<String,Integer>();
 			for(String day : map.get(id).keySet()){
 				if(id_SPs.get(id)!=null){
-					if(id_days.containsKey(day)&&(id_days.get(id).contains(day))){
+					if(id_days.containsKey(id)&&(id_days.get(id).contains(day))){
 						ArrayList<Integer> temp_locchain = getLocChain2(map.get(id).get(day), id_SPs.get(id));
 						ArrayList<Integer> locchain = continueChecker(temp_locchain);
 						count++;
@@ -106,7 +110,7 @@ public class MotifFinder2 {
 	public static Integer overlapchecker(HashMap<Integer,LonLat> map, LonLat point){
 		if(map.size()>0){
 			for(Integer i : map.keySet()){
-				if(map.get(i).distance(point)<500){
+				if(map.get(i).distance(point)<1000){
 					return i;
 				}
 			}
