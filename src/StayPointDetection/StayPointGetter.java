@@ -37,7 +37,7 @@ public class StayPointGetter {
 	(File in, String start, String end, int min, double sigma, double threshold) 
 			throws NumberFormatException, ParseException, IOException{
 
-		HashMap<String, ArrayList<STPoint>> alldatamap = sortintoMapZDC(in);
+		HashMap<String, ArrayList<STPoint>> alldatamap = sortintoMapY(in);
 		HashMap<String, ArrayList<STPoint>> targetmap = getTargetMap(alldatamap,start,end);
 
 		HashMap<String,HashMap<LonLat,ArrayList<STPoint>>> res = new HashMap<String,HashMap<LonLat,ArrayList<STPoint>>>();
@@ -53,7 +53,7 @@ public class StayPointGetter {
 	public static HashMap<String,ArrayList<LonLat>> getSPs2(File in, double r, double threshold) 
 			throws NumberFormatException, ParseException, IOException{
 
-		HashMap<String, ArrayList<STPoint>> alldatamap = sortintoMapZDC(in);
+		HashMap<String, ArrayList<STPoint>> alldatamap = sortintoMapY(in);
 		System.out.println("#done sorting all data into maps");
 
 		HashMap<String,ArrayList<LonLat>> res = new HashMap<String,ArrayList<LonLat>>();
@@ -86,7 +86,7 @@ public class StayPointGetter {
 			String id = tokens[0];
 			Date dt = SDF_TS2.parse(tokens[3]);
 			//			System.out.println(dt);
-			STPoint point = new STPoint(dt,Double.parseDouble(tokens[1]),Double.parseDouble(tokens[2]));
+			STPoint point = new STPoint(dt,Double.parseDouble(tokens[2]),Double.parseDouble(tokens[1]));
 			if(id_count.containsKey(id)){
 				id_count.get(id).add(point);
 			}

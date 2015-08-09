@@ -30,9 +30,9 @@ public class Over8TimeSlots {
 		BufferedReader br = new BufferedReader(new FileReader(infile));
 		String line = null;
 		while ((line=br.readLine())!=null){
-			String[] tokens = line.split(",");
+			String[] tokens = line.split("\t");
 			String id = tokens[0];
-			Date dt = SDF_TS2.parse(tokens[1]);
+			Date dt = SDF_TS2.parse(tokens[3]);
 			String day = SDF_TS3.format(dt);
 			String time = SDF_TS.format(dt);
 			Integer t = StayPointTools.converttoSecs(time);

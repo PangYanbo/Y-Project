@@ -26,12 +26,15 @@ public class OfficeSchoolDetection {
 	
 	public static void main(String args[]) throws IOException, NumberFormatException, ParseException{
 
-		File in = new File(args[0]);
-		File result = new File (args[1]);
+//		File in = new File(args[0]);
+//		File result = new File (args[1]);
+		File in = new File("c:/users/yabetaka/desktop/dataforexp.csv");
+		File result = new File ("c:/users/yabetaka/desktop/id_office.csv");
+
 
 		HashMap<String,HashMap<LonLat,ArrayList<STPoint>>> SPmap = StayPointGetter.getSPs(in,"08:00:00", "18:00:00", 5, 2000, 1000);
 
-		HashMap<String, ArrayList<STPoint>> alldatamap = StayPointGetter.sortintoMapZDC(in);
+		HashMap<String, ArrayList<STPoint>> alldatamap = StayPointGetter.sortintoMapY(in);
 		HashMap<String, ArrayList<STPoint>> targetmap = StayPointGetter.getTargetMap(alldatamap,"08:00:00","18:00:00");
 		
 		HashMap<String,Integer> numberofDays = new HashMap<String,Integer>();
@@ -40,7 +43,9 @@ public class OfficeSchoolDetection {
 			numberofDays.put(id, days);
 		}
 
-		File id_home = new File (args[2]);
+//		File id_home = new File (args[2]);
+		File id_home = new File ("c:/users/yabetaka/desktop/id_home.csv");
+
 		HashMap<String,LonLat> idhome = StayPointTools.getHomeMap(id_home);
 
 		HashMap<String,HashMap<LonLat,Integer>> id_SP_visitcount = ExcludeLowFrequentSPsbyNumberofPoints(SPmap,idhome,numberofDays,0.4);
@@ -257,7 +262,7 @@ public class OfficeSchoolDetection {
 		int count = 0;
 		for(String id:map.keySet()){
 			if(map.get(id)!=null){
-				bw.write(id + "\t" + map.get(id).getLon() + "\t" + map.get(id).getLat());
+				bw.write(id + "\t" + map.get(id).getLat() + "\t" + map.get(id).getLon());
 				bw.newLine();
 				count++;
 			}

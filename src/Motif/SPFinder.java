@@ -25,16 +25,16 @@ public class SPFinder {
 	 * 
 	 */
 
-	public static void main(String args[]) throws IOException, ParseException{
-		HashMap<String, HashMap<String, HashMap<Integer, LonLat>>> map = intomapY(args[0], "all");
-		HashMap<String,HashMap<String, ArrayList<LonLat>>> res = getAllIDsSP(map, Double.parseDouble(args[2]));
-
-		Tools.writeout(res,args[1]);
-	}
+//	public static void main(String args[]) throws IOException, ParseException{
+//		HashMap<String, HashMap<String, ArrayList<LonLat>>> map = intomapY(args[0], "all");
+//		HashMap<String,HashMap<String, ArrayList<LonLat>>> res = getAllIDsSP(map, Double.parseDouble(args[2]));
+//
+//		Tools.writeout(res,args[1]);
+//	}
 
 	protected static final SimpleDateFormat SDF_TS2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//change time format
 
-	public static HashMap<String, HashMap<String, HashMap<Integer, LonLat>>> intomapY(String in, String mode) throws IOException, ParseException{
+	public static HashMap<String, HashMap<String, ArrayList<LonLat>>> intomapY(String in, String mode) throws IOException, ParseException{
 		ArrayList<String> daycodes = new ArrayList<String>();
 		if(mode.equals("weekday")){
 			daycodes.add("1");daycodes.add("2");daycodes.add("3");daycodes.add("4");daycodes.add("5");
@@ -47,12 +47,11 @@ public class SPFinder {
 		}
 		else{
 			System.out.println("weekend or weekday or all??");
-			return null;
 		}
 		int count=0;
 		File infile = new File(in);
 		BufferedReader br = new BufferedReader(new FileReader(infile));
-		HashMap<String, HashMap<String, HashMap<Integer, LonLat>>> res = new HashMap<String, HashMap<String, HashMap<Integer, LonLat>>>();
+		HashMap<String, HashMap<String, ArrayList<LonLat>>> res = new HashMap<String, HashMap<String, ArrayList<LonLat>>>();
 		String line = null;
 		while((line=br.readLine())!=null){
 			String[] tokens = line.split("\t");
@@ -62,23 +61,22 @@ public class SPFinder {
 			String youbi = (new SimpleDateFormat("u")).format(date);
 			if(daycodes.contains(youbi)){
 				String day = dt.substring(8,10);
-				Integer time = Tools.converttoSecs(dt.substring(11,19));
 				Double lon = Double.parseDouble(tokens[2]);
 				Double lat = Double.parseDouble(tokens[1]);
 				if(res.containsKey(id)){
 					if(res.get(id).containsKey(day)){
-						res.get(id).get(day).put(time, new LonLat(lon,lat));
+						res.get(id).get(day).add(new LonLat(lon,lat));
 					}
 					else{
-						HashMap<Integer, LonLat> smap = new HashMap<Integer, LonLat>();
-						smap.put(time, new LonLat(lon,lat));
+						ArrayList<LonLat> smap = new ArrayList<LonLat>();
+						smap.add(new LonLat(lon,lat));
 						res.get(id).put(day, smap);
 					}
 				}
 				else{
-					HashMap<Integer, LonLat> map2 = new HashMap<Integer, LonLat>();
-					map2.put(time, new LonLat(lon,lat));
-					HashMap<String, HashMap<Integer, LonLat>> map3 = new HashMap<String, HashMap<Integer, LonLat>>();
+					ArrayList<LonLat> map2 = new ArrayList<LonLat>();
+					map2.add(new LonLat(lon,lat));
+					HashMap<String, ArrayList<LonLat>> map3 = new HashMap<String, ArrayList<LonLat>>();
 					map3.put(day, map2);
 					res.put(id, map3);
 				}

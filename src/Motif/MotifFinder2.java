@@ -21,14 +21,14 @@ public class MotifFinder2 {
 		/*
 		 * test file
 		 */
-		String in = "c:/users/yabetaka/Desktop/dataforExp.csv";
+				String in = "c:/users/yabetaka/Desktop/dataforExp.csv";
 
-		//		String in = args[0];
+		//String in = args[0];
 
 		HashMap<String,ArrayList<LonLat>> id_SPs = StayPointGetter.getSPs2(new File(in), 500, 300);
 
 		//TODO change mode Y <-> ZDC
-		HashMap<String, HashMap<String, ArrayList<LonLat>>> map = SPFinder.intomapZDC2(in,"weekday"); 
+		HashMap<String, HashMap<String, ArrayList<LonLat>>> map = SPFinder.intomapY(in,"weekday"); 
 		HashMap<String, ArrayList<String>> id_days = Over8TimeSlots.OKAY_id_days(in);
 		HashMap<String, HashMap<String, Integer>> id_day_motif = getID_day_motif2(map, id_SPs, id_days); //[id|day|motifnumber]
 
@@ -50,7 +50,7 @@ public class MotifFinder2 {
 						if(count%10000==0){
 							System.out.println("#done " + count + " ID*days");
 						}
-//						System.out.println(id + ","+day+","+locchain);
+						//						System.out.println(id + ","+day+","+locchain);
 						Integer motif = MotifNumber.motifs(locchain);
 						temp.put(day, motif);
 						res.put(id, temp);

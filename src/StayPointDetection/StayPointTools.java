@@ -200,7 +200,7 @@ public class StayPointTools {
 		while ((line=br.readLine()) != null){
 			String[] tokens = line.split("\t");
 			String id = tokens[0];
-			LonLat point = new LonLat(Double.parseDouble(tokens[1]),Double.parseDouble(tokens[2]));
+			LonLat point = new LonLat(Double.parseDouble(tokens[2]),Double.parseDouble(tokens[1]));
 			res.put(id, point);
 		}
 		br.close();

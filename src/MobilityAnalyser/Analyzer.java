@@ -4,6 +4,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -22,10 +23,15 @@ public class Analyzer {
 		 *  
 		 */
 
-		File in = new File(args[0]);
-		File Home = new File(args[1]);
-		File Office = new File(args[2]);
-		String outputpath = args[3];
+		//		File in = new File(args[0]);
+		//		File Home = new File(args[1]);
+		//		File Office = new File(args[2]);
+		//		String outputpath = args[3];
+
+		File in = new File("c:/users/yabetaka/desktop/dataforexp.csv");
+		File Home = new File("c:/users/yabetaka/desktop/id_home.csv");
+		File Office = new File("c:/users/yabetaka/desktop/id_office.csv");
+		String outputpath = "c:/users/yabetaka/desktop/TestExp0808/";
 
 		HashMap<String,HashMap<String,ArrayList<Integer>>> hmap = HomeOfficeMaps.getLogsnearX(in,Home);
 		System.out.println("#done getting logs near home");
@@ -41,13 +47,14 @@ public class Analyzer {
 		HashMap<String, HashMap<String, Integer>> officetime  = officeStayTimes(officeenter, officeexit); System.out.println("#done getting time at office");
 
 		System.out.println("#writing everything out...");
-		writeout(officeenter, outputpath, "office_enter.txt");
-		writeout(officeexit,  outputpath, "office_exit.txt");
-		writeout(homeexit,    outputpath, "home_exit.txt");
-		writeout(homereturn,  outputpath, "home_return.txt");
-		writeout(tsukintime,  outputpath, "tsukin_time.txt");
-		writeout(kitakutime,  outputpath, "kitaku_time.txt");
-		writeout(officetime,  outputpath, "office_time.txt");
+		writeout(officeenter, outputpath, "office_enter.csv");
+		writeout(officeexit,  outputpath, "office_exit.csv");
+		writeout(homeexit,    outputpath, "home_exit.csv");
+		writeout(homereturn,  outputpath, "home_return.csv");
+		writeout(tsukintime,  outputpath, "tsukin_time.csv");
+		writeout(kitakutime,  outputpath, "kitaku_time.csv");
+		writeout(officetime,  outputpath, "office_time.csv");
+		System.out.println("#done everything");
 
 	}
 
@@ -141,9 +148,14 @@ public class Analyzer {
 				for(String day : homeexittime.get(id).keySet()){
 					if(officeentertime.get(id).containsKey(day)){
 						int time = officeentertime.get(id).get(day) - homeexittime.get(id).get(day);
-						HashMap<String, Integer> map = new HashMap<String, Integer>();
-						map.put(day, time);
-						tsuukintimes.put(id, map);
+						if(tsuukintimes.containsKey(id)){
+							tsuukintimes.get(id).put(day, time);
+						}
+						else{
+							HashMap<String, Integer> map = new HashMap<String, Integer>();
+							map.put(day, time);
+							tsuukintimes.put(id, map);
+						}
 					}
 				}
 			}
@@ -159,9 +171,14 @@ public class Analyzer {
 				for(String day : officeexittime.get(id).keySet()){
 					if(homereturntime.get(id).containsKey(day)){
 						int time = homereturntime.get(id).get(day) - officeexittime.get(id).get(day);
-						HashMap<String, Integer> map = new HashMap<String, Integer>();
-						map.put(day, time);
-						kitakujikantimes.put(id, map);
+						if(kitakujikantimes.containsKey(id)){
+							kitakujikantimes.get(id).put(day, time);
+						}
+						else{
+							HashMap<String, Integer> map = new HashMap<String, Integer>();
+							map.put(day, time);
+							kitakujikantimes.put(id, map);
+						}
 					}
 				}
 			}
@@ -177,9 +194,14 @@ public class Analyzer {
 				for(String day : officeexittime.get(id).keySet()){
 					if(officeentertime.get(id).containsKey(day)){
 						int time = officeexittime.get(id).get(day) - officeentertime.get(id).get(day);
-						HashMap<String, Integer> map = new HashMap<String, Integer>();
-						map.put(day, time);
-						officestaytimes.put(id, map);
+						if(officestaytimes.containsKey(id)){
+							officestaytimes.get(id).put(day, time);
+						}
+						else{
+							HashMap<String, Integer> map = new HashMap<String, Integer>();
+							map.put(day, time);
+							officestaytimes.put(id, map);
+						}
 					}
 				}
 			}
@@ -192,7 +214,10 @@ public class Analyzer {
 		BufferedWriter bw = new BufferedWriter(new FileWriter(out));
 		for(String id : map.keySet()){
 			for(String day : map.get(id).keySet()){
-				bw.write(id + "\t" + day + "\t" + map.get(id).get(day));
+				double time = (double)map.get(id).get(day)/(double)3600;
+				BigDecimal x = new BigDecimal(time);
+				x = x.setScale(2, BigDecimal.ROUND_HALF_UP);
+				bw.write(id + "," + day + "," + x);
 				bw.newLine();
 			}
 		}

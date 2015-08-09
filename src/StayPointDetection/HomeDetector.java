@@ -25,13 +25,16 @@ public class HomeDetector {
 
 	public static void main(String args[]) throws IOException, NumberFormatException, ParseException{
 
-		File in = new File(args[0]);
+//		File in = new File(args[0]);
+//		File res = new File (args[1]);
+		File in = new File("c:/users/yabetaka/desktop/dataforexp.csv");
+		File res = new File ("c:/users/yabetaka/desktop/id_home.csv");
 
 		HashMap<String,HashMap<LonLat,ArrayList<STPoint>>> SPmap = 
 				StayPointGetter.getSPs(in, "00:00:00", "10:00:00", 5, 2000, 1000);
 
 
-		HashMap<String, ArrayList<STPoint>> alldatamap = StayPointGetter.sortintoMapZDC(in);
+		HashMap<String, ArrayList<STPoint>> alldatamap = StayPointGetter.sortintoMapY(in);
 		HashMap<String, ArrayList<STPoint>> targetmap = StayPointGetter.getTargetMap(alldatamap,"00:00:00","10:00:00");
 		HashMap<String,Integer> numberofLogs = new HashMap<String,Integer>();
 		for(String id : targetmap.keySet()){
@@ -43,7 +46,7 @@ public class HomeDetector {
 				StayPointTools.ExcludeLowFrequentSPsbyNumberofPoints(SPmap,numberofLogs,0.4);
 		HashMap<String,LonLat> resmap = StayPointTools.getHomePointsbyNumberofPoints(id_SP_visitcount);
 
-		File res = new File (args[1]);
+
 		writeOut(resmap, res);
 	}
 
@@ -97,7 +100,7 @@ public class HomeDetector {
 		BufferedWriter bw = new BufferedWriter(new FileWriter(out));
 		int count = 0;
 		for(String id:map.keySet()){
-			bw.write(id + "\t" + map.get(id).getLon() + "\t" + map.get(id).getLat());
+			bw.write(id + "\t" + map.get(id).getLat() + "\t" + map.get(id).getLon());
 			bw.newLine();
 			count++;
 		}
