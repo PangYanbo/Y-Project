@@ -18,11 +18,11 @@ public class ID_Extractor {
 	 */
 	public static void main(String args[]) throws IOException{
 		HashSet<String> IDmap = intoMap(args[0]);
-		ID_Extracter(args[0],IDmap);
+		ID_Extracter(args[0],IDmap,"20000000");
 	}
 
-	public static void ID_Extracter(String alldata, HashSet<String> IDmap) throws IOException{
-		String out = alldata+"extracted";
+	public static void ID_Extracter(String alldata, HashSet<String> IDmap, String ymd) throws IOException{
+		String out = "/home/c-tyabe/Data/grid/0/tmp/ktsubouc/gps_" + ymd + "extr.csv";
 		BufferedReader br = new BufferedReader(new FileReader(new File(alldata)));
 		BufferedWriter bw = new BufferedWriter(new FileWriter(new File(out),true));
 		String line = br.readLine();

@@ -51,7 +51,7 @@ public class ExtractFile {
 				new File(tarEnt.getName()).mkdir();
 			}
 			else {
-				FileOutputStream fos = new FileOutputStream(new File("/home/c-tyabe/Data/"+tarEnt.getName()));
+				FileOutputStream fos = new FileOutputStream(new File("/home/c-tyabe/Data/"+tarEnt.getName()+".csv"));
 				tin.copyEntryContents(fos);
 			}
 		}

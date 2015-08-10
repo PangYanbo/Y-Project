@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 import DataModify.AreaChecker;
+import DataModify.ExtractFile;
 import DisasterAlert.DisasterLogs;
 import DisasterAlert.ExtractIDbyDate;
 import IDExtract.ID_Extractor;
@@ -49,12 +50,13 @@ public class YDisasterProject {
 	}
 
 	public static void run(ArrayList<String> zones, String zipfilepath, String ymd, String type) throws IOException, NumberFormatException, ParseException{
-		//unzip filepath
-		String unzip = "/home/c-tyabe/Data/gps_" + ymd + ".csv";
+		ExtractFile.extract(zipfilepath);
+		String unzip = "/home/c-tyabe/Data/grid/0/tmp/ktsubouc/gps_" + ymd + ".csv";
 		HashSet<String> targetIDs = ExtractIDbyDate.extractID(unzip,zones);
-		ID_Extractor.ID_Extracter(unzip,targetIDs);
+		ID_Extractor.ID_Extracter(unzip,targetIDs,ymd);
+		String extracted = "/home/c-tyabe/Data/grid/0/tmp/ktsubouc/gps_" + ymd + "extr.csv";
 		String dataforexp = "/home/c-tyabe/Data/new_gps_" + ymd + ".csv";
-		AreaChecker.WriteonlyGcheckedLogs(unzip, dataforexp);
+		AreaChecker.WriteonlyGcheckedLogs(extracted, dataforexp);
 		System.out.println("#got the data for exp for " + ymd);
 		
 		HomeDetector.getHome(dataforexp, ymd);
