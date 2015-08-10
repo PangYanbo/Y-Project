@@ -65,7 +65,9 @@ public class Analyzer {
 			for(String day : omap.get(id).keySet()){
 				ArrayList<Integer> list = omap.get(id).get(day);
 				Collections.sort(list);
-				day_lastlog.put(day, list.get(0));
+				if(list.size()>1){
+					day_lastlog.put(day, list.get(0));
+				}
 			}
 			OEntertimes.put(id, day_lastlog);
 		}
@@ -80,7 +82,9 @@ public class Analyzer {
 				ArrayList<Integer> list = omap.get(id).get(day);
 				Collections.sort(list);
 				Collections.reverse(list);
-				day_lastlog.put(day, list.get(0));
+				if(list.size()>1){
+					day_lastlog.put(day, list.get(0));
+				}
 			}
 			OExittimes.put(id, day_lastlog);
 		}
