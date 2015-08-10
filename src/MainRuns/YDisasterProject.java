@@ -68,6 +68,9 @@ public class YDisasterProject {
 		(dataforexp, "/home/c-tyabe/Data/id_home_"+ymd+".csv", "/home/c-tyabe/Data/id_office_"+ ymd +".csv", "/home/c-tyabe/Data/"+type+ymd+"/");
 		
 		MotifFinder2.executeMotif(dataforexp, ymd, type);
+		
+		File i = new File(unzip);
+		i.delete();
 	}
 
 }
