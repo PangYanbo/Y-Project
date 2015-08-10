@@ -26,18 +26,18 @@ public class MotifFinder2 {
 //				String in = "c:/users/yabetaka/Desktop/dataforExp.csv";
 
 		String in = args[0];
-		executeMotif(in, "xxx");
+		executeMotif(in, "xxx","rain");
 
 	}
 
-	public static void executeMotif(String in, String ymd) throws IOException, ParseException{
+	public static void executeMotif(String in, String ymd, String type) throws IOException, ParseException{
 		HashMap<String,ArrayList<LonLat>> id_SPs = StayPointGetter.getSPs2(new File(in), 500, 300);
 
 		HashMap<String, HashMap<String, ArrayList<LonLat>>> map = SPFinder.intomapY(in,"weekday"); 
 		HashMap<String, ArrayList<String>> id_days = Over8TimeSlots.OKAY_id_days(in);
 		HashMap<String, HashMap<String, Integer>> id_day_motif = getID_day_motif2(map, id_SPs, id_days); //[id|day|motifnumber]
 
-		motifPercentage(id_day_motif, "/home/c-tyabe/Data/"+ymd+"/motifs.csv");
+		motifPercentage(id_day_motif, "/home/c-tyabe/Data/"+type+ymd+"/motifs.csv");
 	}
 	
 	public static HashMap<String, HashMap<String,Integer>> getID_day_motif2
