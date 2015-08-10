@@ -55,7 +55,6 @@ public class DisasterLogs {
 		}
 //		Date d = SDF_TS2.parse("2014-10-21 00:00:00");
 		while((line = br.readLine())!= null){
-			System.out.println("line " + line);
 			String[] tokens = line.split(",");
 			String[] ymd = tokens[0].split("/");
 			Integer year = Integer.valueOf(ymd[0]);
