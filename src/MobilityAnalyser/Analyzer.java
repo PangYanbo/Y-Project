@@ -31,7 +31,7 @@ public class Analyzer {
 		File in = new File("c:/users/yabetaka/desktop/dataforexp.csv");
 		File Home = new File("c:/users/yabetaka/desktop/id_home.csv");
 		File Office = new File("c:/users/yabetaka/desktop/id_office.csv");
-		String outputpath = "c:/users/yabetaka/desktop/TestExp0808/";
+		String outputpath = "c:/users/yabetaka/desktop/Test/";
 
 		HashMap<String,HashMap<String,ArrayList<Integer>>> hmap = HomeOfficeMaps.getLogsnearX(in,Home);
 		System.out.println("#done getting logs near home");
@@ -103,9 +103,11 @@ public class Analyzer {
 								newlist.add(log);
 							}
 						}
-						Collections.sort(newlist);
-						Collections.reverse(newlist);
-						day_lastlog.put(day, list.get(0));
+						if(newlist.size()>0){
+							Collections.sort(newlist);
+							Collections.reverse(newlist);
+							day_lastlog.put(day, newlist.get(0));
+						}
 					}
 				}
 				shukkintimes.put(id, day_lastlog);
@@ -130,8 +132,10 @@ public class Analyzer {
 								newlist.add(log);
 							}
 						}
-						Collections.sort(newlist);
-						day_lastlog.put(day, list.get(0));
+						if(newlist.size()>0){
+							Collections.sort(newlist);
+							day_lastlog.put(day, newlist.get(0));
+						}
 					}
 				}
 				kitakutimes.put(id, day_lastlog);
