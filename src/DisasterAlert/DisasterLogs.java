@@ -70,7 +70,7 @@ public class DisasterLogs {
 			Integer min = Integer.valueOf(hourmin[1]);
 			
 			if((year>2014)||((year==2014)&&(month>=11))){
-				String type = tokens[1];
+				String type = tokens[1]; 
 				Integer level = Integer.valueOf(tokens[2]);
 				String jiscode = tokens[3];
 				if(res.containsKey(type)){
