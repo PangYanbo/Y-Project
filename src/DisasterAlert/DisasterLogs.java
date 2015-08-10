@@ -93,7 +93,7 @@ public class DisasterLogs {
 
 	public static void writeout
 	(HashMap<String, HashMap<Integer, HashMap<String,String>>> map, String path, String type, String level) throws IOException{
-		String out = path + type;
+		String out = path + type+ ".csv";
 		BufferedWriter bw = new BufferedWriter(new FileWriter(new File(out)));
 		for(String ty : map.keySet()){
 			if(ty.equals(type)){
