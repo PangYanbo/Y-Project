@@ -35,8 +35,8 @@ public class DisasterLogs {
 //		writeout(sortLogs(args[0]),args[1],args[2],args[3]);
 		String logfile = "c:/Users/c-tyabe/desktop/DisasterAlertData.csv";
 		String out = "c:/Users/c-tyabe/desktop/";
-		String type = "rain";
-		String level = "4";
+		String type = "emg1";
+		String level = "3";
 		writeout(sortLogs(logfile),out,type,level);
 	}
 	
