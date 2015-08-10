@@ -49,10 +49,8 @@ public class DisasterLogs {
 		HashMap<String, HashMap<Integer, HashMap<String,String>>> res = new HashMap<String, HashMap<Integer, HashMap<String,String>>>();
 		File infile = new File(in);
 		BufferedReader br = new BufferedReader(new FileReader(infile));
-		String line = null;
-		for(int i=1; i<=4; i++){
-			line = br.readLine();
-		}
+		String line = br.readLine();
+		
 //		Date d = SDF_TS2.parse("2014-10-21 00:00:00");
 		while((line = br.readLine())!= null){
 			String[] tokens = line.split(",");
