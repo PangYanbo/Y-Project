@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 
-public class Analyzer {
+public class MovementAnalyzer {
 
 	public static void main(String args[]) throws NumberFormatException, IOException, ParseException{
 
@@ -23,16 +23,20 @@ public class Analyzer {
 		 *  
 		 */
 
-		File in = new File(args[0]);
-		File Home = new File(args[1]);
-		File Office = new File(args[2]);
-		String outputpath = args[3];
-
 		//		File in = new File("c:/users/yabetaka/desktop/dataforexp.csv");
 		//		File Home = new File("c:/users/yabetaka/desktop/id_home.csv");
 		//		File Office = new File("c:/users/yabetaka/desktop/id_office.csv");
 		//		String outputpath = "c:/users/yabetaka/desktop/Test/";
 
+		executeAnalyser(args[0],args[1],args[2],args[3]);
+
+	}
+
+	public static void executeAnalyser(String infile, String idhome, String idoffice, String outputpath) throws NumberFormatException, IOException, ParseException{
+		File in = new File(infile);
+		File Home = new File(idhome);
+		File Office = new File(idoffice);
+		
 		HashMap<String,HashMap<String,ArrayList<Integer>>> hmap = HomeOfficeMaps.getLogsnearX(in,Home);
 		System.out.println("#done getting logs near home");
 		HashMap<String,HashMap<String,ArrayList<Integer>>> omap = HomeOfficeMaps.getLogsnearX(in,Office);
@@ -55,9 +59,8 @@ public class Analyzer {
 		writeout(kitakutime,  outputpath, "kitaku_time.csv");
 		writeout(officetime,  outputpath, "office_time.csv");
 		System.out.println("#done everything");
-
 	}
-
+	
 	public static HashMap<String, HashMap<String, Integer>> officeEnterTime(HashMap<String,HashMap<String,ArrayList<Integer>>> omap){
 		HashMap<String, HashMap<String, Integer>> OEntertimes = new HashMap<String, HashMap<String, Integer>>();
 		for(String id : omap.keySet()){

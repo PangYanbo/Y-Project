@@ -1,6 +1,8 @@
 package Motif;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -24,17 +26,20 @@ public class MotifFinder2 {
 //				String in = "c:/users/yabetaka/Desktop/dataforExp.csv";
 
 		String in = args[0];
+		executeMotif(in, "xxx");
 
+	}
+
+	public static void executeMotif(String in, String ymd) throws IOException, ParseException{
 		HashMap<String,ArrayList<LonLat>> id_SPs = StayPointGetter.getSPs2(new File(in), 500, 300);
 
-		//TODO change mode Y <-> ZDC
 		HashMap<String, HashMap<String, ArrayList<LonLat>>> map = SPFinder.intomapY(in,"weekday"); 
 		HashMap<String, ArrayList<String>> id_days = Over8TimeSlots.OKAY_id_days(in);
 		HashMap<String, HashMap<String, Integer>> id_day_motif = getID_day_motif2(map, id_SPs, id_days); //[id|day|motifnumber]
 
-		motifPercentage(id_day_motif);
+		motifPercentage(id_day_motif, "/home/c-tyabe/Data/"+ymd+"/motifs.csv");
 	}
-
+	
 	public static HashMap<String, HashMap<String,Integer>> getID_day_motif2
 	(HashMap<String, HashMap<String, ArrayList<LonLat>>> map, HashMap<String,ArrayList<LonLat>> id_SPs, HashMap<String, ArrayList<String>> id_days){
 		HashMap<String, HashMap<String,Integer>> res = new HashMap<String, HashMap<String,Integer>>();
@@ -130,7 +135,8 @@ public class MotifFinder2 {
 		return res;
 	}
 
-	public static void motifPercentage(HashMap<String, HashMap<String,Integer>> map){
+	public static void motifPercentage(HashMap<String, HashMap<String,Integer>> map, String out) throws IOException{
+		BufferedWriter bw = new BufferedWriter(new FileWriter(new File(out)));
 		HashMap<Integer,Double> res = new HashMap<Integer,Double>();
 		HashMap<Integer,Integer> temp = new HashMap<Integer,Integer>();
 		int count = 0;
@@ -151,8 +157,11 @@ public class MotifFinder2 {
 		for(Integer m : temp.keySet()){
 			Double wariai = (double)temp.get(m)/(double)count;
 			res.put(m, wariai);
-			System.out.println(m +","+wariai*100);
+			bw.write(m +","+wariai*100);
+			bw.newLine();
+			System.out.println("#done calculating motifs");
 		}
+		bw.close();
 	}
 
 }

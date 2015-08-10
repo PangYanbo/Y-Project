@@ -10,19 +10,19 @@ import java.util.HashSet;
 
 public class ID_Extractor {
 
-	/*
-	 * param
+	/**
+	 *  param
 	 * 	args[0] : All Data File
 	 * 	args[1] : ID_File
-	 *  args[2] : OutFile
-	 * 
+	 *   
 	 */
 	public static void main(String args[]) throws IOException{
-		ID_Extracter(args[0],args[1],args[2]);
+		HashSet<String> IDmap = intoMap(args[0]);
+		ID_Extracter(args[0],IDmap);
 	}
 
-	public static void ID_Extracter(String alldata, String IDs, String out) throws IOException{
-		HashSet<String> IDmap = intoMap(IDs);
+	public static void ID_Extracter(String alldata, HashSet<String> IDmap) throws IOException{
+		String out = alldata+"extracted";
 		BufferedReader br = new BufferedReader(new FileReader(new File(alldata)));
 		BufferedWriter bw = new BufferedWriter(new FileWriter(new File(out),true));
 		String line = br.readLine();
@@ -72,7 +72,7 @@ public class ID_Extractor {
 		String lat = tokens[3];
 		String timestamp = tokens[4];
 		String newtime = TimeModifier(timestamp);
-		String res = String.join("\t",id,lon,lat,newtime);
+		String res = String.join("\t",id,lat,lon,newtime);
 		return res;
 	}
 	

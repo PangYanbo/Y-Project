@@ -29,9 +29,12 @@ public class OfficeSchoolDetection {
 //		File in = new File(args[0]);
 //		File result = new File (args[1]);
 		File in = new File("c:/users/yabetaka/desktop/dataforexp.csv");
-		File result = new File ("c:/users/yabetaka/desktop/id_office.csv");
 
-
+	}
+	
+	public static File getOfficeSchool(String inpath, String date) throws NumberFormatException, ParseException, IOException{
+		File in = new File(inpath);
+		File result = new File ("/home/c-tyabe/Data/id_office_"+ date +".csv");
 		HashMap<String,HashMap<LonLat,ArrayList<STPoint>>> SPmap = StayPointGetter.getSPs(in,"08:00:00", "18:00:00", 5, 2000, 1000);
 
 		HashMap<String, ArrayList<STPoint>> alldatamap = StayPointGetter.sortintoMapY(in);
@@ -44,7 +47,7 @@ public class OfficeSchoolDetection {
 		}
 
 //		File id_home = new File (args[2]);
-		File id_home = new File ("c:/users/yabetaka/desktop/id_home.csv");
+		File id_home = new File ("/home/c-tyabe/Data/id_home_"+date+".csv");
 
 		HashMap<String,LonLat> idhome = StayPointTools.getHomeMap(id_home);
 
@@ -52,6 +55,7 @@ public class OfficeSchoolDetection {
 
 		HashMap<String,LonLat> resmap = getOfficePoints(id_SP_visitcount,idhome,1000);
 		writeOut(resmap, result);
+		return result;
 	}
 
 	public static HashMap<String,HashMap<LonLat,Integer>> ExcludeLowFrequentSPsbyNumberofPoints(HashMap<String,HashMap<LonLat,ArrayList<STPoint>>> map, HashMap<String,LonLat> idhome, HashMap<String, Integer> numberoflogs, double minrate){

@@ -8,7 +8,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class DisasterLogs {
@@ -37,10 +37,10 @@ public class DisasterLogs {
 		String out = "c:/Users/c-tyabe/desktop/";
 //		String type = "dosha";
 		String level = "10";
-//		writeout(sortLogs(logfile),out,"dosha",level);
-//		writeout(sortLogs(logfile),out,"flood",level);
-//		writeout(sortLogs(logfile),out,"heats","3");
-//		writeout(sortLogs(logfile),out,"volc",level);
+		writeout(sortLogs(logfile),out,"dosha",level);
+		writeout(sortLogs(logfile),out,"flood",level);
+		writeout(sortLogs(logfile),out,"heats","3");
+		writeout(sortLogs(logfile),out,"volc",level);
 		writeout(sortLogs(logfile),out,"eew","3");
 
 	}
@@ -115,5 +115,27 @@ public class DisasterLogs {
 		bw.close();
 	}
 
+	public static HashMap<String, ArrayList<String>> date_codemap(String disasterlogs) throws IOException{
+		HashMap<String, ArrayList<String>> res = new HashMap<String, ArrayList<String>>();
+		File dislogs = new File(disasterlogs);
+		BufferedReader br = new BufferedReader(new FileReader(dislogs));
+		String line = null;
+		while((line=br.readLine())!=null){
+			String[] tokens = line.split(",");
+			String[] datetime = tokens[2].split(" ");
+			String date = datetime[0];
+			String code = tokens[3];
+			if(res.containsKey(date)){
+				res.get(date).add(code);
+			}
+			else{
+				ArrayList<String> list = new ArrayList<String>();
+				list.add(code);
+				res.put(date, list);
+			}
+		}
+		br.close();
+		return res;
+	}
 
 }

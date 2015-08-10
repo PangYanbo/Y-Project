@@ -28,11 +28,17 @@ public class HomeDetector {
 //		File in = new File(args[0]);
 //		File res = new File (args[1]);
 		File in = new File("c:/users/yabetaka/desktop/dataforexp.csv");
-		File res = new File ("c:/users/yabetaka/desktop/id_home.csv");
+
+
+		
+	}
+
+	public static File getHome(String infile, String date) throws NumberFormatException, ParseException, IOException{
+		File in = new File(infile);
+		File res = new File ("c:/users/yabetaka/desktop/id_home_"+date+".csv");
 
 		HashMap<String,HashMap<LonLat,ArrayList<STPoint>>> SPmap = 
 				StayPointGetter.getSPs(in, "00:00:00", "10:00:00", 5, 2000, 1000);
-
 
 		HashMap<String, ArrayList<STPoint>> alldatamap = StayPointGetter.sortintoMapY(in);
 		HashMap<String, ArrayList<STPoint>> targetmap = StayPointGetter.getTargetMap(alldatamap,"00:00:00","10:00:00");
@@ -45,11 +51,10 @@ public class HomeDetector {
 		HashMap<String,HashMap<LonLat,Integer>> id_SP_visitcount = 
 				StayPointTools.ExcludeLowFrequentSPsbyNumberofPoints(SPmap,numberofLogs,0.4);
 		HashMap<String,LonLat> resmap = StayPointTools.getHomePointsbyNumberofPoints(id_SP_visitcount);
-
-
 		writeOut(resmap, res);
+		
+		return res;
 	}
-
 
 
 	public static HashMap<Integer,HashMap<LonLat,Integer>> FrequentStayPointsintoMap(File in) throws IOException{
