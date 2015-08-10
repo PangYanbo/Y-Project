@@ -32,7 +32,12 @@ public class DisasterLogs {
 	 */
 
 	public static void main(String args[]) throws IOException, ParseException{
-		writeout(sortLogs(args[0]),args[1],args[2],args[3]);
+//		writeout(sortLogs(args[0]),args[1],args[2],args[3]);
+		String logfile = "c:/Users/c-tyabe/desktop/DisasterAlertData.csv";
+		String out = "c:/Users/c-tyabe/desktop/";
+		String type = "rain";
+		String level = "4";
+		writeout(sortLogs(logfile),out,type,level);
 	}
 	
 	protected static final SimpleDateFormat SDF_TS  = new SimpleDateFormat("HH:mm:ss");//change time format
