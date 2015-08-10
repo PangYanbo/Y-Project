@@ -23,15 +23,15 @@ public class Analyzer {
 		 *  
 		 */
 
-		//		File in = new File(args[0]);
-		//		File Home = new File(args[1]);
-		//		File Office = new File(args[2]);
-		//		String outputpath = args[3];
+		File in = new File(args[0]);
+		File Home = new File(args[1]);
+		File Office = new File(args[2]);
+		String outputpath = args[3];
 
-		File in = new File("c:/users/yabetaka/desktop/dataforexp.csv");
-		File Home = new File("c:/users/yabetaka/desktop/id_home.csv");
-		File Office = new File("c:/users/yabetaka/desktop/id_office.csv");
-		String outputpath = "c:/users/yabetaka/desktop/Test/";
+		//		File in = new File("c:/users/yabetaka/desktop/dataforexp.csv");
+		//		File Home = new File("c:/users/yabetaka/desktop/id_home.csv");
+		//		File Office = new File("c:/users/yabetaka/desktop/id_office.csv");
+		//		String outputpath = "c:/users/yabetaka/desktop/Test/";
 
 		HashMap<String,HashMap<String,ArrayList<Integer>>> hmap = HomeOfficeMaps.getLogsnearX(in,Home);
 		System.out.println("#done getting logs near home");

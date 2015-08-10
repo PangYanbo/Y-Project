@@ -21,9 +21,9 @@ public class MotifFinder2 {
 		/*
 		 * test file
 		 */
-				String in = "c:/users/yabetaka/Desktop/dataforExp.csv";
+//				String in = "c:/users/yabetaka/Desktop/dataforExp.csv";
 
-		//String in = args[0];
+		String in = args[0];
 
 		HashMap<String,ArrayList<LonLat>> id_SPs = StayPointGetter.getSPs2(new File(in), 500, 300);
 
