@@ -1,8 +1,10 @@
 package DisasterAlert;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -13,11 +15,26 @@ public class DisasterLogs {
 
 	/*
 	 * TODO: Identify if the log is in the disaster area, using gchecker from knsg plow
-	 * 
 	 * Base file : time , type , level , jis code
+	 *   
+	 */
+	
+	/**
+	 * @param 
+	 * args[0] : disaster log file 
+	 * args[1] : output path 
+	 * args[2] : disaster type
+	 * args[3] : disaster level
+	 * 
+	 * @throws IOException
+	 * @throws ParseException
 	 * 
 	 */
 
+	public static void main(String args[]) throws IOException, ParseException{
+		writeout(sortLogs(args[0]),args[1],args[2],args[3]);
+	}
+	
 	protected static final SimpleDateFormat SDF_TS  = new SimpleDateFormat("HH:mm:ss");//change time format
 	protected static final SimpleDateFormat SDF_TS2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//change time format
 	protected static final SimpleDateFormat SDF_TS3 = new SimpleDateFormat("dd");//change time format
@@ -62,6 +79,24 @@ public class DisasterLogs {
 		return res;
 	}
 
+	public static void writeout
+	(HashMap<String, HashMap<Integer, HashMap<Date,String>>> map, String path, String type, String level) throws IOException{
+		String out = path + type;
+		BufferedWriter bw = new BufferedWriter(new FileWriter(new File(out)));
+		for(String ty : map.keySet()){
+			if(ty.equals(type)){
+				for(Integer le : map.get(ty).keySet()){
+					if(le>=Integer.valueOf(level)){
+						for(Date d : map.get(ty).get(le).keySet()){
+							bw.write(ty + "," + le + "," + d + "," + map.get(ty).get(le).get(d));
+							bw.newLine();
+						}
+					}
+				}
+			}
+		}
+		bw.close();
+	}
 
 
 }
