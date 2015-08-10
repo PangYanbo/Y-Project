@@ -35,9 +35,14 @@ public class DisasterLogs {
 //		writeout(sortLogs(args[0]),args[1],args[2],args[3]);
 		String logfile = "c:/Users/c-tyabe/desktop/DisasterAlertData.csv";
 		String out = "c:/Users/c-tyabe/desktop/";
-		String type = "emg2";
+//		String type = "dosha";
 		String level = "10";
-		writeout(sortLogs(logfile),out,type,level);
+		writeout(sortLogs(logfile),out,"dosha",level);
+		writeout(sortLogs(logfile),out,"flood",level);
+		writeout(sortLogs(logfile),out,"heats","3");
+		writeout(sortLogs(logfile),out,"volc",level);
+		writeout(sortLogs(logfile),out,"eew","3");
+
 	}
 	
 	protected static final SimpleDateFormat SDF_TS  = new SimpleDateFormat("HH:mm:ss");//change time format
