@@ -37,10 +37,10 @@ public class DisasterLogs {
 		String out = "c:/Users/c-tyabe/desktop/";
 //		String type = "dosha";
 		String level = "10";
-		writeout(sortLogs(logfile),out,"dosha",level);
-		writeout(sortLogs(logfile),out,"flood",level);
-		writeout(sortLogs(logfile),out,"heats","3");
-		writeout(sortLogs(logfile),out,"volc",level);
+//		writeout(sortLogs(logfile),out,"dosha",level);
+//		writeout(sortLogs(logfile),out,"flood",level);
+//		writeout(sortLogs(logfile),out,"heats","3");
+//		writeout(sortLogs(logfile),out,"volc",level);
 		writeout(sortLogs(logfile),out,"eew","3");
 
 	}
@@ -69,7 +69,7 @@ public class DisasterLogs {
 			Integer hour = Integer.valueOf(hourmin[0]);
 			Integer min = Integer.valueOf(hourmin[1]);
 			
-			if((year>2014)||((year==2014)&&(month>11))){
+			if((year>2014)||((year==2014)&&(month>=11))){
 				String type = tokens[1];
 				Integer level = Integer.valueOf(tokens[2]);
 				String jiscode = tokens[3];
