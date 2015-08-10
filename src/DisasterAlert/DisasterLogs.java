@@ -41,7 +41,7 @@ public class DisasterLogs {
 	}
 	
 	protected static final SimpleDateFormat SDF_TS  = new SimpleDateFormat("HH:mm:ss");//change time format
-	protected static final SimpleDateFormat SDF_TS2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//change time format
+	protected static final SimpleDateFormat SDF_TS2 = new SimpleDateFormat("yyyy-MM-dd HH:mm");//change time format
 	protected static final SimpleDateFormat SDF_TS3 = new SimpleDateFormat("dd");//change time format
 
 	//type - level - <time-jis>
