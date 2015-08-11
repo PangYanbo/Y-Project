@@ -71,6 +71,8 @@ public class YDisasterProject {
 		
 		File i = new File(unzip);
 		i.delete();
+		File j = new File(extracted);
+		j.delete();
 	}
 
 }
