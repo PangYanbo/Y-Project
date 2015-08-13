@@ -33,7 +33,7 @@ public class DisasterLogs {
 
 	public static void main(String args[]) throws IOException, ParseException{
 //		writeout(sortLogs(args[0]),args[1],args[2],args[3]);
-		String logfile = "c:/Users/c-tyabe/desktop/DisasterAlertData.csv";
+		String logfile = "c:/Users/c-tyabe/desktop/DisasterAlertData_toshiken.csv";
 		String out = "c:/Users/c-tyabe/desktop/";
 //		String type = "dosha";
 		String level = "10";
@@ -42,6 +42,9 @@ public class DisasterLogs {
 		writeout(sortLogs(logfile),out,"heats","3");
 		writeout(sortLogs(logfile),out,"volc",level);
 		writeout(sortLogs(logfile),out,"eew","3");
+		writeout(sortLogs(logfile),out,"rain","4");
+		writeout(sortLogs(logfile),out,"earthquake","3");
+		
 
 	}
 	
