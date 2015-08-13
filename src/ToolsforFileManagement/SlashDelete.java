@@ -13,4 +13,11 @@ public class SlashDelete {
 		return yyyymmdd;
 	}
 	
+	public static String slashtodash(String in){
+		String[] tokens = in.split("/");
+		String yyyymmdd = tokens[0] +"-"+ String.format("%02d",Integer.valueOf(tokens[1])) +"-"+  String.format("%02d",Integer.valueOf(tokens[2]));
+		System.out.println(yyyymmdd);
+		return yyyymmdd;
+	}
+	
 }

@@ -4,6 +4,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,7 +38,8 @@ public class MotifFinder2 {
 		HashMap<String, ArrayList<String>> id_days = Over8TimeSlots.OKAY_id_days(in);
 		HashMap<String, HashMap<String, Integer>> id_day_motif = getID_day_motif2(map, id_SPs, id_days); //[id|day|motifnumber]
 
-		motifPercentage(id_day_motif, "/home/c-tyabe/Data/"+type+ymd+"/motifs.csv");
+		writeout(id_day_motif,"/home/c-tyabe/Data/"+type+ymd+"/id_day_motifs.csv");
+		motifPercentage(id_day_motif, "/home/c-tyabe/Data/"+type+ymd+"/motif%s.csv");
 	}
 	
 	public static HashMap<String, HashMap<String,Integer>> getID_day_motif2
@@ -162,6 +164,20 @@ public class MotifFinder2 {
 			System.out.println("#done calculating motifs");
 		}
 		bw.close();
+	}
+	
+	public static File writeout(HashMap<String, HashMap<String, Integer>> map, String path) throws IOException{
+		File out = new File(path);
+		BufferedWriter bw = new BufferedWriter(new FileWriter(out));
+		for(String id : map.keySet()){
+			for(String day : map.get(id).keySet()){
+				int motifnum = map.get(id).get(day);
+				bw.write(id + "," + day + "," + motifnum);
+				bw.newLine();
+			}
+		}
+		bw.close();
+		return out;
 	}
 
 }
