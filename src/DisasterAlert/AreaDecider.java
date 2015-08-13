@@ -37,6 +37,7 @@ public class AreaDecider {
 			String jiscode = tokens[3];		
 			if(JISset.contains(jiscode)){
 				bw.write(line);
+				bw.newLine();
 				count++;
 			}
 		}
