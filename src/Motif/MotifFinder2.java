@@ -16,7 +16,10 @@ import StayPointDetection.StayPointGetter;
 public class MotifFinder2 {
 
 	/**
-	 * @param args[0] : infile 
+	 * @param 
+	 * args[0] : infile 
+	 * args[1] : yyyymmdd of disaster
+	 * args[2] : name of disaster
 	 *
 	 */
 	public static void main(String args[]) throws IOException, ParseException{
@@ -27,7 +30,7 @@ public class MotifFinder2 {
 //				String in = "c:/users/yabetaka/Desktop/dataforExp.csv";
 
 		String in = args[0];
-		executeMotif(in, "xxx","rain");
+		executeMotif(in, args[1],args[2]);
 
 	}
 
