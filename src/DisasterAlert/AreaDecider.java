@@ -13,7 +13,7 @@ public class AreaDecider {
 	public static void main(String args[]) throws IOException{
 		File in = new File("c:/users/c-tyabe/desktop/DisasterDataLogs/DisasterAlertData.csv");
 		File out = new File("c:/users/c-tyabe/desktop/DisasterDataLogs/DisasterAlertData_toshiken.csv");
-		File jiscodes = new File("c:/users/c-tyabe/desktop/ToshikenSHP/JIScodes.xlsx");
+		File jiscodes = new File("c:/users/c-tyabe/desktop/ToshikenSHP/JIScodes.csv");
 		choosebyArea(in,out,jiscodes);		
 	}
 	
