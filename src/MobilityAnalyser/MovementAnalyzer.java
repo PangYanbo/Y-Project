@@ -36,7 +36,7 @@ public class MovementAnalyzer {
 		File in = new File(infile);
 		File Home = new File(idhome);
 		File Office = new File(idoffice);
-		
+
 		HashMap<String,HashMap<String,ArrayList<Integer>>> hmap = HomeOfficeMaps.getLogsnearX(in,Home);
 		System.out.println("#done getting logs near home");
 		HashMap<String,HashMap<String,ArrayList<Integer>>> omap = HomeOfficeMaps.getLogsnearX(in,Office);
@@ -60,7 +60,7 @@ public class MovementAnalyzer {
 		writeout(officetime,  outputpath, "office_time.csv");
 		System.out.println("#done everything");
 	}
-	
+
 	public static HashMap<String, HashMap<String, Integer>> officeEnterTime(HashMap<String,HashMap<String,ArrayList<Integer>>> omap){
 		HashMap<String, HashMap<String, Integer>> OEntertimes = new HashMap<String, HashMap<String, Integer>>();
 		for(String id : omap.keySet()){
@@ -205,13 +205,15 @@ public class MovementAnalyzer {
 				for(String day : officeexittime.get(id).keySet()){
 					if(officeentertime.get(id).containsKey(day)){
 						int time = officeexittime.get(id).get(day) - officeentertime.get(id).get(day);
-						if(officestaytimes.containsKey(id)){
-							officestaytimes.get(id).put(day, time);
-						}
-						else{
-							HashMap<String, Integer> map = new HashMap<String, Integer>();
-							map.put(day, time);
-							officestaytimes.put(id, map);
+						if(time>1){
+							if(officestaytimes.containsKey(id)){
+								officestaytimes.get(id).put(day, time);
+							}
+							else{
+								HashMap<String, Integer> map = new HashMap<String, Integer>();
+								map.put(day, time);
+								officestaytimes.put(id, map);
+							}
 						}
 					}
 				}

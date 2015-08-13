@@ -4,7 +4,6 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -164,8 +163,8 @@ public class MotifFinder2 {
 			res.put(m, wariai);
 			bw.write(m +","+wariai*100);
 			bw.newLine();
-			System.out.println("#done calculating motifs");
 		}
+		System.out.println("#done calculating motifs");
 		bw.close();
 	}
 	
