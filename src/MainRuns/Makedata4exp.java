@@ -19,7 +19,7 @@ public class Makedata4exp {
 
 	public static void makedata(String outpath, HashSet<String> targetdays, HashSet<String> targetIDs) throws IOException{
 		BufferedWriter bw = new BufferedWriter(new FileWriter(new File(outpath),true));
-
+		int count = 0;
 		for(String d : targetdays){
 			String[] youso = d.split("-");
 			String ymd = youso[0]+youso[1]+youso[2];
@@ -39,6 +39,7 @@ public class Makedata4exp {
 						String time = converttime(tokens[4]);
 						bw.write(id + "\t" + lat + "\t" + lon + "\t" + time);
 						bw.newLine();
+						count++;
 					}
 					prevline = line;
 				}
@@ -50,7 +51,7 @@ public class Makedata4exp {
 		}
 
 		bw.close();
-
+		System.out.println("#the size of data for exp is "+ count);
 	}
 	
 	public static String converttime(String t){

@@ -74,7 +74,7 @@ public class YDisasterProject {
 
 		String disGPS = GPSpath+ymd+".tar.gz"; //ymd=yyyymmdd‚ÌŒ`‚É‚È‚Á‚Ä‚¢‚é
 		ExtractFile.uncompress(Paths.get(disGPS));
-		System.out.println("#done compressing " + disGPS);
+		System.out.println("#done uncompressing " + disGPS);
 		
 		String unzippedfile = FilePaths.deephomepath(ymd);
 		HashSet<String> targetIDs = ExtractIDbyDate.extractID(unzippedfile,time,zones,10); //10: minimum logs
@@ -83,8 +83,9 @@ public class YDisasterProject {
 		i.delete();
 
 		String dataforexp = workpath+"dataforexp.csv";
-		HashSet<String> targetdays = DayChooser.getTargetDates(ymd, dislog); System.out.println("#the nuumber of days are " + targetdays.size());
+		HashSet<String> targetdays = DayChooser.getTargetDates(ymd, dislog); System.out.println("#the number of days are " + targetdays.size());
 		Makedata4exp.makedata(dataforexp, targetdays, targetIDs);
+		System.out.println("#successfully made data for exp");
 
 		HomeDetector.getHome(dataforexp, ymd, type);
 		OfficeSchoolDetection.getOfficeSchool(dataforexp, ymd, type);

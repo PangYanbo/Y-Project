@@ -35,11 +35,11 @@ public class ExtractIDbyDate {
 				String[] tokens = line.split("\t");
 				if(tokens.length>1){
 					String id = tokens[0];
-					String[] ymdt = tokens[3].split("T");
+					String[] ymdt = tokens[4].split("T");
 					String time = DisasterLogs.converttime(ymdt[1]);
 					if(time.equals(t)){
-						Double lat = Double.parseDouble(tokens[1]);
-						Double lon = Double.parseDouble(tokens[2]);
+						Double lat = Double.parseDouble(tokens[2]);
+						Double lon = Double.parseDouble(tokens[3]);
 						LonLat p = new LonLat(lon,lat);
 						if(AreaOverlap(p,JIScodes)==true){
 							if(temp.containsKey(id)){
