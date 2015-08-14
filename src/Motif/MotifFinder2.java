@@ -29,11 +29,11 @@ public class MotifFinder2 {
 //				String in = "c:/users/yabetaka/Desktop/dataforExp.csv";
 
 		String in = args[0];
-		executeMotif(in, args[1],args[2], args[3]);
+		executeMotif(in, args[1]);
 
 	}
 
-	public static void executeMotif(String in, String ymd, String type, String path) throws IOException, ParseException{
+	public static void executeMotif(String in, String path) throws IOException, ParseException{
 		HashMap<String,ArrayList<LonLat>> id_SPs = StayPointGetter.getSPs2(new File(in), 500, 300);
 
 		HashMap<String, HashMap<String, ArrayList<LonLat>>> map = SPFinder.intomapY(in,"weekday"); 

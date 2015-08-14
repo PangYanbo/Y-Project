@@ -102,7 +102,7 @@ public class YDisasterProject {
 		(dataforexp, FilePaths.dirfile(dir.toString(),"id_home.csv"), 
 				FilePaths.dirfile(dir.toString(),"id_office.csv"), dir.toString());
 
-		MotifFinder2.executeMotif(dataforexp, ymd, type, dir.toString());
+		MotifFinder2.executeMotif(dataforexp, dir.toString());
 
 	}
 }
