@@ -33,15 +33,17 @@ public class ExtractIDbyDate {
 				String[] tokens = line.split("\t");
 				if(tokens.length>=5){
 					String id = tokens[0];
-					if(!tokens[4].equals("null")){
-						String tz = tokens[4].substring(11,19);
-						String time = DisasterLogs.converttime(tz);
-						if(time.equals(t)){
-							Double lat = Double.parseDouble(tokens[2]);
-							Double lon = Double.parseDouble(tokens[3]);
-							LonLat p = new LonLat(lon,lat);
-							if(AreaOverlap(p,JIScodes)==true){
-								set.add(id);
+					if(!id.equals("null")){
+						if(!tokens[4].equals("null")){
+							String tz = tokens[4].substring(11,19);
+							String time = DisasterLogs.converttime(tz);
+							if(time.equals(t)){
+								Double lat = Double.parseDouble(tokens[2]);
+								Double lon = Double.parseDouble(tokens[3]);
+								LonLat p = new LonLat(lon,lat);
+								if(AreaOverlap(p,JIScodes)==true){
+									set.add(id);
+								}
 							}
 						}
 					}
