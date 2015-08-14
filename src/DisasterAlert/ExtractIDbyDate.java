@@ -33,7 +33,7 @@ public class ExtractIDbyDate {
 		while((line=br.readLine())!=null){
 			if(ID_Extract_Tools.SameLogCheck(line,prevline)==true){
 				String[] tokens = line.split("\t");
-				if(tokens.length>1){
+				if(tokens.length>=5){
 					String id = tokens[0];
 					if(!tokens[4].equals("null")){
 						String tz = tokens[4].substring(11,19);

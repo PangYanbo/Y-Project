@@ -32,7 +32,7 @@ public class Makedata4exp {
 			while((line=br.readLine())!=null){
 				if(ID_Extract_Tools.SameLogCheck(line,prevline)==true){
 					String[] tokens = line.split("\t");
-					if(tokens.length>1){
+					if(tokens.length>=5){
 						if(!tokens[4].equals("null")){
 							String id = tokens[0];
 							String lat = tokens[2];
