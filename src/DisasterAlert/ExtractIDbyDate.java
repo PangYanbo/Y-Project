@@ -35,8 +35,8 @@ public class ExtractIDbyDate {
 				String[] tokens = line.split("\t");
 				if(tokens.length>1){
 					String id = tokens[0];
-					String[] ymdt = tokens[4].split("T");
-					String time = DisasterLogs.converttime(ymdt[1]);
+					String tz = tokens[4].substring(11,19);
+					String time = DisasterLogs.converttime(tz);
 					if(time.equals(t)){
 						Double lat = Double.parseDouble(tokens[2]);
 						Double lon = Double.parseDouble(tokens[3]);
