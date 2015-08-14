@@ -36,14 +36,14 @@ public class DisasterLogs {
 		String logfile = "c:/Users/c-tyabe/desktop/DisasterAlertData_toshiken.csv";
 		String out = "c:/Users/c-tyabe/desktop/";
 //		String type = "dosha";
-		String level = "10";
-		writeout(sortLogs(logfile),out,"dosha",level);
-		writeout(sortLogs(logfile),out,"flood",level);
-		writeout(sortLogs(logfile),out,"heats","3");
-		writeout(sortLogs(logfile),out,"volc",level);
-		writeout(sortLogs(logfile),out,"eew","3");
-		writeout(sortLogs(logfile),out,"rain","4");
-		writeout(sortLogs(logfile),out,"earthquake","3");
+//		String level = "10";
+//		writeout(sortLogs(logfile),out,"dosha",level);
+//		writeout(sortLogs(logfile),out,"flood",level);
+//		writeout(sortLogs(logfile),out,"heats","3");
+//		writeout(sortLogs(logfile),out,"volc",level);
+//		writeout(sortLogs(logfile),out,"eew","3");
+		writeout(sortLogs(logfile),out,"rain","1");
+//		writeout(sortLogs(logfile),out,"earthquake","3");
 		
 
 	}
