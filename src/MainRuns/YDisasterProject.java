@@ -41,7 +41,7 @@ public class YDisasterProject {
 	public static void main(String args[]) throws IOException, NumberFormatException, ParseException{
 		File dir = new File(homepath);
 		dir.mkdir();
-		
+			
 		String disasterlogfile = "/home/c-tyabe/Data/DisasterLogs/DisasterAlertData_shutoken_"+type+".csv";
 		runforallevents(disasterlogfile);
 	}
@@ -68,6 +68,10 @@ public class YDisasterProject {
 	}
 
 	public static void run(ArrayList<String> zones, String ymd, String time, String level, String dislog) throws IOException, NumberFormatException, ParseException{
+		String wpath = homepath+"/"+type+"_"+level+"/";
+		File dir2 = new File(wpath);
+		dir2.mkdir();
+		
 		String workpath = homepath+"/"+type+"_"+level+"/"+ymd+"_"+time+"/";
 		File dir = new File(workpath);
 		dir.mkdir();
