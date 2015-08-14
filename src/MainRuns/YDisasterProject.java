@@ -71,6 +71,8 @@ public class YDisasterProject {
 		System.out.println("start run for " + zones.size() +" zones");
 		System.out.println("zones are " + zones);
 		
+		String disasterday = ymd.substring(4,6);
+		
 		String wpath = homepath+"/"+type+"_"+level+"/";
 		File dir2 = new File(wpath);
 		dir2.mkdir();
@@ -100,9 +102,9 @@ public class YDisasterProject {
 
 		MovementAnalyzer.executeAnalyser
 		(dataforexp, FilePaths.dirfile(dir.toString(),"id_home.csv"), 
-				FilePaths.dirfile(dir.toString(),"id_office.csv"), dir.toString());
+				FilePaths.dirfile(dir.toString(),"id_office.csv"), dir.toString(), disasterday);
 
-		MotifFinder2.executeMotif(dataforexp, dir.toString());
+		MotifFinder2.executeMotif(dataforexp, dir.toString(), disasterday);
 
 	}
 }

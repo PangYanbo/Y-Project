@@ -28,11 +28,11 @@ public class MovementAnalyzer {
 		//		File Office = new File("c:/users/yabetaka/desktop/id_office.csv");
 		//		String outputpath = "c:/users/yabetaka/desktop/Test/";
 
-		executeAnalyser(args[0],args[1],args[2],args[3]);
+		executeAnalyser(args[0],args[1],args[2],args[3],args[4]);
 
 	}
 
-	public static void executeAnalyser(String infile, String idhome, String idoffice, String outputpath) throws NumberFormatException, IOException, ParseException{
+	public static void executeAnalyser(String infile, String idhome, String idoffice, String outputpath, String disasterday) throws NumberFormatException, IOException, ParseException{
 		File in = new File(infile);
 		File Home = new File(idhome);
 		File Office = new File(idoffice);
@@ -51,13 +51,13 @@ public class MovementAnalyzer {
 		HashMap<String, HashMap<String, Integer>> officetime  = officeStayTimes(officeenter, officeexit); System.out.println("#done getting time at office");
 
 		System.out.println("#writing everything out...");
-		writeout(officeenter, outputpath, "office_enter.csv");
-		writeout(officeexit,  outputpath, "office_exit.csv");
-		writeout(homeexit,    outputpath, "home_exit.csv");
-		writeout(homereturn,  outputpath, "home_return.csv");
-		writeout(tsukintime,  outputpath, "tsukin_time.csv");
-		writeout(kitakutime,  outputpath, "kitaku_time.csv");
-		writeout(officetime,  outputpath, "office_time.csv");
+		writeout(officeenter, outputpath, "office_enter.csv", disasterday);
+		writeout(officeexit,  outputpath, "office_exit.csv" , disasterday);
+		writeout(homeexit,    outputpath, "home_exit.csv"   , disasterday);
+		writeout(homereturn,  outputpath, "home_return.csv" , disasterday);
+		writeout(tsukintime,  outputpath, "tsukin_time.csv" , disasterday);
+		writeout(kitakutime,  outputpath, "kitaku_time.csv" , disasterday);
+		writeout(officetime,  outputpath, "office_time.csv" , disasterday);
 		System.out.println("#done everything");
 	}
 
@@ -222,7 +222,7 @@ public class MovementAnalyzer {
 		return officestaytimes;
 	}
 
-	public static File writeout(HashMap<String, HashMap<String, Integer>> map, String path, String name) throws IOException{
+	public static File writeout(HashMap<String, HashMap<String, Integer>> map, String path, String name, String disasterday) throws IOException{
 		File out = new File(path+name);
 		BufferedWriter bw = new BufferedWriter(new FileWriter(out));
 		for(String id : map.keySet()){
@@ -230,7 +230,11 @@ public class MovementAnalyzer {
 				double time = (double)map.get(id).get(day)/(double)3600;
 				BigDecimal x = new BigDecimal(time);
 				x = x.setScale(2, BigDecimal.ROUND_HALF_UP);
-				bw.write(id + "," + day + "," + x);
+				String z = "1";
+				if(day.equals(disasterday)){
+					z = "2";
+				}
+				bw.write(id + "," + z + "," + x);
 				bw.newLine();
 			}
 		}
