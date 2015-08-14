@@ -90,7 +90,8 @@ public class YDisasterProject {
 		i.delete();
 
 		String dataforexp = workpath+"dataforexp.csv";
-		HashSet<String> targetdays = DayChooser.getTargetDates(ymd, dislog); System.out.println("#the number of days are " + targetdays.size());
+		HashSet<String> targetdays = DayChooser.getTargetDates(ymd, dislog); 
+		System.out.println("#the number of days are " + targetdays.size());
 		Makedata4exp.makedata(dataforexp, targetdays, targetIDs);
 		System.out.println("#successfully made data for exp");
 

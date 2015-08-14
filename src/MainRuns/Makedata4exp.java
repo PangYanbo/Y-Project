@@ -35,12 +35,14 @@ public class Makedata4exp {
 					if(tokens.length>=5){
 						if(!tokens[4].equals("null")){
 							String id = tokens[0];
-							String lat = tokens[2];
-							String lon = tokens[3];
-							String time = converttime(tokens[4]);
-							bw.write(id + "\t" + lat + "\t" + lon + "\t" + time);
-							bw.newLine();
-							count++;
+							if(targetIDs.contains(id)){
+								String lat = tokens[2];
+								String lon = tokens[3];
+								String time = converttime(tokens[4]);
+								bw.write(id + "\t" + lat + "\t" + lon + "\t" + time);
+								bw.newLine();
+								count++;
+							}
 						}
 					}
 					prevline = line;
