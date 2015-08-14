@@ -17,8 +17,8 @@ public class DisLogDecider {
 
 	public static void main(String args[]) throws IOException, ParseException{
 		File in = new File("c:/users/c-tyabe/desktop/DisasterDataLogs/DisasterAlertData.csv");
-		File out = new File("c:/users/c-tyabe/desktop/DisasterDataLogs/DisasterAlertData_shutoken.csv");
-		File jiscodes = new File("c:/users/c-tyabe/desktop/ToshikenSHP/JIScodes.csv");
+		File out = new File("c:/users/c-tyabe/desktop/DisasterDataLogs/DisasterAlertData_shutoken_rain.csv");
+		File jiscodes = new File("c:/users/c-tyabe/desktop/ShutokenSHP/JIScodes.csv");
 		choosebyAreaDateType(in,out,jiscodes,"rain","2014-10-21");		
 	}
 
