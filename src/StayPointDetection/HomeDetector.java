@@ -33,9 +33,9 @@ public class HomeDetector {
 		
 	}
 
-	public static File getHome(String infile, String date, String type) throws NumberFormatException, ParseException, IOException{
+	public static File getHome(String infile, String date, String type, String path) throws NumberFormatException, ParseException, IOException{
 		File in = new File(infile);
-		File res = new File ("c:/users/yabetaka/desktop/"+type+date+"/id_home_"+date+".csv");
+		File res = new File (path+"id_home.csv");
 
 		HashMap<String,HashMap<LonLat,ArrayList<STPoint>>> SPmap = 
 				StayPointGetter.getSPs(in, "00:00:00", "10:00:00", 5, 2000, 1000);

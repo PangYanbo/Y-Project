@@ -97,14 +97,14 @@ public class YDisasterProject {
 		Makedata4exp.makedata(dataforexp, targetdays, targetIDs);
 		System.out.println("#successfully made data for exp");
 
-		HomeDetector.getHome(dataforexp, ymd, type);
-		OfficeSchoolDetection.getOfficeSchool(dataforexp, ymd, type);
+		HomeDetector.getHome(dataforexp, ymd, type, workpath);
+		OfficeSchoolDetection.getOfficeSchool(dataforexp, ymd, type, workpath);
 
 		MovementAnalyzer.executeAnalyser
-		(dataforexp, FilePaths.dirfile(dir.toString(),"id_home.csv"), 
-				FilePaths.dirfile(dir.toString(),"id_office.csv"), dir.toString(), disasterday);
+		(dataforexp, FilePaths.dirfile(workpath,"id_home.csv"), 
+				FilePaths.dirfile(workpath,"id_office.csv"), workpath, disasterday);
 
-		MotifFinder2.executeMotif(dataforexp, dir.toString(), disasterday);
+		MotifFinder2.executeMotif(dataforexp, workpath, disasterday);
 
 	}
 }
