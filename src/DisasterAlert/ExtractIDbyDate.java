@@ -35,23 +35,22 @@ public class ExtractIDbyDate {
 				String[] tokens = line.split("\t");
 				if(tokens.length>1){
 					String id = tokens[0];
-					if(tokens[4].length()<15){
-						System.out.println("whats going wrong man "+tokens[4]);
-					}
-					String tz = tokens[4].substring(11,19);
-					String time = DisasterLogs.converttime(tz);
-					if(time.equals(t)){
-						Double lat = Double.parseDouble(tokens[2]);
-						Double lon = Double.parseDouble(tokens[3]);
-						LonLat p = new LonLat(lon,lat);
-						if(AreaOverlap(p,JIScodes)==true){
-							if(temp.containsKey(id)){
-								int count = temp.get(id);
-								count++;
-								temp.put(id, count);
-							}
-							else{
-								temp.put(id, 1);
+					if(!tokens[4].equals(null)){
+						String tz = tokens[4].substring(11,19);
+						String time = DisasterLogs.converttime(tz);
+						if(time.equals(t)){
+							Double lat = Double.parseDouble(tokens[2]);
+							Double lon = Double.parseDouble(tokens[3]);
+							LonLat p = new LonLat(lon,lat);
+							if(AreaOverlap(p,JIScodes)==true){
+								if(temp.containsKey(id)){
+									int count = temp.get(id);
+									count++;
+									temp.put(id, count);
+								}
+								else{
+									temp.put(id, 1);
+								}
 							}
 						}
 					}
