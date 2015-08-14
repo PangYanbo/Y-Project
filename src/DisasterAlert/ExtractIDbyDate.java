@@ -5,13 +5,12 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
-import IDExtract.ID_Extract_Tools;
 import jp.ac.ut.csis.pflow.geom.GeometryChecker;
 import jp.ac.ut.csis.pflow.geom.LonLat;
+import IDExtract.ID_Extract_Tools;
 
 public class ExtractIDbyDate {
 
@@ -25,7 +24,6 @@ public class ExtractIDbyDate {
 
 	public static HashSet<String> extractID(String in, String t, ArrayList<String> JIScodes, int minimumlogs) throws IOException{
 		HashSet<String> set = new HashSet<String>();
-		HashMap<String, Integer> temp = new HashMap<String, Integer>();
 		File infile = new File(in);
 		BufferedReader br = new BufferedReader(new FileReader(infile));
 		String line = null;
@@ -43,24 +41,12 @@ public class ExtractIDbyDate {
 							Double lon = Double.parseDouble(tokens[3]);
 							LonLat p = new LonLat(lon,lat);
 							if(AreaOverlap(p,JIScodes)==true){
-								if(temp.containsKey(id)){
-									int count = temp.get(id);
-									count++;
-									temp.put(id, count);
-								}
-								else{
-									temp.put(id, 1);
-								}
+								set.add(id);
 							}
 						}
 					}
 				}
 				prevline = line;
-			}
-		}
-		for(String i : temp.keySet()){
-			if(temp.get(i)>minimumlogs){
-				set.add(i);
 			}
 		}
 		br.close();
