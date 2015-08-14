@@ -33,13 +33,15 @@ public class Makedata4exp {
 				if(ID_Extract_Tools.SameLogCheck(line,prevline)==true){
 					String[] tokens = line.split("\t");
 					if(tokens.length>1){
-						String id = tokens[0];
-						String lat = tokens[2];
-						String lon = tokens[3];
-						String time = converttime(tokens[4]);
-						bw.write(id + "\t" + lat + "\t" + lon + "\t" + time);
-						bw.newLine();
-						count++;
+						if(!tokens[4].equals("null")){
+							String id = tokens[0];
+							String lat = tokens[2];
+							String lon = tokens[3];
+							String time = converttime(tokens[4]);
+							bw.write(id + "\t" + lat + "\t" + lon + "\t" + time);
+							bw.newLine();
+							count++;
+						}
 					}
 					prevline = line;
 				}
@@ -53,7 +55,7 @@ public class Makedata4exp {
 		bw.close();
 		System.out.println("#the size of data for exp is "+ count);
 	}
-	
+
 	public static String converttime(String t){
 		String[] x = t.split("T");
 		String time = x[1].substring(0,8);
