@@ -35,7 +35,9 @@ public class ExtractIDbyDate {
 				String[] tokens = line.split("\t");
 				if(tokens.length>1){
 					String id = tokens[0];
-					System.out.println("whats going wrong man "+tokens[4]);
+					if(tokens[4].length()<15){
+						System.out.println("whats going wrong man "+tokens[4]);
+					}
 					String tz = tokens[4].substring(11,19);
 					String time = DisasterLogs.converttime(tz);
 					if(time.equals(t)){
