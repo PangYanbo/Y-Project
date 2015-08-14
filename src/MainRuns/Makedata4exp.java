@@ -51,7 +51,7 @@ public class Makedata4exp {
 				}
 			}
 			br.close();
-			System.out.println("done " + d +" ... " + daa +"lines");
+			System.out.println("done " + d +" ... " + daa +" lines");
 			File i = new File(GPSdeeppath+ymd+".csv");
 			i.delete();
 		}
