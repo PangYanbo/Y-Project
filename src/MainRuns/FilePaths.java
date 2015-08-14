@@ -8,7 +8,7 @@ public class FilePaths {
 	}
 	
 	public static String deephomepath(String x){
-		String res = "/home/c-tyabe/Data/grid/0/tmp/ktsubouc/gps_" + x;
+		String res = "/home/c-tyabe/Data/grid/0/tmp/ktsubouc/gps_" + x +".csv";
 		return res;
 	}
 

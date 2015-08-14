@@ -74,6 +74,7 @@ public class YDisasterProject {
 
 		String disGPS = GPSpath+ymd+".tar.gz"; //ymd=yyyymmdd‚ÌŒ`‚É‚È‚Á‚Ä‚¢‚é
 		ExtractFile.uncompress(Paths.get(disGPS));
+		System.out.println("#done compressing " + disGPS);
 		
 		String unzippedfile = FilePaths.deephomepath(ymd);
 		HashSet<String> targetIDs = ExtractIDbyDate.extractID(unzippedfile,time,zones,10); //10: minimum logs
