@@ -41,7 +41,7 @@ public class YDisasterProject {
 		File dir = new File(homepath);
 		dir.mkdir();
 		
-		String disasterlogfile = "/home/c-yabe/Data/DisasterLogs/DisasterAlertData_shutoken_"+type+".csv";
+		String disasterlogfile = "/home/c-tyabe/Data/DisasterLogs/DisasterAlertData_shutoken_"+type+".csv";
 		runforallevents(disasterlogfile);
 	}
 
