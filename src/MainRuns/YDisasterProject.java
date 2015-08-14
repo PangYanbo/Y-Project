@@ -2,6 +2,7 @@ package MainRuns;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -72,7 +73,7 @@ public class YDisasterProject {
 		dir.mkdir();
 
 		String disGPS = GPSpath+ymd+".tar.gz"; //ymd=yyyymmdd‚ÌŒ`‚É‚È‚Á‚Ä‚¢‚é
-		ExtractFile.extract(disGPS);
+		ExtractFile.uncompress(Paths.get(disGPS));
 		
 		String unzippedfile = FilePaths.deephomepath(ymd);
 		HashSet<String> targetIDs = ExtractIDbyDate.extractID(unzippedfile,time,zones,10); //10: minimum logs
