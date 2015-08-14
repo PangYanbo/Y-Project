@@ -68,6 +68,9 @@ public class YDisasterProject {
 	}
 
 	public static void run(ArrayList<String> zones, String ymd, String time, String level, String dislog) throws IOException, NumberFormatException, ParseException{
+		System.out.println("start run for " + zones.size() +" zones");
+		System.out.println("zones are " + zones);
+		
 		String wpath = homepath+"/"+type+"_"+level+"/";
 		File dir2 = new File(wpath);
 		dir2.mkdir();
@@ -81,7 +84,7 @@ public class YDisasterProject {
 		System.out.println("#done uncompressing " + disGPS);
 		
 		String unzippedfile = FilePaths.deephomepath(ymd);
-		HashSet<String> targetIDs = ExtractIDbyDate.extractID(unzippedfile,time,zones,10); //10: minimum logs
+		HashSet<String> targetIDs = ExtractIDbyDate.extractID(unzippedfile,time,zones,0); //0: minimum logs
 		System.out.println("#the number of IDs for " + ymd+time+ " is " + targetIDs.size());
 		File i = new File(unzippedfile);
 		i.delete();
