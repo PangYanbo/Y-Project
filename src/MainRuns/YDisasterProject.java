@@ -5,20 +5,17 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 
-import DataModify.AreaChecker;
 import DataModify.ExtractFile;
+import DisasterAlert.DayChooser;
 import DisasterAlert.DisasterLogs;
 import DisasterAlert.ExtractIDbyDate;
-import IDExtract.ID_Extractor;
 import MobilityAnalyser.MovementAnalyzer;
 import Motif.MotifFinder2;
 import StayPointDetection.HomeDetector;
 import StayPointDetection.OfficeSchoolDetection;
-import ToolsforFileManagement.SlashDelete;
 
 public class YDisasterProject {
 
@@ -35,55 +32,64 @@ public class YDisasterProject {
 	 */
 
 	protected static final SimpleDateFormat SDF_TS = new SimpleDateFormat("yyyy-MM-dd");//change time format
+		
+	private static final String type = "rain";
+	private static final String homepath = "/home/c-tyabe/Data/"+type+"Tokyo/";
+	private static final String GPSpath  = "/tmp/bousai_data/gps_";
+
+	public static void main(String args[]) throws IOException, NumberFormatException, ParseException{
+		File dir = new File(homepath);
+		dir.mkdir();
+		
+		String disasterlogfile = "/home/c-yabe/Data/DisasterLogs/DisasterAlertData_shutoken_"+type+".csv";
+		runforallevents(disasterlogfile);
+	}
+
 	
-	public static void runforallevents(String dislog, Integer codenum, String type) throws IOException, NumberFormatException, ParseException{
-		HashMap<String, ArrayList<String>> date_code = DisasterLogs.date_codemap(dislog);
-		for(String day : date_code.keySet()){
-			if(date_code.get(day).size()>=codenum){ //TODO change number of Žs’¬‘º
-				String yyyymmdd = SlashDelete.excludeslash(day);
-				String filepath = FilePaths.tmppath(yyyymmdd);
-				run(date_code.get(day), filepath, yyyymmdd, type);
-				//run for normal days here
+	public static void runforallevents(String dislog) throws IOException, NumberFormatException, ParseException{
+		HashMap<String, HashMap<String, HashMap<String, ArrayList<String>>>> dislogs = DisasterLogs.sortLogs(dislog);
+		
+		int count = 0;
+		for(String ymd : dislogs.keySet()){
+			for(String time : dislogs.get(ymd).keySet()){
+				for(String level : dislogs.get(ymd).get(time).keySet()){
+					ArrayList<String> codes = dislogs.get(ymd).get(time).get(level);
+					run(codes, ymd, time, level, dislog);
+					count++;
+					if(count==1){
+						break;
+					}
+				}
 			}
 		}
 	}
 
-	public static void run(ArrayList<String> zones, String zipfilepath, String ymd, String type) throws IOException, NumberFormatException, ParseException{
-		File dir = new File(FilePaths.homedir(type+ymd));
+	public static void run(ArrayList<String> zones, String ymd, String time, String level, String dislog) throws IOException, NumberFormatException, ParseException{
+		String workpath = homepath+"/"+type+"_"+level+"/"+ymd+"_"+time+"/";
+		File dir = new File(workpath);
 		dir.mkdir();
+
+		String disGPS = GPSpath+ymd+".tar.gz"; //ymd=yyyymmdd‚ÌŒ`‚É‚È‚Á‚Ä‚¢‚é
+		ExtractFile.extract(disGPS);
 		
-		ExtractFile.extract(zipfilepath);
-		String unzip = FilePaths.deephomepath(ymd);
-		HashSet<String> targetIDs = ExtractIDbyDate.extractID(unzip,zones);
-		ID_Extractor.ID_Extracter(unzip,targetIDs,ymd);
-		String extracted = FilePaths.deephomepath(ymd+"extr");
-		
-		String dataforexp = FilePaths.dirfile(dir.toString(), "newgps"+ymd+".csv");
-		AreaChecker.WriteonlyGcheckedLogs(extracted, dataforexp);
-		System.out.println("#got the dis data for exp for " + ymd);
-		
-		Date disday = SDF_TS.parse(SlashDelete.slashtodash(ymd));
-		
-		
+		String unzippedfile = FilePaths.deephomepath(ymd);
+		HashSet<String> targetIDs = ExtractIDbyDate.extractID(unzippedfile,time,zones,10); //10: minimum logs
+		System.out.println("#the number of IDs for " + ymd+time+ " is " + targetIDs.size());
+		File i = new File(unzippedfile);
+		i.delete();
+
+		String dataforexp = workpath+"dataforexp.csv";
+		HashSet<String> targetdays = DayChooser.getTargetDates(ymd, dislog); System.out.println("#the nuumber of days are " + targetdays.size());
+		Makedata4exp.makedata(dataforexp, targetdays, targetIDs);
+
 		HomeDetector.getHome(dataforexp, ymd, type);
 		OfficeSchoolDetection.getOfficeSchool(dataforexp, ymd, type);
-		
-		MovementAnalyzer.executeAnalyser
-		(dataforexp, FilePaths.dirfile(FilePaths.homedir(type+ymd),"id_home_"+ymd+".csv"), 
-				FilePaths.dirfile(FilePaths.homedir(type+ymd),"id_office_"+ymd+".csv"), dir.toString());
-		
-		MotifFinder2.executeMotif(dataforexp, ymd, type);
-		
-		File i = new File(unzip);
-		i.delete();
-		File j = new File(extracted);
-		j.delete();
-	}
-	
-	public static void main(String args[]) throws IOException, NumberFormatException, ParseException{
-		String type = args[0];
-		String disasterlogfile = "/home/c-yabe/Data/DisasterLogs/"+type+".csv";
-		runforallevents(disasterlogfile,5,type);
-	}
 
+		MovementAnalyzer.executeAnalyser
+		(dataforexp, FilePaths.dirfile(dir.toString(),"id_home.csv"), 
+				FilePaths.dirfile(dir.toString(),"id_office.csv"), dir.toString());
+
+		MotifFinder2.executeMotif(dataforexp, ymd, type);
+
+	}
 }

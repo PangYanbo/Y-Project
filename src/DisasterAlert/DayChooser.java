@@ -36,8 +36,9 @@ public class DayChooser {
 		return res;
 	}
 
-	public static HashSet<Date> getTargetDates(String disDate, File dislogs) throws ParseException, IOException{
-		HashSet<Date> res = new HashSet<Date>();
+	public static HashSet<String> getTargetDates(String disDate, String dislog) throws ParseException, IOException{
+		File dislogs = new File(dislog);
+		HashSet<String> res = new HashSet<String>();
 		HashSet<Date> DisDays = getDisDays(dislogs);
 		String year = disDate.substring(0,4);
 		String month = disDate.substring(4,6);
@@ -47,7 +48,8 @@ public class DayChooser {
 			String youbi = (new SimpleDateFormat("u")).format(d);
 			if(!((youbi.equals("6"))||(youbi.equals("7")))){
 				if(!(DisDays.contains(d))){
-					res.add(d);
+					String date = SDF_TS.format(d);
+					res.add(date);
 					if(res.size()==15){
 						break;
 					}

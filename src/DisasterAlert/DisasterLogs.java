@@ -18,7 +18,7 @@ public class DisasterLogs {
 	 * Base file : time , type , level , jis code
 	 *   
 	 */
-	
+
 	/**
 	 * @param 
 	 * args[0] : disaster log file 
@@ -31,68 +31,69 @@ public class DisasterLogs {
 	 * 
 	 */
 
-	public static void main(String args[]) throws IOException, ParseException{
-//		writeout(sortLogs(args[0]),args[1],args[2],args[3]);
-		String logfile = "c:/Users/c-tyabe/desktop/DisasterAlertData_toshiken.csv";
-		String out = "c:/Users/c-tyabe/desktop/";
-//		String type = "dosha";
-//		String level = "10";
-//		writeout(sortLogs(logfile),out,"dosha",level);
-//		writeout(sortLogs(logfile),out,"flood",level);
-//		writeout(sortLogs(logfile),out,"heats","3");
-//		writeout(sortLogs(logfile),out,"volc",level);
-//		writeout(sortLogs(logfile),out,"eew","3");
-		writeout(sortLogs(logfile),out,"rain","1");
-//		writeout(sortLogs(logfile),out,"earthquake","3");
-		
+//	public static void main(String args[]) throws IOException, ParseException{
+//		//		writeout(sortLogs(args[0]),args[1],args[2],args[3]);
+//		String logfile = "c:/Users/c-tyabe/desktop/DisasterAlertData_toshiken.csv";
+//		String out = "c:/Users/c-tyabe/desktop/";
+//		//		String type = "dosha";
+//		//		String level = "10";
+//		//		writeout(sortLogs(logfile),out,"dosha",level);
+//		//		writeout(sortLogs(logfile),out,"flood",level);
+//		//		writeout(sortLogs(logfile),out,"heats","3");
+//		//		writeout(sortLogs(logfile),out,"volc",level);
+//		//		writeout(sortLogs(logfile),out,"eew","3");
+//	//	writeout(sortLogs(logfile),out,"rain","1");
+//		//		writeout(sortLogs(logfile),out,"earthquake","3");
+//	}
 
-	}
-	
 	protected static final SimpleDateFormat SDF_TS  = new SimpleDateFormat("HH:mm:ss");//change time format
 	protected static final SimpleDateFormat SDF_TS2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//change time format
 	protected static final SimpleDateFormat SDF_TS3 = new SimpleDateFormat("dd");//change time format
 
-	//type - level - <time-jis>
-	public static HashMap<String, HashMap<Integer, HashMap<String,String>>> sortLogs(String in) throws IOException, ParseException{
-		HashMap<String, HashMap<Integer, HashMap<String,String>>> res = new HashMap<String, HashMap<Integer, HashMap<String,String>>>();
+	//day - time - <level-jis>
+	public static HashMap<String, HashMap<String, HashMap<String, ArrayList<String>>>> sortLogs(String in) throws IOException, ParseException{
+		HashMap<String, HashMap<String, HashMap<String, ArrayList<String>>>> res = new HashMap<String, HashMap<String, HashMap<String, ArrayList<String>>>>();
 		File infile = new File(in);
 		BufferedReader br = new BufferedReader(new FileReader(infile));
 		String line = br.readLine();
-		
-//		Date d = SDF_TS2.parse("2014-10-21 00:00:00");
+
 		while((line = br.readLine())!= null){
 			String[] tokens = line.split(",");
-			String[] ymd = tokens[0].split("/");
-			Integer year = Integer.valueOf(ymd[0]);
-			Integer month = Integer.valueOf(ymd[1]);
-			String daytime = ymd[2];
-			String[] d_t = daytime.split(" ");
-			Integer day = Integer.valueOf(d_t[0]);
-			String[] hourmin = d_t[1].split(":");
-			Integer hour = Integer.valueOf(hourmin[0]);
-			Integer min = Integer.valueOf(hourmin[1]);
-			
-			if((year>2014)||((year==2014)&&(month>=11))){
-				String type = tokens[1]; 
-				Integer level = Integer.valueOf(tokens[2]);
-				String jiscode = tokens[3];
-				if(res.containsKey(type)){
-					if(res.get(type).containsKey(level)){
-						res.get(type).get(level).put(tokens[0], jiscode);
+			String[] date = tokens[0].split(" ");
+			String ymdslash = date[0];
+			String ymd = yyyymmdd(ymdslash);
+			String time = date[1];
+			String hour = converttime(time);
+			String level = tokens[2];
+			String codes = tokens[3];
+
+			if(res.containsKey(ymd)){
+				if(res.get(ymd).containsKey(hour)){
+					if(res.get(ymd).get(hour).containsKey(level)){
+						res.get(ymd).get(hour).get(level).add(codes);
 					}
 					else{
-						HashMap<String,String> timejismap = new HashMap<String,String>();
-						timejismap.put(tokens[0], jiscode);
-						res.get(type).put(level, timejismap);				
+						ArrayList<String> list = new ArrayList<String>();
+						list.add(codes);
+						res.get(ymd).get(hour).put(level, list);
 					}
 				}
 				else{
-					HashMap<String,String> timejismap = new HashMap<String,String>();
-					timejismap.put(tokens[0], jiscode);
-					HashMap<Integer, HashMap<String,String>> ltj = new HashMap<Integer, HashMap<String,String>>();
-					ltj.put(level, timejismap);
-					res.put(type, ltj);
+					ArrayList<String> list = new ArrayList<String>();
+					list.add(codes);
+					HashMap<String,ArrayList<String>> leveljismap = new HashMap<String,ArrayList<String>>();
+					leveljismap.put(level, list);
+					res.get(ymd).put(hour, leveljismap);				
 				}
+			}
+			else{
+				ArrayList<String> list = new ArrayList<String>();
+				list.add(codes);
+				HashMap<String,ArrayList<String>> leveljismap = new HashMap<String,ArrayList<String>>();
+				leveljismap.put(level, list);
+				HashMap<String, HashMap<String, ArrayList<String>>> map = new HashMap<String, HashMap<String, ArrayList<String>>>();
+				map.put(hour, leveljismap);
+				res.put(ymd, map);
 			}
 		}
 		br.close();
@@ -118,26 +119,52 @@ public class DisasterLogs {
 		bw.close();
 	}
 
-	public static HashMap<String, ArrayList<String>> date_codemap(String disasterlogs) throws IOException{
-		HashMap<String, ArrayList<String>> res = new HashMap<String, ArrayList<String>>();
-		File dislogs = new File(disasterlogs);
-		BufferedReader br = new BufferedReader(new FileReader(dislogs));
-		String line = null;
-		while((line=br.readLine())!=null){
-			String[] tokens = line.split(",");
-			String[] datetime = tokens[2].split(" ");
-			String date = datetime[0];
-			String code = tokens[3];
-			if(res.containsKey(date)){
-				res.get(date).add(code);
-			}
-			else{
-				ArrayList<String> list = new ArrayList<String>();
-				list.add(code);
-				res.put(date, list);
-			}
+//	public static HashMap<String, ArrayList<String>> date_codemap(String disasterlogs) throws IOException{
+//		HashMap<String, ArrayList<String>> res = new HashMap<String, ArrayList<String>>();
+//		File dislogs = new File(disasterlogs);
+//		BufferedReader br = new BufferedReader(new FileReader(dislogs));
+//		String line = null;
+//		while((line=br.readLine())!=null){
+//			String[] tokens = line.split(",");
+//			String[] datetime = tokens[2].split(" ");
+//			String date = datetime[0];
+//			String code = tokens[3];
+//			if(res.containsKey(date)){
+//				res.get(date).add(code);
+//			}
+//			else{
+//				ArrayList<String> list = new ArrayList<String>();
+//				list.add(code);
+//				res.put(date, list);
+//			}
+//		}
+//		br.close();
+//		return res;
+//	}
+
+	public static String converttime(String time){
+		String[] xx = time.split(":");
+		Double hour = Double.parseDouble(xx[0]);
+		Double mins = Double.parseDouble(xx[1]);
+		if(mins>30){
+			hour = hour + 0.5;
 		}
-		br.close();
+		String h = String.valueOf(hour);
+		return h;
+	}
+	
+	public static String slashtodash(String ymdslash){
+		String[] yy = ymdslash.split("/");
+		String ymd = yy[0]+"-"+yy[1]+"-"+yy[2];
+		return ymd;
+	}
+	
+	public static String yyyymmdd(String ymdslash){
+		String[] yy = ymdslash.split("/");
+		String y = yy[0];
+		String m = String.format("%02d", yy[1]);
+		String d = String.format("%02d", yy[2]);
+		String res = y+m+d;
 		return res;
 	}
 
