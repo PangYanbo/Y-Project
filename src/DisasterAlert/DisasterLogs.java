@@ -162,8 +162,8 @@ public class DisasterLogs {
 	public static String yyyymmdd(String ymdslash){
 		String[] yy = ymdslash.split("/");
 		String y = yy[0];
-		String m = String.format("%02d", yy[1]);
-		String d = String.format("%02d", yy[2]);
+		String m = String.format("%02d", Integer.valueOf(yy[1]));
+		String d = String.format("%02d", Integer.valueOf(yy[2]));
 		String res = y+m+d;
 		return res;
 	}
