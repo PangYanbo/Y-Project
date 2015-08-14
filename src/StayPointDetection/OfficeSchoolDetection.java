@@ -47,7 +47,7 @@ public class OfficeSchoolDetection {
 		}
 
 //		File id_home = new File (args[2]);
-		File id_home = new File ("/home/c-tyabe/Data/id_home_"+date+".csv");
+		File id_home = new File (path+"id_home.csv");
 
 		HashMap<String,LonLat> idhome = StayPointTools.getHomeMap(id_home);
 

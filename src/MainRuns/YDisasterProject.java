@@ -59,9 +59,7 @@ public class YDisasterProject {
 					ArrayList<String> codes = dislogs.get(ymd).get(time).get(level);
 					run(codes, ymd, time, level, dislog);
 					count++;
-					if(count==1){
-						break;
-					}
+					System.out.println("#######done " + count + " disasters.");
 				}
 			}
 		}
