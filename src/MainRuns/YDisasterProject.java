@@ -49,7 +49,15 @@ public class YDisasterProject {
 	
 	public static void runforallevents(String dislog) throws IOException, NumberFormatException, ParseException{
 		HashMap<String, HashMap<String, HashMap<String, ArrayList<String>>>> dislogs = DisasterLogs.sortLogs(dislog);
-		System.out.println("#successfully sorted out disaster info logs");
+		int c = 0;
+		for(String day : dislogs.keySet()){
+			for(String time : dislogs.get(day).keySet()){
+				for(String level : dislogs.get(day).get(time).keySet()){
+					c++;
+				}
+			}
+		}
+		System.out.println("#successfully sorted out disaster info logs... there are " + c);
 		
 		int count = 0;
 		for(String ymd : dislogs.keySet()){
