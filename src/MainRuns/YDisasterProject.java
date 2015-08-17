@@ -68,9 +68,9 @@ public class YDisasterProject {
 						System.out.println("#starting run for " + ymd +", level:" +level);
 						ArrayList<String> codes = dislogs.get(ymd).get(time).get(level);
 						run(codes, ymd, time, level, dislog);
-						count++;
 						System.out.println("#######done " + count + " disasters.");
 					}
+					count++;
 				}
 			}
 		}
@@ -125,5 +125,12 @@ public class YDisasterProject {
 
 		MotifFinder2.executeMotif(dataforexp, workpath, disasterday);
 
+		File data = new File(dataforexp);
+		data.delete();
+		File home = new File(workpath+"id_home.csv");
+		home.delete();
+		File office = new File(workpath+"id_office.csv");
+		office.delete();
+		
 	}
 }
