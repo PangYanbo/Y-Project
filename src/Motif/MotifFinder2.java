@@ -174,10 +174,11 @@ public class MotifFinder2 {
 		for(String id : map.keySet()){
 			for(String day : map.get(id).keySet()){
 				int motifnum = map.get(id).get(day);
+				String z = "1";
 				if(day.equals(disasterday)){
-					day = "99";
+					z = "2";
 				}
-				bw.write(id + "," + 99 + "," + motifnum);
+				bw.write(id + "," + z + "," + motifnum);
 				bw.newLine();
 			}
 		}

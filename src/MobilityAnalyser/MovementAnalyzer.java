@@ -230,10 +230,11 @@ public class MovementAnalyzer {
 				double time = (double)map.get(id).get(day)/(double)3600;
 				BigDecimal x = new BigDecimal(time);
 				x = x.setScale(2, BigDecimal.ROUND_HALF_UP);
+				String z = "1";
 				if(day.equals(disasterday)){
-					day = "99";
+					z = "2";
 				}
-				bw.write(id + "," + Integer.valueOf(day) + "," + x);
+				bw.write(id + "," + z + "," + x);
 				bw.newLine();
 			}
 		}
