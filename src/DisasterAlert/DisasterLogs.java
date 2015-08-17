@@ -188,7 +188,8 @@ public class DisasterLogs {
 			if(map.get(code).containsKey("4")){
 				l4 = map.get(code).get("4").size();
 			}
-			bw.write(code + "," + l1 + "," + l2 + "," + l3 + "," + l4 + "," + l1+l2+l3+l4);
+			Integer sum = l1+l2+l3+l4;
+			bw.write(code + "," + l1 + "," + l2 + "," + l3 + "," + l4 + "," + sum);
 			bw.newLine();
 		}
 		bw.close();
