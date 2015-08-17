@@ -35,7 +35,8 @@ public class YDisasterProject {
 	protected static final SimpleDateFormat SDF_TS = new SimpleDateFormat("yyyy-MM-dd");//change time format
 
 	private static final String type = "rain";
-	private static final String homepath = "/home/c-tyabe/Data/"+type+"Tokyo/";
+	private static final String city = "Tokyo";
+	private static final String homepath = "/home/c-tyabe/Data/"+type+city+"/";
 	private static final String GPSpath  = "/tmp/bousai_data/gps_";
 
 	public static void main(String args[]) throws IOException, NumberFormatException, ParseException{
@@ -63,7 +64,7 @@ public class YDisasterProject {
 		for(String ymd : dislogs.keySet()){
 			for(String time : dislogs.get(ymd).keySet()){
 				for(String level : dislogs.get(ymd).get(time).keySet()){
-					if(doublechecker(ymd,time,type,level)==true){
+					if(doublechecker(ymd,time,type,level,city)==true){
 						System.out.println("#starting run for " + ymd +", level:" +level);
 						ArrayList<String> codes = dislogs.get(ymd).get(time).get(level);
 						run(codes, ymd, time, level, dislog);
@@ -75,8 +76,8 @@ public class YDisasterProject {
 		}
 	}
 
-	public static boolean doublechecker(String ymd, String time, String type, String level){
-		File file = new File("/home/c-tyabe/Data/"+type+"Tokyo/"+type+"_"+level+"/"+ymd+"_"+time);
+	public static boolean doublechecker(String ymd, String time, String type, String level, String city){
+		File file = new File("/home/c-tyabe/Data/"+type+city+"/"+type+"_"+level+"/"+ymd+"_"+time);
 		if(file.exists()){
 			return false;
 		}
