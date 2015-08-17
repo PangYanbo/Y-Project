@@ -33,7 +33,7 @@ public class YDisasterProject {
 	 */
 
 	protected static final SimpleDateFormat SDF_TS = new SimpleDateFormat("yyyy-MM-dd");//change time format
-		
+
 	private static final String type = "rain";
 	private static final String homepath = "/home/c-tyabe/Data/"+type+"Tokyo/";
 	private static final String GPSpath  = "/tmp/bousai_data/gps_";
@@ -41,12 +41,12 @@ public class YDisasterProject {
 	public static void main(String args[]) throws IOException, NumberFormatException, ParseException{
 		File dir = new File(homepath);
 		dir.mkdir();
-			
+
 		String disasterlogfile = "/home/c-tyabe/Data/DisasterLogs/DisasterAlertData_shutoken_"+type+".csv";
 		runforallevents(disasterlogfile);
 	}
 
-	
+
 	public static void runforallevents(String dislog) throws IOException, NumberFormatException, ParseException{
 		HashMap<String, HashMap<String, HashMap<String, ArrayList<String>>>> dislogs = DisasterLogs.sortLogs(dislog);
 		int c = 0;
@@ -58,31 +58,43 @@ public class YDisasterProject {
 			}
 		}
 		System.out.println("#successfully sorted out disaster info logs... there are " + c);
-		
+
 		int count = 0;
 		for(String ymd : dislogs.keySet()){
 			for(String time : dislogs.get(ymd).keySet()){
 				for(String level : dislogs.get(ymd).get(time).keySet()){
-					System.out.println("#starting run for " + ymd +", level:" +level);
-					ArrayList<String> codes = dislogs.get(ymd).get(time).get(level);
-					run(codes, ymd, time, level, dislog);
-					count++;
-					System.out.println("#######done " + count + " disasters.");
+					if(doublechecker(ymd,time,type,level)==true){
+						System.out.println("#starting run for " + ymd +", level:" +level);
+						ArrayList<String> codes = dislogs.get(ymd).get(time).get(level);
+						run(codes, ymd, time, level, dislog);
+						count++;
+						System.out.println("#######done " + count + " disasters.");
+					}
 				}
 			}
+		}
+	}
+
+	public static boolean doublechecker(String ymd, String time, String type, String level){
+		File file = new File("/home/c-tyabe/Data/"+type+"Tokyo/"+type+"_"+level+"/"+ymd+"_"+time);
+		if(file.exists()){
+			return false;
+		}
+		else{
+			return true;
 		}
 	}
 
 	public static void run(ArrayList<String> zones, String ymd, String time, String level, String dislog) throws IOException, NumberFormatException, ParseException{
 		System.out.println("start run for " + zones.size() +" zones");
 		System.out.println("zones are " + zones);
-		
+
 		String disasterday = ymd.substring(4,6);
-		
+
 		String wpath = homepath+"/"+type+"_"+level+"/";
 		File dir2 = new File(wpath);
 		dir2.mkdir();
-		
+
 		String workpath = homepath+"/"+type+"_"+level+"/"+ymd+"_"+time+"/";
 		File dir = new File(workpath);
 		dir.mkdir();
@@ -90,7 +102,7 @@ public class YDisasterProject {
 		String disGPS = GPSpath+ymd+".tar.gz"; //ymd=yyyymmdd‚ÌŒ`‚É‚È‚Á‚Ä‚¢‚é
 		ExtractFile.uncompress(Paths.get(disGPS));
 		System.out.println("#done uncompressing " + disGPS);
-		
+
 		String unzippedfile = FilePaths.deephomepath(ymd);
 		HashSet<String> targetIDs = ExtractIDbyDate.extractID(unzippedfile,time,zones,0); //0: minimum logs
 		System.out.println("#the number of IDs for " + ymd+time+ " is " + targetIDs.size());
