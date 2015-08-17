@@ -233,7 +233,7 @@ public class MovementAnalyzer {
 				if(day.equals(disasterday)){
 					day = "99";
 				}
-				bw.write(id + "," + day + "," + x);
+				bw.write(id + "," + Integer.valueOf(day) + "," + x);
 				bw.newLine();
 			}
 		}
