@@ -33,7 +33,7 @@ public class HomeDetector {
 		
 	}
 
-	public static File getHome(String infile, String date, String type, String path) throws NumberFormatException, ParseException, IOException{
+	public static File getHome(String infile, String path) throws NumberFormatException, ParseException, IOException{
 		File in = new File(infile);
 		File res = new File (path+"id_home.csv");
 

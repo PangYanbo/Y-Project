@@ -32,7 +32,7 @@ public class OfficeSchoolDetection {
 
 	}
 	
-	public static File getOfficeSchool(String inpath, String date, String type, String path) throws NumberFormatException, ParseException, IOException{
+	public static File getOfficeSchool(String inpath, String path) throws NumberFormatException, ParseException, IOException{
 		File in = new File(inpath);
 		File result = new File (path+"id_office.csv");
 		HashMap<String,HashMap<LonLat,ArrayList<STPoint>>> SPmap = StayPointGetter.getSPs(in,"08:00:00", "18:00:00", 5, 2000, 1000);

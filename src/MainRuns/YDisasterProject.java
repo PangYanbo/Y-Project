@@ -95,8 +95,8 @@ public class YDisasterProject {
 		Makedata4exp.makedata(dataforexp, targetdays, targetIDs);
 		System.out.println("#successfully made data for exp");
 
-		HomeDetector.getHome(dataforexp, ymd, type, workpath);
-		OfficeSchoolDetection.getOfficeSchool(dataforexp, ymd, type, workpath);
+		HomeDetector.getHome(dataforexp, workpath);
+		OfficeSchoolDetection.getOfficeSchool(dataforexp, workpath);
 
 		MovementAnalyzer.executeAnalyser
 		(dataforexp, FilePaths.dirfile(workpath,"id_home.csv"), 

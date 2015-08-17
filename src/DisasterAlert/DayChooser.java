@@ -50,7 +50,7 @@ public class DayChooser {
 				if(!(DisDays.contains(d))){
 					String date = SDF_TS.format(d);
 					res.add(date);
-					if(res.size()==15){
+					if(res.size()==5){
 						break;
 					}
 				}
