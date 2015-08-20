@@ -53,9 +53,7 @@ public class YDisasterProject {
 		int c = 0;
 		for(String day : dislogs.keySet()){
 			for(String time : dislogs.get(day).keySet()){
-				for(String level : dislogs.get(day).get(time).keySet()){
-					c++;
-				}
+				c = c + dislogs.get(day).get(time).size();
 			}
 		}
 		System.out.println("#successfully sorted out disaster info logs... there are " + c);
@@ -64,7 +62,7 @@ public class YDisasterProject {
 		for(String ymd : dislogs.keySet()){
 			for(String time : dislogs.get(ymd).keySet()){
 				for(String level : dislogs.get(ymd).get(time).keySet()){
-					if(doublechecker(ymd,time,type,level,city)==true){
+					if(filedoublechecker(ymd,time,type,level,city)==true){
 						System.out.println("#starting run for " + ymd +", level:" +level);
 						ArrayList<String> codes = dislogs.get(ymd).get(time).get(level);
 						run(codes, ymd, time, level, dislog);
@@ -76,7 +74,7 @@ public class YDisasterProject {
 		}
 	}
 
-	public static boolean doublechecker(String ymd, String time, String type, String level, String city){
+	public static boolean filedoublechecker(String ymd, String time, String type, String level, String city){
 		File file = new File("/home/c-tyabe/Data/"+type+city+"/"+type+"_"+level+"/"+ymd+"_"+time);
 		if(file.exists()){
 			return false;
@@ -87,50 +85,42 @@ public class YDisasterProject {
 	}
 
 	public static void run(ArrayList<String> zones, String ymd, String time, String level, String dislog) throws IOException, NumberFormatException, ParseException{
-		System.out.println("start run for " + zones.size() +" zones");
-		System.out.println("zones are " + zones);
-
+		System.out.println("start run for " + zones.size() +" zones"); System.out.println("zones are " + zones);
 		String disasterday = ymd.substring(4,6);
 
-		String wpath = homepath+"/"+type+"_"+level+"/";
-		File dir2 = new File(wpath);
-		dir2.mkdir();
-
-		String workpath = homepath+"/"+type+"_"+level+"/"+ymd+"_"+time+"/";
-		File dir = new File(workpath);
-		dir.mkdir();
+		String wpath = homepath+"/"+type+"_"+level+"/"; File dir2 = new File(wpath); dir2.mkdir();
+		String workpath = homepath+"/"+type+"_"+level+"/"+ymd+"_"+time+"/"; File dir = new File(workpath); dir.mkdir();
 
 		String disGPS = GPSpath+ymd+".tar.gz"; //ymd=yyyymmddの形になっている
-		ExtractFile.uncompress(Paths.get(disGPS));
-		System.out.println("#done uncompressing " + disGPS);
 
-		String unzippedfile = FilePaths.deephomepath(ymd);
-		HashSet<String> targetIDs = ExtractIDbyDate.extractID(unzippedfile,time,zones,0); //0: minimum logs
-		System.out.println("#the number of IDs for " + ymd+time+ " is " + targetIDs.size());
-		File i = new File(unzippedfile);
-		i.delete();
+		if(new File(disGPS).exists()){ //もしログのファイルがあれば！
+			ExtractFile.uncompress(Paths.get(disGPS)); System.out.println("#done uncompressing " + disGPS);
 
-		String dataforexp = workpath+"dataforexp.csv";
-		HashSet<String> targetdays = DayChooser.getTargetDates(ymd, dislog); 
-		System.out.println("#the number of days are " + targetdays.size());
-		Makedata4exp.makedata(dataforexp, targetdays, targetIDs);
-		System.out.println("#successfully made data for exp");
+			String unzippedfile = FilePaths.deephomepath(ymd);
+			HashMap<String,String> targetIDs_code = ExtractIDbyDate.extractID(unzippedfile,time,zones,0); //0: minimum logs
+			System.out.println("#the number of IDs for " + ymd+time+ " is " + targetIDs_code.size());
+			File i = new File(unzippedfile); i.delete();
 
-		HomeDetector.getHome(dataforexp, workpath);
-		OfficeSchoolDetection.getOfficeSchool(dataforexp, workpath);
+			if(targetIDs_code.size()>500){ // 対象人数で絞る
+				String dataforexp = workpath+"dataforexp.csv";
+				HashSet<String> targetdays = DayChooser.getTargetDates(ymd, dislog); System.out.println("#the number of days are " + targetdays.size());
+				Makedata4exp.makedata(dataforexp, targetdays, targetIDs_code); System.out.println("#successfully made data for exp");
 
-		MovementAnalyzer.executeAnalyser
-		(dataforexp, FilePaths.dirfile(workpath,"id_home.csv"), 
-				FilePaths.dirfile(workpath,"id_office.csv"), workpath, disasterday);
+				HomeDetector.getHome(dataforexp, workpath);
+				HashMap<String,String> id_homecode = HomeDetector.gethomecode(workpath+"id_home.csv");
+				OfficeSchoolDetection.getOfficeSchool(dataforexp, workpath);
 
-		MotifFinder2.executeMotif(dataforexp, workpath, disasterday);
+				MovementAnalyzer.executeAnalyser
+				(dataforexp, FilePaths.dirfile(workpath,"id_home.csv"), FilePaths.dirfile(workpath,"id_office.csv"), 
+						workpath, disasterday, targetIDs_code, id_homecode);
+				MotifFinder2.executeMotif(dataforexp, workpath, disasterday, targetIDs_code, id_homecode);
 
-		File data = new File(dataforexp);
-		data.delete();
-		File home = new File(workpath+"id_home.csv");
-		home.delete();
-		File office = new File(workpath+"id_office.csv");
-		office.delete();
-		
+				File data = new File(dataforexp); data.delete();
+				File home = new File(workpath+"id_home.csv"); home.delete();
+				File office = new File(workpath+"id_office.csv"); office.delete();
+			}
+
+		}
 	}
+
 }

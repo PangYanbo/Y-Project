@@ -7,6 +7,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.util.HashMap;
 import java.util.HashSet;
 
 import DataModify.ExtractFile;
@@ -17,7 +18,7 @@ public class Makedata4exp {
 	public static final String GPSpath  = "/tmp/bousai_data/gps_";
 	public static final String GPSdeeppath = "/home/c-tyabe/Data/grid/0/tmp/ktsubouc/gps_";
 
-	public static void makedata(String outpath, HashSet<String> targetdays, HashSet<String> targetIDs) throws IOException{
+	public static void makedata(String outpath, HashSet<String> targetdays, HashMap<String,String> targetIDs) throws IOException{
 		BufferedWriter bw = new BufferedWriter(new FileWriter(new File(outpath),true));
 		int count = 0;
 		for(String d : targetdays){
@@ -36,7 +37,7 @@ public class Makedata4exp {
 					if(tokens.length>=5){
 						if(!tokens[4].equals("null")){
 							String id = tokens[0];
-							if(targetIDs.contains(id)){
+							if(targetIDs.keySet().contains(id)){
 								String lat = tokens[2];
 								String lon = tokens[3];
 								String time = converttime(tokens[4]);

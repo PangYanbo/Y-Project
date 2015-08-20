@@ -28,19 +28,20 @@ public class MotifFinder2 {
 		 */
 //				String in = "c:/users/yabetaka/Desktop/dataforExp.csv";
 
-		String in = args[0];
-		executeMotif(in, args[1],args[2]);
+//		String in = args[0];
+//		executeMotif(in, args[1],args[2]);
 
 	}
 
-	public static void executeMotif(String in, String path, String disasterday) throws IOException, ParseException{
+	public static void executeMotif(String in, String path, String disasterday,
+			HashMap<String,String> id_area, HashMap<String,String> id_homecode) throws IOException, ParseException{
 		HashMap<String,ArrayList<LonLat>> id_SPs = StayPointGetter.getSPs2(new File(in), 500, 300);
 
 		HashMap<String, HashMap<String, ArrayList<LonLat>>> map = SPFinder.intomapY(in,"weekday"); 
 		HashMap<String, ArrayList<String>> id_days = Over8TimeSlots.OKAY_id_days(in);
 		HashMap<String, HashMap<String, Integer>> id_day_motif = getID_day_motif2(map, id_SPs, id_days); //[id|day|motifnumber]
 
-		writeout(id_day_motif,path+"id_day_motifs.csv", disasterday);
+		writeout(id_day_motif,path+"id_day_motifs.csv", disasterday,id_area, id_homecode);
 //		motifPercentage(id_day_motif, path+"motif%s.csv");
 	}
 	
@@ -168,7 +169,8 @@ public class MotifFinder2 {
 		bw.close();
 	}
 	
-	public static File writeout(HashMap<String, HashMap<String, Integer>> map, String path, String disasterday) throws IOException{
+	public static File writeout(HashMap<String, HashMap<String, Integer>> map, String path, String disasterday,
+			HashMap<String,String> id_area, HashMap<String,String> id_homecode) throws IOException{
 		File out = new File(path);
 		BufferedWriter bw = new BufferedWriter(new FileWriter(out));
 		for(String id : map.keySet()){
@@ -178,7 +180,7 @@ public class MotifFinder2 {
 				if(day.equals(disasterday)){
 					z = "2";
 				}
-				bw.write(id + "," + z + "," + motifnum);
+				bw.write(id + "," + z + "," + motifnum + "," + id_area.get(id) + "," + id_homecode.get(id));
 				bw.newLine();
 			}
 		}

@@ -28,11 +28,13 @@ public class MovementAnalyzer {
 		//		File Office = new File("c:/users/yabetaka/desktop/id_office.csv");
 		//		String outputpath = "c:/users/yabetaka/desktop/Test/";
 
-		executeAnalyser(args[0],args[1],args[2],args[3],args[4]);
+//		executeAnalyser(args[0],args[1],args[2],args[3],args[4],args[5]);
 
 	}
 
-	public static void executeAnalyser(String infile, String idhome, String idoffice, String outputpath, String disasterday) throws NumberFormatException, IOException, ParseException{
+	public static void executeAnalyser
+	(String infile, String idhome, String idoffice, String outputpath, 
+			String disasterday, HashMap<String,String> id_area, HashMap<String,String> id_homecode) throws NumberFormatException, IOException, ParseException{
 		File in = new File(infile);
 		File Home = new File(idhome);
 		File Office = new File(idoffice);
@@ -51,13 +53,13 @@ public class MovementAnalyzer {
 		HashMap<String, HashMap<String, Integer>> officetime  = officeStayTimes(officeenter, officeexit); System.out.println("#done getting time at office");
 
 		System.out.println("#writing everything out...");
-		writeout(officeenter, outputpath, "office_enter.csv", disasterday);
-		writeout(officeexit,  outputpath, "office_exit.csv" , disasterday);
-		writeout(homeexit,    outputpath, "home_exit.csv"   , disasterday);
-		writeout(homereturn,  outputpath, "home_return.csv" , disasterday);
-		writeout(tsukintime,  outputpath, "tsukin_time.csv" , disasterday);
-		writeout(kitakutime,  outputpath, "kitaku_time.csv" , disasterday);
-		writeout(officetime,  outputpath, "office_time.csv" , disasterday);
+		writeout(officeenter, outputpath, "office_enter.csv", disasterday, id_area, id_homecode);
+		writeout(officeexit,  outputpath, "office_exit.csv" , disasterday, id_area, id_homecode);
+		writeout(homeexit,    outputpath, "home_exit.csv"   , disasterday, id_area, id_homecode);
+		writeout(homereturn,  outputpath, "home_return.csv" , disasterday, id_area, id_homecode);
+		writeout(tsukintime,  outputpath, "tsukin_time.csv" , disasterday, id_area, id_homecode);
+		writeout(kitakutime,  outputpath, "kitaku_time.csv" , disasterday, id_area, id_homecode);
+		writeout(officetime,  outputpath, "office_time.csv" , disasterday, id_area, id_homecode);
 		System.out.println("#done everything");
 	}
 
@@ -222,7 +224,9 @@ public class MovementAnalyzer {
 		return officestaytimes;
 	}
 
-	public static File writeout(HashMap<String, HashMap<String, Integer>> map, String path, String name, String disasterday) throws IOException{
+	public static File writeout
+	(HashMap<String, HashMap<String, Integer>> map, String path, String name, String disasterday, 
+			HashMap<String,String> id_area, HashMap<String,String> id_homecode) throws IOException{
 		File out = new File(path+name);
 		BufferedWriter bw = new BufferedWriter(new FileWriter(out));
 		for(String id : map.keySet()){
@@ -234,7 +238,7 @@ public class MovementAnalyzer {
 				if(day.equals(disasterday)){
 					z = "2";
 				}
-				bw.write(id + "," + z + "," + x);
+				bw.write(id + "," + z + "," + x + "," + id_area.get(id) + "," + id_homecode.get(id));
 				bw.newLine();
 			}
 		}

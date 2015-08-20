@@ -5,7 +5,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.List;
 
 import jp.ac.ut.csis.pflow.geom.GeometryChecker;
@@ -22,8 +22,8 @@ public class ExtractIDbyDate {
 	static File shapedir = new File("/home/c-tyabe/Data/jpnshp");
 	static GeometryChecker gchecker = new GeometryChecker(shapedir);
 
-	public static HashSet<String> extractID(String in, String t, ArrayList<String> JIScodes, int minimumlogs) throws IOException{
-		HashSet<String> set = new HashSet<String>();
+	public static HashMap<String,String> extractID(String in, String t, ArrayList<String> JIScodes, int minimumlogs) throws IOException{
+		HashMap<String,String> map = new HashMap<String,String>();
 		File infile = new File(in);
 		BufferedReader br = new BufferedReader(new FileReader(infile));
 		String line = null;
@@ -41,8 +41,9 @@ public class ExtractIDbyDate {
 								Double lat = Double.parseDouble(tokens[2]);
 								Double lon = Double.parseDouble(tokens[3]);
 								LonLat p = new LonLat(lon,lat);
-								if(AreaOverlap(p,JIScodes)==true){
-									set.add(id);
+								String JIScode = AreaOverlap(p,JIScodes);
+								if(!JIScode.equals(null)){
+									map.put(id,JIScode);
 								}
 							}
 						}
@@ -52,19 +53,19 @@ public class ExtractIDbyDate {
 			}
 		}
 		br.close();
-		return set;
+		return map;
 	}
 
-	public static boolean AreaOverlap(LonLat point, ArrayList<String> JIScodes){
+	public static String AreaOverlap(LonLat point, ArrayList<String> JIScodes){
 		List<String> zonecodeList = gchecker.listOverlaps("JCODE",point.getLon(),point.getLat());
 		if(zonecodeList == null || zonecodeList.isEmpty()) {
-			return false;
+			return null;
 		}
 		else if (JIScodes.contains(zonecodeList.get(0))){
-			return true;
+			return zonecodeList.get(0);
 		}
 		else{
-			return false;
+			return null;
 		}
 	}
 

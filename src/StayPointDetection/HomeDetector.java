@@ -10,7 +10,9 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 
+import jp.ac.ut.csis.pflow.geom.GeometryChecker;
 import jp.ac.ut.csis.pflow.geom.LonLat;
 import jp.ac.ut.csis.pflow.geom.STPoint;
 
@@ -25,12 +27,12 @@ public class HomeDetector {
 
 	public static void main(String args[]) throws IOException, NumberFormatException, ParseException{
 
-//		File in = new File(args[0]);
-//		File res = new File (args[1]);
-		File in = new File("c:/users/yabetaka/desktop/dataforexp.csv");
+		//		File in = new File(args[0]);
+		//		File res = new File (args[1]);
+//		File in = new File("c:/users/yabetaka/desktop/dataforexp.csv");
 
 
-		
+
 	}
 
 	public static File getHome(String infile, String path) throws NumberFormatException, ParseException, IOException{
@@ -52,7 +54,7 @@ public class HomeDetector {
 				StayPointTools.ExcludeLowFrequentSPsbyNumberofPoints(SPmap,numberofLogs,0.4);
 		HashMap<String,LonLat> resmap = StayPointTools.getHomePointsbyNumberofPoints(id_SP_visitcount);
 		writeOut(resmap, res);
-		
+
 		return res;
 	}
 
@@ -113,5 +115,26 @@ public class HomeDetector {
 		System.out.println("IDs with Home: " + count);
 		return out;
 	}
+
+	public static HashMap<String,String> gethomecode(String id_home) throws IOException{
+		HashMap<String,String> res = new HashMap<String,String>();
+		BufferedReader br = new BufferedReader(new FileReader(new File(id_home)));
+		String line = null;
+		while((line=br.readLine())!=null){
+			String[] tokens = line.split("\t");
+			String id = (tokens[0]);
+			LonLat point = new LonLat(Double.parseDouble(tokens[2]),Double.parseDouble(tokens[1]));
+			List<String> zonecodeList = gchecker.listOverlaps("JCODE",point.getLon(),point.getLat());
+			if(zonecodeList.size()>0){
+				String zone = zonecodeList.get(0);
+				res.put(id, zone);
+			}
+		}
+		br.close();
+		return res;
+	}
+
+	static File shapedir = new File("/home/c-tyabe/Data/jpnshp");
+	static GeometryChecker gchecker = new GeometryChecker(shapedir);
 
 }
