@@ -179,8 +179,9 @@ public class MotifFinder2 {
 				String z = "1";
 				if(day.equals(disasterday)){
 					z = "2";
+					day = "99";
 				}
-				bw.write(id + "," + z + "," + motifnum + "," + id_area.get(id) + "," + id_homecode.get(id));
+				bw.write(id + "," + z + "," + day + "," + motifnum + "," + id_area.get(id) + "," + id_homecode.get(id));
 				bw.newLine();
 			}
 		}

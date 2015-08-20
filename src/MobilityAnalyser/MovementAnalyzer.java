@@ -237,8 +237,9 @@ public class MovementAnalyzer {
 				String z = "1";
 				if(day.equals(disasterday)){
 					z = "2";
+					day = "99";
 				}
-				bw.write(id + "," + z + "," + x + "," + id_area.get(id) + "," + id_homecode.get(id));
+				bw.write(id + "," + z + "," + day + "," + x + "," + id_area.get(id) + "," + id_homecode.get(id));
 				bw.newLine();
 			}
 		}
