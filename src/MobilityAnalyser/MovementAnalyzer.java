@@ -280,7 +280,8 @@ public class MovementAnalyzer {
 				BigDecimal x = new BigDecimal(diff);
 				x = x.setScale(2, BigDecimal.ROUND_HALF_UP);
 
-				bw.write(id + "," + x + "," + id_area.get(id) + "," + id_homecode.get(id) + "," + dis);
+				bw.write(id + "," + x + "," + id_area.get(id) + "," + id_homecode.get(id)
+						+ "," + dis + "," + id_home.get(id) + "," + id_office.get(id));
 				bw.newLine();
 			}
 		}
