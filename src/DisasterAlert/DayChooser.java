@@ -27,8 +27,9 @@ public class DayChooser {
 			String day = d_t[0];
 			
 			Date d = SDF_TS.parse("2014-10-20");
+			Date d2 = SDF_TS.parse("2015-06-19");
 			Date date = SDF_TS.parse(year+"-"+month+"-"+day);
-			if(date.after(d)){
+			if((date.after(d))&&(date.before(d2))){
 				res.add(date);
 			}
 		}

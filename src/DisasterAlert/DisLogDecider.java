@@ -19,10 +19,10 @@ public class DisLogDecider {
 		File in = new File("c:/users/c-tyabe/desktop/DisasterDataLogs/DisasterAlertData.csv");
 		File out = new File("c:/users/c-tyabe/desktop/DisasterDataLogs/DisasterAlertData_shutoken_rain.csv");
 		File jiscodes = new File("c:/users/c-tyabe/desktop/ShutokenSHP/JIScodes.csv");
-		choosebyAreaDateType(in,out,jiscodes,"rain","2014-10-21");		
+		choosebyAreaDateType(in,out,jiscodes,"rain","2014-10-21","2015-06-19");		
 	}
 
-	public static File choosebyAreaDateType(File in, File out, File codes, String t, String date) throws IOException, ParseException{
+	public static File choosebyAreaDateType(File in, File out, File codes, String t, String date, String enddate) throws IOException, ParseException{
 		BufferedReader br2 = new BufferedReader(new FileReader(codes));
 		HashSet<String> JISset = new HashSet<String>();
 		String line2 = null;
@@ -34,6 +34,7 @@ public class DisLogDecider {
 		br2.close();
 
 		Date startdate = YMD.parse(date);
+		Date enddat    = YMD.parse(enddate);
 
 		int count = 0;
 		BufferedReader br = new BufferedReader(new FileReader(in));
@@ -49,7 +50,7 @@ public class DisLogDecider {
 			Date disdate = YMD.parse(dt);
 
 			String type = tokens[1];
-			if(disdate.after(startdate)){
+			if((disdate.after(startdate))&&(disdate.before(enddat))){
 				if(type.equals(t)){
 					String jiscode = tokens[3];		
 					if(JISset.contains(jiscode)){
