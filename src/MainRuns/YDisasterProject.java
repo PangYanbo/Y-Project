@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
+import jp.ac.ut.csis.pflow.geom.LonLat;
 import DataModify.ExtractFile;
 import DisasterAlert.DayChooser;
 import DisasterAlert.DisasterLogs;
@@ -97,7 +98,7 @@ public class YDisasterProject {
 			ExtractFile.uncompress(Paths.get(disGPS)); System.out.println("#done uncompressing " + disGPS);
 
 			String unzippedfile = FilePaths.deephomepath(ymd);
-			HashMap<String,String> targetIDs_code = ExtractIDbyDate.extractID(unzippedfile,time,zones,0); //0: minimum logs
+			HashMap<String,LonLat> targetIDs_code = ExtractIDbyDate.extractID(unzippedfile,time,zones,0); //0: minimum logs
 			System.out.println("#the number of IDs for " + ymd+time+ " is " + targetIDs_code.size());
 			File i = new File(unzippedfile); i.delete();
 

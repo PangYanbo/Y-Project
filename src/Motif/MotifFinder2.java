@@ -34,7 +34,7 @@ public class MotifFinder2 {
 	}
 
 	public static void executeMotif(String in, String path, String disasterday,
-			HashMap<String,String> id_area, HashMap<String,String> id_homecode) throws IOException, ParseException{
+			HashMap<String,LonLat> id_area, HashMap<String,String> id_homecode) throws IOException, ParseException{
 		HashMap<String,ArrayList<LonLat>> id_SPs = StayPointGetter.getSPs2(new File(in), 500, 300);
 
 		HashMap<String, HashMap<String, ArrayList<LonLat>>> map = SPFinder.intomapY(in,"weekday"); 
@@ -170,7 +170,7 @@ public class MotifFinder2 {
 	}
 	
 	public static File writeout(HashMap<String, HashMap<String, Integer>> map, String path, String disasterday,
-			HashMap<String,String> id_area, HashMap<String,String> id_homecode) throws IOException{
+			HashMap<String,LonLat> id_area, HashMap<String,String> id_homecode) throws IOException{
 		File out = new File(path);
 		BufferedWriter bw = new BufferedWriter(new FileWriter(out));
 		for(String id : map.keySet()){

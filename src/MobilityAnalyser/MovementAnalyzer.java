@@ -9,7 +9,9 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 
+import jp.ac.ut.csis.pflow.geom.GeometryChecker;
 import jp.ac.ut.csis.pflow.geom.LonLat;
 
 public class MovementAnalyzer {
@@ -22,9 +24,12 @@ public class MovementAnalyzer {
 		System.out.println(x);
 	}
 
+	static File shapedir = new File("/home/c-tyabe/Data/jpnshp");
+	static GeometryChecker gchecker = new GeometryChecker(shapedir);
+
 	public static void executeAnalyser
 	(String infile, String idhome, String idoffice, String outputpath, 
-			String disasterday, HashMap<String,String> id_area, HashMap<String,String> id_homecode) throws NumberFormatException, IOException, ParseException{
+			String disasterday, HashMap<String,LonLat> id_area, HashMap<String,String> id_homecode) throws NumberFormatException, IOException, ParseException{
 		File in = new File(infile);
 		File Home = new File(idhome);
 		File Office = new File(idoffice);
@@ -228,7 +233,7 @@ public class MovementAnalyzer {
 
 	public static File writeout
 	(HashMap<String, HashMap<String, Integer>> map, String path, String name, String disasterday, 
-			HashMap<String,String> id_area, HashMap<String,String> id_homecode) throws IOException{
+			HashMap<String,LonLat> id_area, HashMap<String,String> id_homecode) throws IOException{
 		File out = new File(path+name);
 		BufferedWriter bw = new BufferedWriter(new FileWriter(out));
 		for(String id : map.keySet()){
@@ -251,7 +256,7 @@ public class MovementAnalyzer {
 
 	public static File writeoutDiff
 	(HashMap<String, HashMap<String, Integer>> map, String path, String name, String disasterday, 
-			HashMap<String,String> id_area, HashMap<String,String> id_homecode, HashMap<String,LonLat> id_home, HashMap<String,LonLat> id_office) throws IOException{
+			HashMap<String,LonLat> id_area, HashMap<String,String> id_homecode, HashMap<String,LonLat> id_home, HashMap<String,LonLat> id_office) throws IOException{
 		File out = new File(path+name);
 		BufferedWriter bw = new BufferedWriter(new FileWriter(out));
 		for(String id : map.keySet()){
@@ -273,16 +278,19 @@ public class MovementAnalyzer {
 			for(Double d : temp){
 				sum = sum + d;
 			}
-			heiji = sum/temp.size();
-			if((heiji!=0d)&&(saigai!=0d)){
-				double diff = saigai - heiji;
-				System.out.println(diff);
-				BigDecimal x = new BigDecimal(diff);
-				x = x.setScale(2, BigDecimal.ROUND_HALF_UP);
+			if(temp.size()>0){
+				heiji = sum/temp.size();
+				if((heiji!=0d)&&(saigai!=0d)){
+					double diff = saigai - heiji;
+					System.out.println(diff);
+					BigDecimal x = new BigDecimal(diff);
+					x = x.setScale(2, BigDecimal.ROUND_HALF_UP);
+					List<String> zonecodeList = gchecker.listOverlaps("JCODE",id_area.get(id).getLon(),id_area.get(id).getLat());
 
-				bw.write(id + "," + x + "," + id_area.get(id) + "," + id_homecode.get(id)
-						+ "," + dis + "," + id_home.get(id) + "," + id_office.get(id));
-				bw.newLine();
+					bw.write(id + "," + x + "," + zonecodeList.get(0) + "," + id_homecode.get(id)
+							+ "," + dis + "," + id_area.get(id) + "," + id_home.get(id) + "," + id_office.get(id));
+					bw.newLine();
+				}
 			}
 		}
 		bw.close();

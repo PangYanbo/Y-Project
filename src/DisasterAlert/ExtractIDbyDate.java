@@ -22,8 +22,8 @@ public class ExtractIDbyDate {
 	static File shapedir = new File("/home/c-tyabe/Data/jpnshp");
 	static GeometryChecker gchecker = new GeometryChecker(shapedir);
 
-	public static HashMap<String,String> extractID(String in, String t, ArrayList<String> JIScodes, int minimumlogs) throws IOException{
-		HashMap<String,String> map = new HashMap<String,String>();
+	public static HashMap<String,LonLat> extractID(String in, String t, ArrayList<String> JIScodes, int minimumlogs) throws IOException{
+		HashMap<String,LonLat> map = new HashMap<String,LonLat>();
 		File infile = new File(in);
 		BufferedReader br = new BufferedReader(new FileReader(infile));
 		String line = null;
@@ -43,7 +43,7 @@ public class ExtractIDbyDate {
 								LonLat p = new LonLat(lon,lat);
 								String JIScode = AreaOverlap(p,JIScodes);
 								if(!JIScode.equals("null")){
-									map.put(id,JIScode);
+									map.put(id,p);
 								}
 							}
 						}
