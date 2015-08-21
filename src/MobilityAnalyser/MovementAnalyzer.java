@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 
+import jp.ac.ut.csis.pflow.geom.LonLat;
+
 public class MovementAnalyzer {
 
 	public static void main(String args[]) throws NumberFormatException, IOException, ParseException{
@@ -28,7 +30,7 @@ public class MovementAnalyzer {
 		//		File Office = new File("c:/users/yabetaka/desktop/id_office.csv");
 		//		String outputpath = "c:/users/yabetaka/desktop/Test/";
 
-//		executeAnalyser(args[0],args[1],args[2],args[3],args[4],args[5]);
+		//		executeAnalyser(args[0],args[1],args[2],args[3],args[4],args[5]);
 
 	}
 
@@ -60,6 +62,18 @@ public class MovementAnalyzer {
 		writeout(tsukintime,  outputpath, "tsukin_time.csv" , disasterday, id_area, id_homecode);
 		writeout(kitakutime,  outputpath, "kitaku_time.csv" , disasterday, id_area, id_homecode);
 		writeout(officetime,  outputpath, "office_time.csv" , disasterday, id_area, id_homecode);
+		System.out.println("#done everything");
+
+		HashMap<String,LonLat> id_Home = HomeOfficeMaps.getXMap(Home);
+		HashMap<String,LonLat> id_Office = HomeOfficeMaps.getXMap(Office);
+		System.out.println("#writing everything out...");
+		writeoutDiff(officeenter, outputpath, "office_enter_diff.csv", disasterday, id_area, id_homecode, id_Home, id_Office);
+		writeoutDiff(officeexit,  outputpath, "office_exit_diff.csv" , disasterday, id_area, id_homecode, id_Home, id_Office);
+		writeoutDiff(homeexit,    outputpath, "home_exit_diff.csv"   , disasterday, id_area, id_homecode, id_Home, id_Office);
+		writeoutDiff(homereturn,  outputpath, "home_return_diff.csv" , disasterday, id_area, id_homecode, id_Home, id_Office);
+		writeoutDiff(tsukintime,  outputpath, "tsukin_time_diff.csv" , disasterday, id_area, id_homecode, id_Home, id_Office);
+		writeoutDiff(kitakutime,  outputpath, "kitaku_time_diff.csv" , disasterday, id_area, id_homecode, id_Home, id_Office);
+		writeoutDiff(officetime,  outputpath, "office_time_diff.csv" , disasterday, id_area, id_homecode, id_Home, id_Office);
 		System.out.println("#done everything");
 	}
 
@@ -242,6 +256,41 @@ public class MovementAnalyzer {
 				bw.write(id + "," + z + "," + day + "," + x + "," + id_area.get(id) + "," + id_homecode.get(id));
 				bw.newLine();
 			}
+		}
+		bw.close();
+		return out;
+	}
+
+	public static File writeoutDiff
+	(HashMap<String, HashMap<String, Integer>> map, String path, String name, String disasterday, 
+			HashMap<String,String> id_area, HashMap<String,String> id_homecode, HashMap<String,LonLat> id_home, HashMap<String,LonLat> id_office) throws IOException{
+		File out = new File(path+name);
+		BufferedWriter bw = new BufferedWriter(new FileWriter(out));
+		for(String id : map.keySet()){
+			ArrayList<Double> temp = new ArrayList<Double>();
+			Double saigai = 0d;
+			double dis = id_home.get(id).distance(id_office.get(id));
+			
+			for(String day : map.get(id).keySet()){
+				double time = (double)map.get(id).get(day)/(double)3600;
+				if(day.equals(disasterday)){
+					saigai = time;
+				}
+				else{
+					temp.add(time);
+				}
+			}
+			double sum = 0;
+			for(Double d : temp){
+				sum = sum + d;
+			}
+			double heiji = sum/temp.size();
+			double diff = saigai - heiji;
+			BigDecimal x = new BigDecimal(diff);
+			x = x.setScale(2, BigDecimal.ROUND_HALF_UP);
+			
+			bw.write(id + "," + x + "," + id_area.get(id) + "," + id_homecode.get(id) + "," + dis);
+			bw.newLine();
 		}
 		bw.close();
 		return out;
