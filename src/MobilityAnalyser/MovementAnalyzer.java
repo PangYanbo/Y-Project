@@ -282,7 +282,7 @@ public class MovementAnalyzer {
 				heiji = sum/temp.size();
 				if((heiji!=0d)&&(saigai!=0d)){
 					double diff = saigai - heiji;
-					System.out.println(diff);
+//					System.out.println(diff);
 					BigDecimal x = new BigDecimal(diff);
 					x = x.setScale(2, BigDecimal.ROUND_HALF_UP);
 					List<String> zonecodeList = gchecker.listOverlaps("JCODE",id_area.get(id).getLon(),id_area.get(id).getLat());
