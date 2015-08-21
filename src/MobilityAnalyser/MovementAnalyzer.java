@@ -16,22 +16,10 @@ public class MovementAnalyzer {
 
 	public static void main(String args[]) throws NumberFormatException, IOException, ParseException{
 
-		/*
-		 * param 
-		 * args[0] : file for all logs
-		 * args[1] : file for id_home
-		 * args[2] : file for id_office
-		 * args[3] : filepath for output directory
-		 *  
-		 */
-
-		//		File in = new File("c:/users/yabetaka/desktop/dataforexp.csv");
-		//		File Home = new File("c:/users/yabetaka/desktop/id_home.csv");
-		//		File Office = new File("c:/users/yabetaka/desktop/id_office.csv");
-		//		String outputpath = "c:/users/yabetaka/desktop/Test/";
-
-		//		executeAnalyser(args[0],args[1],args[2],args[3],args[4],args[5]);
-
+		double diff = 0;
+		BigDecimal x = new BigDecimal(diff);
+		x = x.setScale(2, BigDecimal.ROUND_HALF_UP);
+		System.out.println(x);
 	}
 
 	public static void executeAnalyser
@@ -269,8 +257,9 @@ public class MovementAnalyzer {
 		for(String id : map.keySet()){
 			ArrayList<Double> temp = new ArrayList<Double>();
 			Double saigai = 0d;
+			Double heiji = 0d;
 			double dis = id_home.get(id).distance(id_office.get(id));
-			
+
 			for(String day : map.get(id).keySet()){
 				double time = (double)map.get(id).get(day)/(double)3600;
 				if(day.equals(disasterday)){
@@ -280,17 +269,20 @@ public class MovementAnalyzer {
 					temp.add(time);
 				}
 			}
-			double sum = 0;
+			double sum = 0d;
 			for(Double d : temp){
 				sum = sum + d;
 			}
-			double heiji = sum/temp.size();
-			double diff = saigai - heiji;
-			BigDecimal x = new BigDecimal(diff);
-			x = x.setScale(2, BigDecimal.ROUND_HALF_UP);
-			
-			bw.write(id + "," + x + "," + id_area.get(id) + "," + id_homecode.get(id) + "," + dis);
-			bw.newLine();
+			heiji = sum/temp.size();
+			if((heiji!=0d)&&(saigai!=0d)){
+				double diff = saigai - heiji;
+				System.out.println(diff);
+				BigDecimal x = new BigDecimal(diff);
+				x = x.setScale(2, BigDecimal.ROUND_HALF_UP);
+
+				bw.write(id + "," + x + "," + id_area.get(id) + "," + id_homecode.get(id) + "," + dis);
+				bw.newLine();
+			}
 		}
 		bw.close();
 		return out;
