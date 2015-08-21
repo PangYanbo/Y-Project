@@ -42,7 +42,7 @@ public class ExtractIDbyDate {
 								Double lon = Double.parseDouble(tokens[3]);
 								LonLat p = new LonLat(lon,lat);
 								String JIScode = AreaOverlap(p,JIScodes);
-								if(!JIScode.equals(null)){
+								if(!JIScode.equals("null")){
 									map.put(id,JIScode);
 								}
 							}
@@ -59,13 +59,13 @@ public class ExtractIDbyDate {
 	public static String AreaOverlap(LonLat point, ArrayList<String> JIScodes){
 		List<String> zonecodeList = gchecker.listOverlaps("JCODE",point.getLon(),point.getLat());
 		if(zonecodeList == null || zonecodeList.isEmpty()) {
-			return null;
+			return "null";
 		}
 		else if (JIScodes.contains(zonecodeList.get(0))){
 			return zonecodeList.get(0);
 		}
 		else{
-			return null;
+			return "null";
 		}
 	}
 
