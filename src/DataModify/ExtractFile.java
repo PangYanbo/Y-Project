@@ -100,7 +100,7 @@ public class ExtractFile {
 		try {
 			Process process = pb.start();
 			process.waitFor();
-			System.out.println(pb.redirectInput());
+//			System.out.println(pb.redirectInput());
 		}
 		catch (Exception ex) {
 			ex.printStackTrace();
