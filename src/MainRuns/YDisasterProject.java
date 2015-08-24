@@ -64,7 +64,7 @@ public class YDisasterProject {
 			for(String time : dislogs.get(ymd).keySet()){
 				for(String level : dislogs.get(ymd).get(time).keySet()){
 					if(filedoublechecker(ymd,time,type,level,city)==true){
-						if(ymd.equals("20150530")){
+						if(ymd.equals("20150529")){
 							System.out.println("#starting run for " + ymd +", level:" +level);
 							ArrayList<String> codes = dislogs.get(ymd).get(time).get(level);
 							run(codes, ymd, time, level, dislog);
