@@ -57,22 +57,28 @@ public class DisasterLogs {
 			String time = date[1];
 			String hour = converttime(time);
 			String level = tokens[2];
-			String codes = tokens[3];
+			String[] codes = tokens[3].split(" ");
 
 			if(res.containsKey(ymd)){
 				if(res.get(ymd).containsKey(hour)){
 					if(res.get(ymd).get(hour).containsKey(level)){
-						res.get(ymd).get(hour).get(level).add(codes);
+						for(String code : codes){
+							res.get(ymd).get(hour).get(level).add(code);
+						}
 					}
 					else{
 						ArrayList<String> list = new ArrayList<String>();
-						list.add(codes);
+						for(String code : codes){
+							list.add(code);
+						}
 						res.get(ymd).get(hour).put(level, list);
 					}
 				}
 				else{
 					ArrayList<String> list = new ArrayList<String>();
-					list.add(codes);
+					for(String code : codes){
+						list.add(code);
+					}
 					HashMap<String,ArrayList<String>> leveljismap = new HashMap<String,ArrayList<String>>();
 					leveljismap.put(level, list);
 					res.get(ymd).put(hour, leveljismap);				
@@ -80,7 +86,9 @@ public class DisasterLogs {
 			}
 			else{
 				ArrayList<String> list = new ArrayList<String>();
-				list.add(codes);
+				for(String code : codes){
+					list.add(code);
+				}
 				HashMap<String,ArrayList<String>> leveljismap = new HashMap<String,ArrayList<String>>();
 				leveljismap.put(level, list);
 				HashMap<String, HashMap<String, ArrayList<String>>> map = new HashMap<String, HashMap<String, ArrayList<String>>>();

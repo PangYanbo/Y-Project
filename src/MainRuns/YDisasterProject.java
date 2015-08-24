@@ -34,7 +34,7 @@ public class YDisasterProject {
 
 	protected static final SimpleDateFormat SDF_TS = new SimpleDateFormat("yyyy-MM-dd");//change time format
 
-	private static final String type = "eq";
+	private static final String type = "rain";
 	private static final String city = "Tokyo";
 	private static final String homepath = "/home/c-tyabe/Data/"+type+city+"/";
 	private static final String GPSpath  = "/tmp/bousai_data/gps_";
@@ -123,9 +123,9 @@ public class YDisasterProject {
 				File office = new File(workpath+"id_office.csv"); office.delete();
 			}
 
-			if(!(new File(workpath+"home_exit.csv").exists())){
-				File emptydir = new File(workpath); emptydir.delete();
-			}
+//			if(!(new File(workpath+"home_exit.csv").exists())){
+//				File emptydir = new File(workpath); emptydir.delete();
+//			}
 
 		}
 	}
