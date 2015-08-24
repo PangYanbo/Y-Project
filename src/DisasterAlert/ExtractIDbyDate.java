@@ -93,6 +93,7 @@ public class ExtractIDbyDate {
 
 	public static String AreaOverlapPref(LonLat point, ArrayList<String> JIScodes){ //JIScodes = 08,...
 		List<String> zonecodeList = gchecker.listOverlaps("JCODE",point.getLon(),point.getLat());
+		System.out.println("zonecodelist: " + zonecodeList);
 		if(zonecodeList == null || zonecodeList.isEmpty()) { //zonecodelist.get(0) = 8988, ...
 			return "null";
 		}
