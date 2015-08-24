@@ -54,7 +54,7 @@ public class DisLogDecider {
 				if(type.equals(t)){
 					String[] jiscodes = tokens[3].split(" ");
 					if(jiscodes[0].equals("ALL")){
-						bw.write("8 11 12 13 14");
+						bw.write(ymd +","+ type +","+tokens[2] +","+"8 11 12 13 14");
 						bw.newLine();
 					}
 					else{
@@ -65,7 +65,7 @@ public class DisLogDecider {
 							}
 						}
 						String c = arraytostr(temp);
-						bw.write(c);
+						bw.write(ymd +","+ type +","+tokens[2] +","+ c);
 						bw.newLine();
 					}
 				}
@@ -81,7 +81,7 @@ public class DisLogDecider {
 		String tmp = temp.toString();
 		String tmp2 = tmp.replace("[", "");
 		String tmp3 = tmp2.replace("]", "");
-		String tmp4 = tmp3.replace(",", " ");
+		String tmp4 = tmp3.replace(",", "");
 		return tmp4;
 	}
 	
