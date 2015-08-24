@@ -102,24 +102,28 @@ public class YDisasterProject {
 			System.out.println("#the number of IDs for " + ymd+time+ " is " + targetIDs_code.size());
 			File i = new File(unzippedfile); i.delete();
 
-//			if(targetIDs_code.size()>500){ //ëŒè€êlêîÇ≈çiÇÈ
-				String dataforexp = workpath+"dataforexp.csv";
-				HashSet<String> targetdays = DayChooser.getTargetDates(ymd, dislog); System.out.println("#the number of days are " + targetdays.size());
-				Makedata4exp.makedata(dataforexp, targetdays, targetIDs_code); System.out.println("#successfully made data for exp");
+			//			if(targetIDs_code.size()>500){ //ëŒè€êlêîÇ≈çiÇÈ
+			String dataforexp = workpath+"dataforexp.csv";
+			HashSet<String> targetdays = DayChooser.getTargetDates(ymd, dislog); System.out.println("#the number of days are " + targetdays.size());
+			Makedata4exp.makedata(dataforexp, targetdays, targetIDs_code); System.out.println("#successfully made data for exp");
 
-				HomeDetector.getHome(dataforexp, workpath);
-				HashMap<String,String> id_homecode = HomeDetector.gethomecode(workpath+"id_home.csv");
-				OfficeSchoolDetection.getOfficeSchool(dataforexp, workpath);
+			HomeDetector.getHome(dataforexp, workpath);
+			HashMap<String,String> id_homecode = HomeDetector.gethomecode(workpath+"id_home.csv");
+			OfficeSchoolDetection.getOfficeSchool(dataforexp, workpath);
 
-				MovementAnalyzer.executeAnalyser
-				(dataforexp, FilePaths.dirfile(workpath,"id_home.csv"), FilePaths.dirfile(workpath,"id_office.csv"), 
-						workpath, disasterday, targetIDs_code, id_homecode);
-				MotifFinder2.executeMotif(dataforexp, workpath, disasterday, targetIDs_code, id_homecode);
+			MovementAnalyzer.executeAnalyser
+			(dataforexp, FilePaths.dirfile(workpath,"id_home.csv"), FilePaths.dirfile(workpath,"id_office.csv"), 
+					workpath, disasterday, targetIDs_code, id_homecode);
+			MotifFinder2.executeMotif(dataforexp, workpath, disasterday, targetIDs_code, id_homecode);
 
-				File data = new File(dataforexp); data.delete();
-				File home = new File(workpath+"id_home.csv"); home.delete();
-				File office = new File(workpath+"id_office.csv"); office.delete();
-//			}
+			File data = new File(dataforexp); data.delete();
+			File home = new File(workpath+"id_home.csv"); home.delete();
+			File office = new File(workpath+"id_office.csv"); office.delete();
+			//			}
+
+			if(!(new File(workpath+"home_exit.csv").exists())){
+				File emptydir = new File(workpath); emptydir.delete();
+			}
 
 		}
 	}
