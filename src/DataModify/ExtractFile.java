@@ -40,7 +40,7 @@ public class ExtractFile {
 		tin.close();
 	}
 
-	public static void uncompress(Path path) throws IOException{
+	public static void uncompress(Path path){
 
 		if(!path.toString().endsWith(".tar.gz"))
 			throw new Error("extension must be tar.gz.");
@@ -54,29 +54,34 @@ public class ExtractFile {
 			e.printStackTrace();
 		}
 
-		for(TarEntry tarEnt = tin.getNextEntry(); tarEnt != null; tarEnt = tin.getNextEntry()) {
-			if(tarEnt.isDirectory()){
-				new File(tarEnt.getName()).mkdir();
-			}
-			else {
-				FileOutputStream fos = null;
-
-				try {
-					fos = new FileOutputStream(new File("/home/c-tyabe/Data/"+tarEnt.getName()+".csv"));
-				} catch (FileNotFoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+		try {
+			for(TarEntry tarEnt = tin.getNextEntry(); tarEnt != null; tarEnt = tin.getNextEntry()) {
+				if(tarEnt.isDirectory()){
+					new File(tarEnt.getName()).mkdir();
 				}
+				else {
+					FileOutputStream fos = null;
+
+					try {
+						fos = new FileOutputStream(new File("/home/c-tyabe/Data/"+tarEnt.getName()+".csv"));
+					} catch (FileNotFoundException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 
 
-				try {
-					tin.copyEntryContents(fos);
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					try {
+						tin.copyEntryContents(fos);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+
 				}
-
 			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 
 		try {
