@@ -18,7 +18,7 @@ import Motif.MotifFinder2;
 import StayPointDetection.HomeDetector;
 import StayPointDetection.OfficeSchoolDetection;
 
-public class YDisasterProject {
+public class YDisasterProject2 {
 
 	/**
 	 * Class for running every step 
@@ -32,11 +32,11 @@ public class YDisasterProject {
 	 * 
 	 */
 
-	// for disasters with 市町村コード！
+	// for disasters with 県コード（2桁）！(prefecture codes!)
 	
 	protected static final SimpleDateFormat SDF_TS = new SimpleDateFormat("yyyy-MM-dd");//change time format
 
-	private static final String type = "rain";
+	private static final String type = "eq";
 	private static final String city = "Tokyo";
 	private static final String homepath = "/home/c-tyabe/Data/"+type+city+"/";
 	private static final String GPSpath  = "/tmp/bousai_data/gps_";
