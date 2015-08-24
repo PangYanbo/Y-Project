@@ -61,8 +61,13 @@ public class ExtractFile {
 				new File(tarEnt.getName()).mkdir();
 			}
 			else {
-				FileOutputStream fos;
-				fos = new FileOutputStream(new File("/home/c-tyabe/Data/"+tarEnt.getName()+".csv"));
+				FileOutputStream fos = null;
+				try {
+					fos = new FileOutputStream(new File("/home/c-tyabe/Data/"+tarEnt.getName()+".csv"));
+				} catch (FileNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				try {
 					tin.copyEntryContents(fos);
 				} catch (IOException e) {
@@ -72,7 +77,12 @@ public class ExtractFile {
 
 			}
 		}
-		tin.close();
+		try {
+			tin.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }
