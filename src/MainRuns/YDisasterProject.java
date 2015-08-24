@@ -102,7 +102,7 @@ public class YDisasterProject {
 			System.out.println("#the number of IDs for " + ymd+time+ " is " + targetIDs_code.size());
 			File i = new File(unzippedfile); i.delete();
 
-			if(targetIDs_code.size()>500){ //ëŒè€êlêîÇ≈çiÇÈ
+//			if(targetIDs_code.size()>500){ //ëŒè€êlêîÇ≈çiÇÈ
 				String dataforexp = workpath+"dataforexp.csv";
 				HashSet<String> targetdays = DayChooser.getTargetDates(ymd, dislog); System.out.println("#the number of days are " + targetdays.size());
 				Makedata4exp.makedata(dataforexp, targetdays, targetIDs_code); System.out.println("#successfully made data for exp");
@@ -119,7 +119,7 @@ public class YDisasterProject {
 				File data = new File(dataforexp); data.delete();
 				File home = new File(workpath+"id_home.csv"); home.delete();
 				File office = new File(workpath+"id_office.csv"); office.delete();
-			}
+//			}
 
 		}
 	}
