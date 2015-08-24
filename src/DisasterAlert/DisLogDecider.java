@@ -36,7 +36,7 @@ public class DisLogDecider {
 		Date startdate = YMD.parse(date);
 		Date enddat    = YMD.parse(enddate);
 
-		int count = 0;
+//		int count = 0;
 		BufferedReader br = new BufferedReader(new FileReader(in));
 		BufferedWriter bw = new BufferedWriter(new FileWriter(out));
 		String line = br.readLine();
@@ -54,7 +54,7 @@ public class DisLogDecider {
 				if(type.equals(t)){
 					String[] jiscodes = tokens[3].split(" ");
 					if(jiscodes[0].equals("ALL")){
-						bw.write(ymd +","+ type +","+tokens[2] +","+"8 11 12 13 14");
+						bw.write(tokens[0] +","+ type +","+tokens[2] +","+"8 11 12 13 14");
 						bw.newLine();
 					}
 					else{
@@ -64,19 +64,21 @@ public class DisLogDecider {
 								temp.add(jiscode);
 							}
 						}
-						String c = arraytostr(temp);
-						bw.write(ymd +","+ type +","+tokens[2] +","+ c);
-						bw.newLine();
+						if(temp.size()>0){
+							String c = arraytostr(temp);
+							bw.write(tokens[0] +","+ type +","+tokens[2] +","+ c);
+							bw.newLine();
+						}
 					}
 				}
 			}
 		}
 		br.close();
 		bw.close();
-		System.out.println("number of disasters in shutoken : " + count);
+//		System.out.println("number of disasters in shutoken : " + count);
 		return out;
 	}
-	
+
 	public static String arraytostr(HashSet<String> temp){
 		String tmp = temp.toString();
 		String tmp2 = tmp.replace("[", "");
@@ -84,16 +86,16 @@ public class DisLogDecider {
 		String tmp4 = tmp3.replace(",", "");
 		return tmp4;
 	}
-	
-//	public static void main(String args[]){
-//		HashSet<String> temp = new HashSet<String>();
-//		temp.add("11");
-//		temp.add("13");
-//		temp.add("12");
-//		temp.add("2");
-//		
-//		String res = arraytostr(temp);
-//		System.out.println(res);
-//	}
+
+	//	public static void main(String args[]){
+	//		HashSet<String> temp = new HashSet<String>();
+	//		temp.add("11");
+	//		temp.add("13");
+	//		temp.add("12");
+	//		temp.add("2");
+	//		
+	//		String res = arraytostr(temp);
+	//		System.out.println(res);
+	//	}
 
 }
