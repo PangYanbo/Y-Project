@@ -52,13 +52,19 @@ public class DisLogDecider {
 			String type = tokens[1];
 			if((disdate.after(startdate))&&(disdate.before(enddat))){
 				if(type.equals(t)){
-					String[] jiscodes = tokens[3].split(" ");		
-					for(String jiscode : jiscodes){
-						if(JISset.contains(jiscode)){
-							bw.write(line);
-							bw.newLine();
-							count++;
-							break;
+					String[] jiscodes = tokens[3].split(" ");
+					if(jiscodes[0].equals("ALL")){
+						bw.write(line);
+						bw.newLine();
+					}
+					else{
+						for(String jiscode : jiscodes){
+							if(JISset.contains(jiscode)){
+								bw.write(line);
+								bw.newLine();
+								count++;
+								break;
+							}
 						}
 					}
 				}
