@@ -64,10 +64,12 @@ public class YDisasterProject {
 			for(String time : dislogs.get(ymd).keySet()){
 				for(String level : dislogs.get(ymd).get(time).keySet()){
 					if(filedoublechecker(ymd,time,type,level,city)==true){
-						System.out.println("#starting run for " + ymd +", level:" +level);
-						ArrayList<String> codes = dislogs.get(ymd).get(time).get(level);
-						run(codes, ymd, time, level, dislog);
-						System.out.println("#######done " + count + " disasters.");
+						if(ymd.equals("20150605")){
+							System.out.println("#starting run for " + ymd +", level:" +level);
+							ArrayList<String> codes = dislogs.get(ymd).get(time).get(level);
+							run(codes, ymd, time, level, dislog);
+							System.out.println("#######done " + count + " disasters.");
+						}
 					}
 					count++;
 				}
