@@ -24,7 +24,7 @@ public class ExtractIDbyDate {
 	static GeometryChecker gchecker = new GeometryChecker(shapedir);
 
 	//check Pref or not.! 
-	
+
 	public static HashMap<String,LonLat> extractID(String in, String t, ArrayList<String> JIScodes, int minimumlogs){
 		HashMap<String,LonLat> map = new HashMap<String,LonLat>();
 		File infile = new File(in);
@@ -93,23 +93,28 @@ public class ExtractIDbyDate {
 
 	public static String AreaOverlapPref(LonLat point, ArrayList<String> JIScodes){ //JIScodes = 08,...
 		List<String> zonecodeList = gchecker.listOverlaps("JCODE",point.getLon(),point.getLat());
-		System.out.println("zonecodelist: " + zonecodeList);
+//		System.out.println("point: " + point + ", zonecodelist: " + zonecodeList);
 		if(zonecodeList == null || zonecodeList.isEmpty()) { //zonecodelist.get(0) = 8988, ...
 			return "null";
 		}
-		else if (Integer.valueOf(zonecodeList.get(0))>=10000){
-			String code =  zonecodeList.get(0).substring(0,2);
-			if(JIScodes.contains(code)){
-				return code;
+		else if (zonecodeList.get(0).length()>0){
+			if (Integer.valueOf(zonecodeList.get(0))>=10000){
+				String code =  zonecodeList.get(0).substring(0,2);
+				if(JIScodes.contains(code)){
+					return code;
+				}
+				else{
+					return "null";
+				}
 			}
-			else{
-				return "null";
-			}
-		}
-		else if (Integer.valueOf(zonecodeList.get(0))<9999){
-			String code =  String.format("%02d", Integer.valueOf(zonecodeList.get(0).substring(0,1)));
-			if(JIScodes.contains(code)){
-				return code;
+			else if (Integer.valueOf(zonecodeList.get(0))<9999){
+				String code =  String.format("%02d", Integer.valueOf(zonecodeList.get(0).substring(0,1)));
+				if(JIScodes.contains(code)){
+					return code;
+				}
+				else{
+					return "null";
+				}
 			}
 			else{
 				return "null";
