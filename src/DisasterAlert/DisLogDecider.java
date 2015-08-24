@@ -17,8 +17,8 @@ public class DisLogDecider {
 
 	public static void main(String args[]) throws IOException, ParseException{
 		File in = new File("c:/users/c-tyabe/desktop/DisasterDataLogs/DisasterAlertData.csv");
-		File out = new File("c:/users/c-tyabe/desktop/DisasterDataLogs/DisasterAlertData_shutoken_rain.csv");
-		File jiscodes = new File("c:/users/c-tyabe/desktop/ShutokenSHP/JIScodes.csv");
+		File out = new File("c:/users/c-tyabe/desktop/DisasterDataLogs/DisasterAlertData_shutoken_eq.csv");
+		File jiscodes = new File("c:/users/c-tyabe/desktop/ShutokenSHP/JIScodes_pref.csv");
 		choosebyAreaDateType(in,out,jiscodes,"emg1","2014-10-21","2015-08-17");		
 	}
 
@@ -52,11 +52,14 @@ public class DisLogDecider {
 			String type = tokens[1];
 			if((disdate.after(startdate))&&(disdate.before(enddat))){
 				if(type.equals(t)){
-					String jiscode = tokens[3];		
-					if(JISset.contains(jiscode)){
-						bw.write(line);
-						bw.newLine();
-						count++;
+					String[] jiscodes = tokens[3].split(" ");		
+					for(String jiscode : jiscodes){
+						if(JISset.contains(jiscode)){
+							bw.write(line);
+							bw.newLine();
+							count++;
+							break;
+						}
 					}
 				}
 			}
