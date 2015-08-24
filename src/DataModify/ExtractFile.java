@@ -49,25 +49,26 @@ public class ExtractFile {
 
 		try {
 			tin = new TarInputStream(new GZIPInputStream(new FileInputStream(path.toFile())));
-		} catch (FileNotFoundException e1) {
+		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			e.printStackTrace();
 		}
+
 		for(TarEntry tarEnt = tin.getNextEntry(); tarEnt != null; tarEnt = tin.getNextEntry()) {
 			if(tarEnt.isDirectory()){
 				new File(tarEnt.getName()).mkdir();
 			}
 			else {
 				FileOutputStream fos = null;
+
 				try {
 					fos = new FileOutputStream(new File("/home/c-tyabe/Data/"+tarEnt.getName()+".csv"));
-				} catch (FileNotFoundException e1) {
+				} catch (FileNotFoundException e) {
 					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					e.printStackTrace();
 				}
+
+
 				try {
 					tin.copyEntryContents(fos);
 				} catch (IOException e) {
@@ -77,12 +78,14 @@ public class ExtractFile {
 
 			}
 		}
+
 		try {
 			tin.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+
 	}
 
 }
