@@ -25,8 +25,8 @@ public class Makedata4exp {
 			int daa = 0;
 			String[] youso = d.split("-");
 			String ymd = youso[0]+youso[1]+youso[2];
-			String GPS = GPSpath+ymd+".tar.gz"; //ymd=yyyymmdd‚ÌŒ`‚É‚È‚Á‚Ä‚¢‚é
-			ExtractFile.jikkou(GPS);
+//			String GPS = GPSpath+ymd+".tar.gz"; //ymd=yyyymmdd‚ÌŒ`‚É‚È‚Á‚Ä‚¢‚é
+			ExtractFile.jikkou(ymd);
 
 			BufferedReader br = new BufferedReader(new FileReader(new File(GPSdeeppath+ymd+".csv")));
 			String line = null;

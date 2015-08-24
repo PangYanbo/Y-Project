@@ -96,7 +96,7 @@ public class YDisasterProject {
 		String disGPS = GPSpath+ymd+".tar.gz"; //ymd=yyyymmddの形になっている
 
 		if(new File(disGPS).exists()){ //もしログのファイルがあれば！
-			ExtractFile.jikkou(disGPS); System.out.println("#done uncompressing " + disGPS);
+			ExtractFile.jikkou(ymd); System.out.println("#done uncompressing " + disGPS);
 
 			String unzippedfile = FilePaths.deephomepath(ymd);
 			HashMap<String,LonLat> targetIDs_code = ExtractIDbyDate.extractID(unzippedfile,time,zones,0); //0: minimum logs
