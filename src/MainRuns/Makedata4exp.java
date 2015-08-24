@@ -22,11 +22,11 @@ public class Makedata4exp {
 		BufferedWriter bw = new BufferedWriter(new FileWriter(new File(outpath),true));
 		int count = 0;
 		for(String d : targetdays){
-			int daa = 0;
+//			int daa = 0;
 			String[] youso = d.split("-");
 			String ymd = youso[0]+youso[1]+youso[2];
 //			String GPS = GPSpath+ymd+".tar.gz"; //ymd=yyyymmdd‚ÌŒ`‚É‚È‚Á‚Ä‚¢‚é
-			ExtractFile.jikkou(ymd);
+			ExtractFile.extractfromcommand(ymd);
 
 			BufferedReader br = new BufferedReader(new FileReader(new File(GPSdeeppath+ymd+".csv")));
 			String line = null;
@@ -44,7 +44,7 @@ public class Makedata4exp {
 								bw.write(id + "\t" + lat + "\t" + lon + "\t" + time);
 								bw.newLine();
 								count++;
-								daa++;
+//								daa++;
 							}
 						}
 					}
@@ -52,7 +52,7 @@ public class Makedata4exp {
 				}
 			}
 			br.close();
-			System.out.println("done " + d +" ... " + daa +" lines");
+//			System.out.println("done " + d +" ... " + daa +" lines");
 			File i = new File(GPSdeeppath+ymd+".csv");
 			i.delete();
 		}

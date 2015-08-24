@@ -39,13 +39,13 @@ public class MovementAnalyzer {
 		HashMap<String,HashMap<String,ArrayList<Integer>>> omap = HomeOfficeMaps.getLogsnearX(in,Office);
 		System.out.println("#done getting logs near office");
 
-		HashMap<String, HashMap<String, Integer>> officeenter = officeEnterTime(omap); System.out.println("#done getting office enter time");
-		HashMap<String, HashMap<String, Integer>> officeexit  = officeExitTime(omap); System.out.println("#done getting office exit time");
-		HashMap<String, HashMap<String, Integer>> homeexit    = homeExitTimes(hmap, officeenter); System.out.println("#done getting home exit time");
-		HashMap<String, HashMap<String, Integer>> homereturn  = homeReturnTimes(hmap,officeexit); System.out.println("#done getting home return time");
-		HashMap<String, HashMap<String, Integer>> tsukintime  = tsuukinTimes(homeexit, officeenter); System.out.println("#done getting tsuukin time");
-		HashMap<String, HashMap<String, Integer>> kitakutime  = kitakujikanTimes(officeexit, homereturn); System.out.println("#done getting kitaku times");
-		HashMap<String, HashMap<String, Integer>> officetime  = officeStayTimes(officeenter, officeexit); System.out.println("#done getting time at office");
+		HashMap<String, HashMap<String, Integer>> officeenter = officeEnterTime(omap); //System.out.println("#done getting office enter time");
+		HashMap<String, HashMap<String, Integer>> officeexit  = officeExitTime(omap); //System.out.println("#done getting office exit time");
+		HashMap<String, HashMap<String, Integer>> homeexit    = homeExitTimes(hmap, officeenter); //System.out.println("#done getting home exit time");
+		HashMap<String, HashMap<String, Integer>> homereturn  = homeReturnTimes(hmap,officeexit); //System.out.println("#done getting home return time");
+		HashMap<String, HashMap<String, Integer>> tsukintime  = tsuukinTimes(homeexit, officeenter); //System.out.println("#done getting tsuukin time");
+		HashMap<String, HashMap<String, Integer>> kitakutime  = kitakujikanTimes(officeexit, homereturn); //System.out.println("#done getting kitaku times");
+		HashMap<String, HashMap<String, Integer>> officetime  = officeStayTimes(officeenter, officeexit); //System.out.println("#done getting time at office");
 
 		System.out.println("#writing everything out...");
 		writeout(officeenter, outputpath, "office_enter.csv", disasterday, id_area, id_homecode);
@@ -55,11 +55,11 @@ public class MovementAnalyzer {
 		writeout(tsukintime,  outputpath, "tsukin_time.csv" , disasterday, id_area, id_homecode);
 		writeout(kitakutime,  outputpath, "kitaku_time.csv" , disasterday, id_area, id_homecode);
 		writeout(officetime,  outputpath, "office_time.csv" , disasterday, id_area, id_homecode);
-		System.out.println("#done everything");
+//		System.out.println("#done everything");
 
 		HashMap<String,LonLat> id_Home = HomeOfficeMaps.getXMap(Home);
 		HashMap<String,LonLat> id_Office = HomeOfficeMaps.getXMap(Office);
-		System.out.println("#writing everything out...");
+//		System.out.println("#writing everything out...");
 		writeoutDiff(officeenter, outputpath, "office_enter_diff.csv", disasterday, id_area, id_homecode, id_Home, id_Office);
 		writeoutDiff(officeexit,  outputpath, "office_exit_diff.csv" , disasterday, id_area, id_homecode, id_Home, id_Office);
 		writeoutDiff(homeexit,    outputpath, "home_exit_diff.csv"   , disasterday, id_area, id_homecode, id_Home, id_Office);

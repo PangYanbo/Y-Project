@@ -67,7 +67,8 @@ public class YDisasterProject {
 							System.out.println("#starting run for " + ymd +", level:" +level);
 							ArrayList<String> codes = dislogs.get(ymd).get(time).get(level);
 							run(codes, ymd, time, level, dislog);
-							System.out.println("#######done " + count + " disasters.");
+							System.out.println("------------------done " + count + " disasters------------------");
+							System.out.println("                ");
 						}
 					}
 					count++;
@@ -96,7 +97,7 @@ public class YDisasterProject {
 		String disGPS = GPSpath+ymd+".tar.gz"; //ymd=yyyymmddの形になっている
 
 		if(new File(disGPS).exists()){ //もしログのファイルがあれば！
-			ExtractFile.jikkou(ymd); System.out.println("#done uncompressing " + disGPS);
+			ExtractFile.extractfromcommand(ymd); System.out.println("#done uncompressing " + disGPS);
 
 			String unzippedfile = FilePaths.deephomepath(ymd);
 			HashMap<String,LonLat> targetIDs_code = ExtractIDbyDate.extractID(unzippedfile,time,zones,0); //0: minimum logs
