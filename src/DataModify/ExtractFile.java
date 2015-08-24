@@ -45,9 +45,17 @@ public class ExtractFile {
 		if(!path.toString().endsWith(".tar.gz"))
 			throw new Error("extension must be tar.gz.");
 
-		TarInputStream tin;
+		TarInputStream tin = null;
 
-		tin = new TarInputStream(new GZIPInputStream(new FileInputStream(path.toFile())));
+		try {
+			tin = new TarInputStream(new GZIPInputStream(new FileInputStream(path.toFile())));
+		} catch (FileNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		for(TarEntry tarEnt = tin.getNextEntry(); tarEnt != null; tarEnt = tin.getNextEntry()) {
 			if(tarEnt.isDirectory()){
 				new File(tarEnt.getName()).mkdir();
