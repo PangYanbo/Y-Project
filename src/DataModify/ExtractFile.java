@@ -9,7 +9,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.zip.GZIPInputStream;
 
 import org.apache.tools.tar.TarEntry;
@@ -94,7 +93,6 @@ public class ExtractFile {
 	}
 	
 	public static void jikkou(String date){
-		File out = new File("/home/c-tyabe/Data/grid/0/tmp/ktsubouc/gps_"+date+".csv");
 		ProcessBuilder pb = new ProcessBuilder("tar", "zxvf",
 				"/tmp/bousai_data/gps_"+date+".tar.gz", 
 				"-C","/home/c-tyabe/Data/");
@@ -107,7 +105,9 @@ public class ExtractFile {
 		catch (Exception ex) {
 			ex.printStackTrace();
 		}
-		System.out.println("=======done=======");
+//		System.out.println("=======done=======");
+		File out = new File("/home/c-tyabe/Data/grid/0/tmp/ktsubouc/gps_"+date);
+		out.renameTo(new File("/home/c-tyabe/Data/grid/0/tmp/ktsubouc/gps_"+date+".csv"));
 	}
 
 }
