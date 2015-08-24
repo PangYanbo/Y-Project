@@ -15,12 +15,12 @@ public class DisLogDecider {
 
 	protected static final SimpleDateFormat YMD = new SimpleDateFormat("yyyy-MM-dd");//change time format
 
-//	public static void main(String args[]) throws IOException, ParseException{
-//		File in = new File("c:/users/c-tyabe/desktop/DisasterDataLogs/DisasterAlertData.csv");
-//		File out = new File("c:/users/c-tyabe/desktop/DisasterDataLogs/DisasterAlertData_shutoken_eq.csv");
-//		File jiscodes = new File("c:/users/c-tyabe/desktop/ShutokenSHP/JIScodes_pref.csv");
-//		choosebyAreaDateType(in,out,jiscodes,"emg1","2014-10-21","2015-08-17");		
-//	}
+	public static void main(String args[]) throws IOException, ParseException{
+		File in = new File("c:/users/c-tyabe/desktop/DisasterDataLogs/DisasterAlertData.csv");
+		File out = new File("c:/users/c-tyabe/desktop/DisasterDataLogs/DisasterAlertData_shutoken_eq.csv");
+		File jiscodes = new File("c:/users/c-tyabe/desktop/ShutokenSHP/JIScodes_pref.csv");
+		choosebyAreaDateType(in,out,jiscodes,"emg1","2014-10-21","2015-08-17");		
+	}
 
 	public static File choosebyAreaDateType(File in, File out, File codes, String t, String date, String enddate) throws IOException, ParseException{
 		BufferedReader br2 = new BufferedReader(new FileReader(codes));
