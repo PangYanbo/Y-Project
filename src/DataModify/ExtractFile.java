@@ -94,6 +94,7 @@ public class ExtractFile {
 	}
 	
 	public static void jikkou(String date){
+		File out = new File("/home/c-tyabe/Data/grid/0/tmp/ktsubouc/gps_"+date+".csv");
 		ProcessBuilder pb = new ProcessBuilder("tar", "zxvf",
 				"/tmp/bousai_data/gps_"+date+".tar.gz", 
 				"-C","/home/c-tyabe/Data/grid/0/tmp/ktsubouc/gps_"+date+".csv");
