@@ -59,21 +59,20 @@ public class MLData {
 			LonLat nowp = null; LonLat homep = null; LonLat officep = null; 
 			
 			String[] tokens = line.split(",");
-			if(tokens.length==8){ // output version 1 
+			if(tokens[5].contains("(")){ // output version 1 
 				diff = tokens[1]; dis = tokens[4];
-				nowp = StringtoLonLat(tokens[5]);
-				homep = StringtoLonLat(tokens[6]);
-				officep = StringtoLonLat(tokens[7]);	
+				nowp = new LonLat(Double.parseDouble(tokens[5].replace("(","")),Double.parseDouble(tokens[6].replace(")","")));
+				homep = new LonLat(Double.parseDouble(tokens[7].replace("(","")),Double.parseDouble(tokens[8].replace(")","")));
+				officep = new LonLat(Double.parseDouble(tokens[9].replace("(","")),Double.parseDouble(tokens[10].replace(")","")));
 				dis = String.valueOf(homep.distance(officep)/100000);
 			}
-			else if(tokens.length==11){ // output version 2
+			else{ // output version 2
 				diff = tokens[1]; dis = tokens[4];
 				nowp = new LonLat(Double.parseDouble(tokens[5]),Double.parseDouble(tokens[6]));
 				homep = new LonLat(Double.parseDouble(tokens[7]),Double.parseDouble(tokens[8]));
 				officep = new LonLat(Double.parseDouble(tokens[9]),Double.parseDouble(tokens[10]));
 				dis = String.valueOf(homep.distance(officep)/100000);
 			}
-			else{System.out.println("#number of tokens in line is invalid");}
 
 			String res = "1:"+diff+" 2:"+level+" 3:"+timerange(time)
 					+GetPop.getpop(popmap,nowp,homep,officep)
