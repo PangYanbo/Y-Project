@@ -41,6 +41,7 @@ public class MLData {
 				
 				for(File f : datetime.listFiles()){
 					if(f.toString().contains(subject)){
+						System.out.println("#working on " + f.toString());
 						getAttributes(f,new File(outfile),level,time,popmap,buildingmap,farmmap,sroadmap,broadmap,allroadmap,trainmap,pricemap);
 					}}}}}
 
