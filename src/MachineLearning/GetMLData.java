@@ -10,7 +10,7 @@ import java.util.HashMap;
 
 import jp.ac.ut.csis.pflow.geom.LonLat;
 
-public class MainRun {
+public class GetMLData {
 
 	public static void main(String args[]){
 		
