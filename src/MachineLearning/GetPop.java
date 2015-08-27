@@ -17,6 +17,8 @@ public class GetPop {
 		Mesh homem = new Mesh(3, home.getLon(), home.getLat());
 		Mesh offm  = new Mesh(3, office.getLon(), office.getLat());
 
+		System.out.println(nowm);
+		
 		String nowpop = popmap.get(nowm);
 		String homepop = popmap.get(homem);
 		String offpop = popmap.get(offm);
