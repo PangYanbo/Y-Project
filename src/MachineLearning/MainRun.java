@@ -10,8 +10,12 @@ import java.util.HashMap;
 
 import jp.ac.ut.csis.pflow.geom.LonLat;
 
-public class ObtainAttributes {
+public class MainRun {
 
+	public static void main(String args[]){
+		
+		
+	}
 	
 	
 	public static void getAttributes(File in, File out, String level, String time) throws IOException{
