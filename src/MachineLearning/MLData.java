@@ -14,14 +14,14 @@ public class MLData {
 
 	public static final String type      = "rain";
 	public static final String subject   = "home_exit_diff";
-	public static final String dir       = "c/users/c-tyabe/desktop/"+type+"Tokyo/";
-	public static final String outfile   = "c/users/c-tyabe/desktop/"+type+"Tokyo/"+subject+"_ML.csv"; 
+	public static final String dir       = "/home/c-tyabe/Data/"+type+"Tokyo/";
+	public static final String outfile   = "/home/c-tyabe/Data/"+type+"Tokyo/"+subject+"_ML.csv"; 
 
-//	public static final File popfile     = new File("c/users/c-tyabe/desktop/DataforML/popdata.csv");
-	public static final File landusefile = new File("c/users/c-tyabe/desktop/DataforML/landusedata.csv");
-	public static final File roadfile    = new File("c/users/c-tyabe/desktop/DataforML/roadnetworkdata.csv");
-	public static final File trainfile   = new File("c/users/c-tyabe/desktop/DataforML/railnodedata.csv");
-	public static final File pricefile   = new File("c/users/c-tyabe/desktop/DataforML/landpricedata.csv");
+//	public static final File popfile     = new File("/home/c-tyabe/Data/DataforML/popdata.csv");
+	public static final File landusefile = new File("/home/c-tyabe/Data/DataforML/landusedata.csv");
+	public static final File roadfile    = new File("/home/c-tyabe/Data/DataforML/roadnetworkdata.csv");
+	public static final File trainfile   = new File("/home/c-tyabe/Data/DataforML/railnodedata.csv");
+	public static final File pricefile   = new File("/home/c-tyabe/Data/DataforML/landpricedata.csv");
 
 	public static void main(String args[]) throws IOException{
 
