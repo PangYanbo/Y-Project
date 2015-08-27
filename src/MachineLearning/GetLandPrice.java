@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.HashMap;
 
 import jp.ac.ut.csis.pflow.geom.LonLat;
@@ -38,7 +39,9 @@ public class GetLandPrice {
 		br.close();
 		
 		for(LonLat p : temp.keySet()){
-			res.put(p, String.valueOf((double)temp.get(p)/max));
+			BigDecimal x = new BigDecimal((double)temp.get(p)/max);
+			x = x.setScale(4, BigDecimal.ROUND_HALF_UP);
+			res.put(p, String.valueOf(x));
 		}
 		return res;
 	}

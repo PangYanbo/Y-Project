@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import jp.ac.ut.csis.pflow.geom.LonLat;
@@ -13,11 +14,9 @@ import jp.ac.ut.csis.pflow.geom.LonLat;
 public class MLData {
 
 	public static final String type      = "rain";
-	public static final String subject   = "home_exit_diff";
 	public static final String dir       = "/home/c-tyabe/Data/"+type+"Tokyo/";
-	public static final String outfile   = "/home/c-tyabe/Data/"+type+"Tokyo/"+subject+"_ML.csv"; 
 
-//	public static final File popfile     = new File("/home/c-tyabe/Data/DataforML/popdata.csv");
+	//	public static final File popfile     = new File("/home/c-tyabe/Data/DataforML/popdata.csv");
 	public static final File landusefile = new File("/home/c-tyabe/Data/DataforML/landusedata.csv");
 	public static final File roadfile    = new File("/home/c-tyabe/Data/DataforML/roadnetworkdata.csv");
 	public static final File trainfile   = new File("/home/c-tyabe/Data/DataforML/railnodedata.csv");
@@ -25,43 +24,56 @@ public class MLData {
 
 	public static void main(String args[]) throws IOException{
 
-		HashMap<String, String>  popmap       = GetPop.getpopmap(landusefile);
-		HashMap<String, String>  buildingmap  = GetLanduse.getmeshbuilding(landusefile);
-		HashMap<String, String>  farmmap      = GetLanduse.getmeshfarm(landusefile);
-		HashMap<String, String>  sroadmap     = GetRoadData.getsmallroad(roadfile);
-		HashMap<String, String>  broadmap     = GetRoadData.getfatroad(roadfile);
-		HashMap<String, String>  allroadmap   = GetRoadData.getallroad(roadfile);
-		HashMap<LonLat, String>  trainmap     = GetTrainData.getpopmap(trainfile);
-		HashMap<LonLat, String>  pricemap     = GetLandPrice.getpricemap(pricefile);
+		ArrayList<String> subjects = new ArrayList<String>();
+		subjects.add("tsukin_time_diff");
+		subjects.add("office_time_diff");
+		subjects.add("kitaku_time_diff");
+		subjects.add("home_exit_diff");
+		subjects.add("home_return_diff");
+		subjects.add("office_enter_diff");
+		subjects.add("office_exit_diff");
 
-//		int count = 0;
-		for(File typelevel : new File(dir).listFiles()){
-			String level = typelevel.getName().split("_")[1];
-			for(File datetime :typelevel.listFiles()){
-				String time = datetime.getName().split("_")[1];
-				
-				for(File f : datetime.listFiles()){
-					if(f.toString().contains(subject)){
-						System.out.println("#working on " + f.toString());
-						getAttributes(f,new File(outfile),level,time,popmap,buildingmap,farmmap,sroadmap,broadmap,allroadmap,trainmap,pricemap);
-//						if(count==0){
-//							break;
-//						}
-					}}}}}
+		for(String subject : subjects){
+
+			String outfile   = "/home/c-tyabe/Data/"+type+"Tokyo/"+subject+"_ML.csv"; 
+
+			HashMap<String, String>  popmap       = GetPop.getpopmap(landusefile);
+			HashMap<String, String>  buildingmap  = GetLanduse.getmeshbuilding(landusefile);
+			HashMap<String, String>  farmmap      = GetLanduse.getmeshfarm(landusefile);
+			HashMap<String, String>  sroadmap     = GetRoadData.getsmallroad(roadfile);
+			HashMap<String, String>  broadmap     = GetRoadData.getfatroad(roadfile);
+			HashMap<String, String>  allroadmap   = GetRoadData.getallroad(roadfile);
+			HashMap<LonLat, String>  trainmap     = GetTrainData.getpopmap(trainfile);
+			HashMap<LonLat, String>  pricemap     = GetLandPrice.getpricemap(pricefile);
+
+			//		int count = 0;
+			for(File typelevel : new File(dir).listFiles()){
+				String level = typelevel.getName().split("_")[1];
+				for(File datetime :typelevel.listFiles()){
+					String time = datetime.getName().split("_")[1];
+
+					for(File f : datetime.listFiles()){
+						if(f.toString().contains(subject)){
+							System.out.println("#working on " + f.toString());
+							getAttributes(f,new File(outfile),level,time,popmap,buildingmap,farmmap,sroadmap,broadmap,allroadmap,trainmap,pricemap);
+							//						if(count==0){
+							//							break;
+							//						}
+						}}}}}}
 
 
 	public static void getAttributes(File in, File out, String level, String time,
 			HashMap<String, String> popmap, HashMap<String, String> buildingmap, HashMap<String, String> farmmap, 
 			HashMap<String, String> sroadmap, HashMap<String, String> broadmap, HashMap<String, String> allroadmap,
 			HashMap<LonLat, String> trainmap, HashMap<LonLat, String> pricemap) throws IOException{
-		
+
 		BufferedReader br = new BufferedReader(new FileReader(in));
 		BufferedWriter bw = new BufferedWriter(new FileWriter(out,true));
 		String line = null;
 		while((line=br.readLine())!=null){
 			String diff = null; String dis = null; 
 			LonLat nowp = null; LonLat homep = null; LonLat officep = null; 
-			
+
 			String[] tokens = line.split(",");
 			if(tokens[5].contains("(")){ // output version 1 
 				diff = tokens[1]; dis = tokens[4];
@@ -103,7 +115,7 @@ public class MLData {
 		LonLat p = new LonLat(lon,lat);
 		return p;
 	}
-	
+
 	public static String timerange(String time){
 		Double timerange = Double.parseDouble(time);
 		if(timerange<6){return "1";}

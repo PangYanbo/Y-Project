@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.HashMap;
 
 import jp.ac.ut.csis.pflow.geom.LonLat;
@@ -48,7 +49,9 @@ public class GetLanduse {
 		br.close();
 		
 		for(String s : temp.keySet()){
-			res.put(s, String.valueOf((double)temp.get(s)/(double)max));
+			BigDecimal x = new BigDecimal((double)temp.get(s)/(double)max);
+			x = x.setScale(4, BigDecimal.ROUND_HALF_UP);
+			res.put(s, String.valueOf(x));
 		}
 		return res;
 	}
@@ -71,7 +74,9 @@ public class GetLanduse {
 		br.close();
 		
 		for(String s : temp.keySet()){
-			res.put(s, String.valueOf((double)temp.get(s)/(double)max));
+			BigDecimal x = new BigDecimal((double)temp.get(s)/(double)max);
+			x = x.setScale(4, BigDecimal.ROUND_HALF_UP);
+			res.put(s, String.valueOf(x));
 		}
 		return res;
 	}

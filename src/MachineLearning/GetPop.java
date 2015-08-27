@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.HashMap;
 
 import jp.ac.ut.csis.pflow.geom.LonLat;
@@ -45,7 +46,9 @@ public class GetPop {
 		br.close();
 		
 		for(String s : temp.keySet()){
-			res.put(s, String.valueOf(temp.get(s)/max));
+			BigDecimal x = new BigDecimal(temp.get(s)/max);
+			x = x.setScale(4, BigDecimal.ROUND_HALF_UP);
+			res.put(s, String.valueOf(x));
 		}
 		return res;
 	}
