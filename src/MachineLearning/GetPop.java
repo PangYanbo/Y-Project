@@ -13,11 +13,11 @@ public class GetPop {
 
 	//popmap = meshcode - pop
 	public static String getpop(HashMap<String, String> popmap, LonLat now, LonLat home, LonLat office){
-		Mesh nowm  = new Mesh(3, now.getLon(),now.getLat());
-		Mesh homem = new Mesh(3, home.getLon(), home.getLat());
-		Mesh offm  = new Mesh(3, office.getLon(), office.getLat());
+		String nowm  = new Mesh(3, now.getLon(),now.getLat()).getCode();
+		String homem = new Mesh(3, home.getLon(), home.getLat()).getCode();
+		String offm  = new Mesh(3, office.getLon(), office.getLat()).getCode();
 
-		System.out.println(nowm);
+//		System.out.println(nowm);
 		
 		String nowpop = popmap.get(nowm);
 		String homepop = popmap.get(homem);

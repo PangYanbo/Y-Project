@@ -14,9 +14,9 @@ public class GetRoadData {
 	public static String getroaddata
 	(HashMap<String, String> smallroad, HashMap<String, String> bigroad, HashMap<String, String> allroad, 
 			LonLat now, LonLat home, LonLat office){
-		Mesh nowm  = new Mesh(3, now.getLon(),now.getLat());
-		Mesh homem = new Mesh(3, home.getLon(), home.getLat());
-		Mesh offm  = new Mesh(3, office.getLon(), office.getLat());
+		String nowm  = new Mesh(3, now.getLon(),now.getLat()).getCode();
+		String homem = new Mesh(3, home.getLon(), home.getLat()).getCode();
+		String offm  = new Mesh(3, office.getLon(), office.getLat()).getCode();
 		
 		String nows = smallroad.get(nowm);
 		String homes = smallroad.get(homem);

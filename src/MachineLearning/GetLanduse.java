@@ -13,9 +13,9 @@ public class GetLanduse {
 
 	public static String getlanduse
 	(HashMap<String, String> building, HashMap<String, String> farm, LonLat now, LonLat home, LonLat office){
-		Mesh nowm  = new Mesh(3, now.getLon(),now.getLat());
-		Mesh homem = new Mesh(3, home.getLon(), home.getLat());
-		Mesh offm  = new Mesh(3, office.getLon(), office.getLat());
+		String nowm  = new Mesh(3, now.getLon(),now.getLat()).getCode();
+		String homem = new Mesh(3, home.getLon(), home.getLat()).getCode();
+		String offm  = new Mesh(3, office.getLon(), office.getLat()).getCode();
 		
 		String nowb = building.get(nowm);
 		String homeb = building.get(homem);
