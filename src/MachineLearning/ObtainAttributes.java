@@ -1,4 +1,4 @@
-package MainRuns;
+package MachineLearning;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -100,11 +100,4 @@ public class ObtainAttributes {
 		LonLat p = new LonLat(lon,lat);
 		return p;
 	}
-
-	//	public static void main(String args[]){
-	//		String x = "(133.5,42.4)";
-	//		LonLat y = StringtoLonLat(x);
-	//		System.out.println(y.getLon());
-	//		System.out.println(y);
-	//	}
 }
