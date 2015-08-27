@@ -1,4 +1,4 @@
-package tempfiles;
+package ToolsforFileManagement;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -7,7 +7,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class filecombine {
+public class FileCombine {
 
 	public static void main(String args[]) throws IOException{
 		File out = new File("c:/users/yabetaka/Desktop/landusedata.csv");
@@ -15,7 +15,7 @@ public class filecombine {
 		File[] files = dir.listFiles();
 		for(File f : files){
 			System.out.println(f);
-			if(isitdbf(f)==true){
+			if(isitdbf(f,"dbf")==true){
 				combinefiles(f,out);
 			}
 		}
@@ -35,11 +35,11 @@ public class filecombine {
 		bw.close();
 	}
 
-	public static boolean isitdbf(File in){
+	public static boolean isitdbf(File in, String str){
 		String filepath = in.toString();	
 		int index = filepath.lastIndexOf(".");//Šg’£Žq‚Ì"."‚ð’T‚·
-		String ext = filepath.substring(index+1).toLowerCase();
-		if(ext.equals("dbf")){
+		String ext = filepath.substring(index).toLowerCase();
+		if(ext.equals(str)){
 			return true;			
 		}
 		else{

@@ -10,36 +10,45 @@ import jp.ac.ut.csis.pflow.geom.LonLat;
 
 public class GetLandPrice {
 
-	public static String getlandprice(HashMap<LonLat, Integer> pricemap, LonLat now, LonLat home, LonLat office){
+	public static String getlandprice(HashMap<LonLat, String> pricemap, LonLat now, LonLat home, LonLat office){
 
 		String nowpop = getnearestprice(pricemap,now);
 		String homepop = getnearestprice(pricemap,home);
 		String offpop = getnearestprice(pricemap,office);
 
-		String res = "num:"+nowpop +" num:"+homepop+" num:"+offpop;
+		String res = " 25:"+nowpop +" 26:"+homepop+" 27:"+offpop;
 		return res;
 	}
 
-	public static HashMap<LonLat, Integer> getpricemap(File in) throws IOException{
-		HashMap<LonLat, Integer> res = new HashMap<LonLat, Integer>();
+	public static HashMap<LonLat, String> getpricemap(File in) throws IOException{
+		HashMap<LonLat, Integer> temp = new HashMap<LonLat, Integer>();
+		HashMap<LonLat, String> res = new HashMap<LonLat, String>();
 		BufferedReader br = new BufferedReader(new FileReader(in));
 		String line = null;
+		Integer max = Integer.MIN_VALUE;
 		while((line=br.readLine())!=null){
 			String[] toks = line.split(",");
 			Integer price  = Integer.valueOf(toks[0]);
 			LonLat point = new LonLat(Double.parseDouble(toks[1]),Double.parseDouble(toks[2]));
-			res.put(point, price);
+			temp.put(point, price);
+			if(price>max){
+				max = price;
+			}
 		}
 		br.close();
+		
+		for(LonLat p : temp.keySet()){
+			res.put(p, String.valueOf((double)temp.get(p)/max));
+		}
 		return res;
 	}
 
-	public static String getnearestprice(HashMap<LonLat, Integer> map, LonLat p){
+	public static String getnearestprice(HashMap<LonLat, String> map, LonLat p){
 		Double dis = Double.MAX_VALUE;
-		Integer price = 0;
+		Double price = 0d;
 		for(LonLat point : map.keySet()){
 			if(point.distance(p)<dis){
-				price = map.get(point);
+				price = Double.parseDouble(map.get(point));
 				dis = point.distance(p);
 			}
 		}

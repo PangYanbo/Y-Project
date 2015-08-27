@@ -30,51 +30,78 @@ public class GetRoadData {
 		String homea = allroad.get(homem);
 		String offa = allroad.get(offm);
 		
-		String res =  "num:"+nows +" num:"+homes+" num:"+offs +
-				     " num:"+nowb +" num:"+homeb + " num:" + offb+
-				     " num:"+nowa +" num:"+homea + " num:" + offa;
+		String res = " 13:"+nows +" 14:"+homes+" 15:"+offs +
+				     " 16:"+nowb +" 17:"+homeb+" 18:"+ offb+
+				     " 19:"+nowa +" 20:"+homea+" 21:"+ offa;
 		return res;
 	}
 	
 	public static HashMap<String, String> getsmallroad(File in) throws IOException{
+		HashMap<String, Integer> temp = new HashMap<String, Integer>(); 
 		HashMap<String, String> res = new HashMap<String, String>();
 		BufferedReader br = new BufferedReader(new FileReader(in));
 		String line = null;
+		Integer max = Integer.MIN_VALUE;
 		while((line=br.readLine())!=null){
 			String[] toks = line.split(",");
 			String mesh = toks[0];
-			String pop  = toks[2];
-			res.put(mesh, pop);
+			Integer pop  = Integer.valueOf(toks[2]);
+			temp.put(mesh, pop);
+			if(pop>max){
+				max = pop;
+			}
 		}
 		br.close();
+		
+		for(String s : temp.keySet()){
+			res.put(s, String.valueOf((double)temp.get(s)/(double)max));
+		}
 		return res;
 	}
 	
 	public static HashMap<String, String> getfatroad(File in) throws IOException{
+		HashMap<String, Integer> temp = new HashMap<String, Integer>(); 
 		HashMap<String, String> res = new HashMap<String, String>();
 		BufferedReader br = new BufferedReader(new FileReader(in));
 		String line = null;
+		Integer max = Integer.MIN_VALUE;
 		while((line=br.readLine())!=null){
 			String[] toks = line.split(",");
 			String mesh = toks[0];
-			String pop  = toks[1];
-			res.put(mesh, pop);
+			Integer pop  = Integer.valueOf(toks[1]);
+			temp.put(mesh, pop);
+			if(pop>max){
+				max = pop;
+			}
 		}
 		br.close();
+		
+		for(String s : temp.keySet()){
+			res.put(s, String.valueOf((double)temp.get(s)/(double)max));
+		}
 		return res;
 	}
 	
 	public static HashMap<String, String> getallroad(File in) throws IOException{
+		HashMap<String, Integer> temp = new HashMap<String, Integer>(); 
 		HashMap<String, String> res = new HashMap<String, String>();
 		BufferedReader br = new BufferedReader(new FileReader(in));
 		String line = null;
+		Integer max = Integer.MIN_VALUE;
 		while((line=br.readLine())!=null){
 			String[] toks = line.split(",");
 			String mesh = toks[0];
-			String pop  = toks[3];
-			res.put(mesh, pop);
+			Integer pop  = Integer.valueOf(toks[3]);
+			temp.put(mesh, pop);
+			if(pop>max){
+				max = pop;
+			}
 		}
 		br.close();
+		
+		for(String s : temp.keySet()){
+			res.put(s, String.valueOf((double)temp.get(s)/(double)max));
+		}
 		return res;
 	}
 	

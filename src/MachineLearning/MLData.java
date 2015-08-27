@@ -12,87 +12,82 @@ import jp.ac.ut.csis.pflow.geom.LonLat;
 
 public class MLData {
 
-	public static void main(String args[]){
+	public static final String type      = "rain";
+	public static final String subject   = "home_exit_diff";
+	public static final String dir       = "c/users/c-tyabe/desktop/"+type+"Tokyo/";
+	public static final String outfile   = "c/users/c-tyabe/desktop/"+type+"Tokyo/"+subject+"_ML.csv"; 
+
+//	public static final File popfile     = new File("c/users/c-tyabe/desktop/DataforML/popdata.csv");
+	public static final File landusefile = new File("c/users/c-tyabe/desktop/DataforML/landusedata.csv");
+	public static final File roadfile    = new File("c/users/c-tyabe/desktop/DataforML/roadnetworkdata.csv");
+	public static final File trainfile   = new File("c/users/c-tyabe/desktop/DataforML/railnodedata.csv");
+	public static final File pricefile   = new File("c/users/c-tyabe/desktop/DataforML/landpricedata.csv");
+
+	public static void main(String args[]) throws IOException{
+
+		HashMap<String, String>  popmap       = GetPop.getpopmap(landusefile);
+		HashMap<String, String>  buildingmap  = GetLanduse.getmeshbuilding(landusefile);
+		HashMap<String, String>  farmmap      = GetLanduse.getmeshfarm(landusefile);
+		HashMap<String, String>  sroadmap     = GetRoadData.getsmallroad(roadfile);
+		HashMap<String, String>  broadmap     = GetRoadData.getfatroad(roadfile);
+		HashMap<String, String>  allroadmap   = GetRoadData.getallroad(roadfile);
+		HashMap<LonLat, String>  trainmap     = GetTrainData.getpopmap(trainfile);
+		HashMap<LonLat, String>  pricemap     = GetLandPrice.getpricemap(pricefile);
+
+		for(File typelevel : new File(dir).listFiles()){
+			String level = typelevel.getName().split("_")[1];
+			for(File datetime :typelevel.listFiles()){
+				String time = datetime.getName().split("_")[1];
+				
+				for(File f : datetime.listFiles()){
+					if(f.toString().contains(subject)){
+						getAttributes(f,new File(outfile),level,time,popmap,buildingmap,farmmap,sroadmap,broadmap,allroadmap,trainmap,pricemap);
+					}}}}}
+
+
+	public static void getAttributes(File in, File out, String level, String time,
+			HashMap<String, String> popmap, HashMap<String, String> buildingmap, HashMap<String, String> farmmap, 
+			HashMap<String, String> sroadmap, HashMap<String, String> broadmap, HashMap<String, String> allroadmap,
+			HashMap<LonLat, String> trainmap, HashMap<LonLat, String> pricemap) throws IOException{
 		
-		
-	}
-	
-	
-	public static void getAttributes(File in, File out, String level, String time) throws IOException{
 		BufferedReader br = new BufferedReader(new FileReader(in));
 		BufferedWriter bw = new BufferedWriter(new FileWriter(out,true));
 		String line = null;
 		while((line=br.readLine())!=null){
+			String diff = null; String dis = null; 
+			LonLat nowp = null; LonLat homep = null; LonLat officep = null; 
+			
 			String[] tokens = line.split(",");
-
 			if(tokens.length==8){ // output version 1 
-				String id = tokens[0];
-				String diff = tokens[1];
-				String nowzone = tokens[2];
-				String homezone = tokens[3];
-				String dis = tokens[4];
-				LonLat nowp = StringtoLonLat(tokens[5]);
-				LonLat homep = StringtoLonLat(tokens[6]);
-				LonLat officep = StringtoLonLat(tokens[7]);
-				
-				bw.write(diff + ", rain," + level + "," + time + "," );
-				
+				diff = tokens[1]; dis = tokens[4];
+				nowp = StringtoLonLat(tokens[5]);
+				homep = StringtoLonLat(tokens[6]);
+				officep = StringtoLonLat(tokens[7]);	
+				dis = String.valueOf(homep.distance(officep)/100000);
 			}
 			else if(tokens.length==11){ // output version 2
-				String id = tokens[0];
-				String diff = tokens[1];
-				String nowzone = tokens[2];
-				String homezone = tokens[3];
-				String dis = tokens[4];
-				LonLat nowp = new LonLat(Double.parseDouble(tokens[5]),Double.parseDouble(tokens[6]));
-				LonLat homep = new LonLat(Double.parseDouble(tokens[7]),Double.parseDouble(tokens[8]));
-				LonLat officep = new LonLat(Double.parseDouble(tokens[9]),Double.parseDouble(tokens[10]));
+				diff = tokens[1]; dis = tokens[4];
+				nowp = new LonLat(Double.parseDouble(tokens[5]),Double.parseDouble(tokens[6]));
+				homep = new LonLat(Double.parseDouble(tokens[7]),Double.parseDouble(tokens[8]));
+				officep = new LonLat(Double.parseDouble(tokens[9]),Double.parseDouble(tokens[10]));
+				dis = String.valueOf(homep.distance(officep)/100000);
 			}
-			else{
-				System.out.println("#number of tokens in line is invalid");
-			}
-			
+			else{System.out.println("#number of tokens in line is invalid");}
 
-			
-			
+			String res = "1:"+diff+" 2:"+level+" 3:"+timerange(time)
+					+GetPop.getpop(popmap,nowp,homep,officep)
+					+GetLanduse.getlanduse(buildingmap, farmmap, nowp, homep, officep)
+					+GetRoadData.getroaddata(sroadmap, broadmap, allroadmap, nowp, homep, officep)
+					+GetTrainData.getstationpop(trainmap, nowp, homep, officep)
+					+GetLandPrice.getlandprice(pricemap, nowp, homep, officep)
+					+" 28:"+dis;
+
+			bw.write(res);
+			bw.newLine();
+
 		}
 		br.close();
 		bw.close();
-	}
-
-	public static String locationinfo
-	(LonLat p,HashMap<String,String> landusefile,HashMap<String,String> roadnwfile,
-			HashMap<String,String> landprice,HashMap<String,String> stations){
-		String res = getLanduse(p,landusefile)+","+getRoadnetwork(p,roadnwfile)+","+
-			getlandprice(p,landprice)+","+getStationID(p,stations);
-		return res;
-	}
-	
-	//3次メッシュから取得
-	public static String getLanduse(LonLat point, HashMap<String,String> landusefile){
-		String landuse = null;
-
-		return landuse;
-	}
-
-	//3次メッシュから取得
-	public static String getRoadnetwork(LonLat point, HashMap<String,String> roadnwfile){
-		String roadnw = null;
-
-		return roadnw;
-	}
-
-	//ポイントから検索か？
-	public static String getlandprice(LonLat point, HashMap<String,String> landprice){
-		String landp = null;
-
-		return landp;		
-	}
-
-	//
-	public static String getStationID(LonLat point, HashMap<String,String> stations){
-		String stationID = null;
-		return stationID;
 	}
 
 	public static LonLat StringtoLonLat(String x){
@@ -103,5 +98,14 @@ public class MLData {
 		Double lat = Double.parseDouble(slat);
 		LonLat p = new LonLat(lon,lat);
 		return p;
+	}
+	
+	public static String timerange(String time){
+		Double timerange = Double.parseDouble(time);
+		if(timerange<6){return "1";}
+		else if ((timerange>=6)&&(timerange<10)){return "2";}
+		else if ((timerange>=10)&&(timerange<16)){return "3";}
+		else if ((timerange>=16)&&(timerange<20)){return "4";}
+		else{return "5";}
 	}
 }

@@ -25,36 +25,54 @@ public class GetLanduse {
 		String homef = farm.get(homem);
 		String offf = farm.get(offm);
 		
-		String res =  "num:"+nowb+" num:"+homeb+" num:"+offb+
-				     " num:"+nowf+" num:"+homef+" num:"+offf;
+		String res = " 7:"+nowb+" 8:"+homeb+" 9:"+offb+
+				     " 10:"+nowf+" 11:"+homef+" 12:"+offf;
 		return res;
 	}
 	
 	public static HashMap<String, String> getmeshbuilding(File pops) throws IOException{
+		HashMap<String, Integer> temp = new HashMap<String, Integer>();
 		HashMap<String, String> res = new HashMap<String, String>();
 		BufferedReader br = new BufferedReader(new FileReader(pops));
 		String line = null;
+		Integer max = Integer.MIN_VALUE;
 		while((line=br.readLine())!=null){
 			String[] toks = line.split(",");
 			String mesh = toks[0];
-			String pop  = toks[5];
-			res.put(mesh, pop);
+			Integer area  = Integer.valueOf(toks[5]);
+			temp.put(mesh, area);
+			if(area>max){
+				max = area;
+			}
 		}
 		br.close();
+		
+		for(String s : temp.keySet()){
+			res.put(s, String.valueOf((double)temp.get(s)/(double)max));
+		}
 		return res;
 	}
 	
 	public static HashMap<String, String> getmeshfarm(File pops) throws IOException{
+		HashMap<String, Integer> temp = new HashMap<String, Integer>();
 		HashMap<String, String> res = new HashMap<String, String>();
 		BufferedReader br = new BufferedReader(new FileReader(pops));
 		String line = null;
+		Integer max = Integer.MIN_VALUE;
 		while((line=br.readLine())!=null){
 			String[] toks = line.split(",");
 			String mesh = toks[0];
-			String pop  = toks[1];
-			res.put(mesh, pop);
+			Integer area  = Integer.valueOf(toks[1]);
+			temp.put(mesh, area);
+			if(area>max){
+				max = area;
+			}
 		}
 		br.close();
+		
+		for(String s : temp.keySet()){
+			res.put(s, String.valueOf((double)temp.get(s)/(double)max));
+		}
 		return res;
 	}
 	
