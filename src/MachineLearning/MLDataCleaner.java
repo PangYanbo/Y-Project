@@ -24,7 +24,7 @@ public class MLDataCleaner {
 		for(String subject : subjects){
 			File in = new File("c:/users/c-tyabe/Desktop/Exfiles/"+subject+"_ML_ver2.csv");
 			File out = new File("c:/users/c-tyabe/Desktop/Exfiles/"+subject+"_ML_ver3.csv");
-			RemoveOne(in,out);
+			DataClean(in,out);
 		}
 	}
 
