@@ -25,8 +25,8 @@ public class MLData {
 	public static void main(String args[]) throws IOException{
 
 		ArrayList<String> subjects = new ArrayList<String>();
-		subjects.add("tsukin_time_diff");
-		subjects.add("office_time_diff");
+//		subjects.add("tsukin_time_diff");
+//		subjects.add("office_time_diff");
 		subjects.add("kitaku_time_diff");
 		subjects.add("home_exit_diff");
 		subjects.add("home_return_diff");
@@ -35,7 +35,7 @@ public class MLData {
 
 		for(String subject : subjects){
 
-			String outfile   = "/home/c-tyabe/Data/"+type+"Tokyo/"+subject+"_ML.csv"; 
+			String outfile   = "/home/c-tyabe/Data/MLResults_"+type+"/"+subject+"_ML.csv"; 
 
 			HashMap<String, String>  popmap       = GetPop.getpopmap(landusefile);
 			HashMap<String, String>  buildingmap  = GetLanduse.getmeshbuilding(landusefile);
@@ -51,15 +51,15 @@ public class MLData {
 				String level = typelevel.getName().split("_")[1];
 				for(File datetime :typelevel.listFiles()){
 					String time = datetime.getName().split("_")[1];
-
 					for(File f : datetime.listFiles()){
 						if(f.toString().contains(subject)){
 							System.out.println("#working on " + f.toString());
 							getAttributes(f,new File(outfile),level,time,popmap,buildingmap,farmmap,sroadmap,broadmap,allroadmap,trainmap,pricemap);
-							//						if(count==0){
-							//							break;
-							//						}
-						}}}}}}
+						}}}}
+			String newoutfile   = "/home/c-tyabe/Data/MLResults_"+type+"/"+subject+"_ML_real.csv"; 
+			MLDataCleaner.DataClean(new File(outfile), new File(newoutfile));
+			}
+		}
 
 
 	public static void getAttributes(File in, File out, String level, String time,
@@ -118,10 +118,10 @@ public class MLData {
 
 	public static String timerange(String time){
 		Double timerange = Double.parseDouble(time);
-		if(timerange<6){return "1";}
-		else if ((timerange>=6)&&(timerange<10)){return "2";}
-		else if ((timerange>=10)&&(timerange<16)){return "3";}
-		else if ((timerange>=16)&&(timerange<20)){return "4";}
-		else{return "5";}
+		if(timerange<6){return "0.2";}
+		else if ((timerange>=6)&&(timerange<10)){return "0.4";}
+		else if ((timerange>=10)&&(timerange<16)){return "0.6";}
+		else if ((timerange>=16)&&(timerange<20)){return "0.8";}
+		else{return "1";}
 	}
 }
