@@ -19,7 +19,7 @@ public class MLDataCleaner {
 		subjects.add("home_exit_diff");
 		subjects.add("home_return_diff");
 		subjects.add("office_enter_diff");
-		subjects.add("office_exit_diff");
+//		subjects.add("office_exit_diff");
 
 		for(String subject : subjects){
 			File in = new File("c:/users/c-tyabe/Desktop/"+subject+"_ML_real.csv");
