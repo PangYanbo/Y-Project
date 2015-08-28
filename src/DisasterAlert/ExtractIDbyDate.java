@@ -45,15 +45,17 @@ public class ExtractIDbyDate {
 						String id = tokens[0];
 						if(!id.equals("null")){
 							if(!tokens[4].equals("null")){
-								String tz = tokens[4].substring(11,19);
-								String time = DisasterLogs.converttime(tz);
-								if(time.equals(t)){
-									Double lat = Double.parseDouble(tokens[2]);
-									Double lon = Double.parseDouble(tokens[3]);
-									LonLat p = new LonLat(lon,lat);
-									String JIScode = AreaOverlapPref(p,JIScodes);
-									if(!JIScode.equals("null")){
-										map.put(id,p);
+								if(tokens[4].length()>=18){
+									String tz = tokens[4].substring(11,19);
+									String time = DisasterLogs.converttime(tz);
+									if(time.equals(t)){
+										Double lat = Double.parseDouble(tokens[2]);
+										Double lon = Double.parseDouble(tokens[3]);
+										LonLat p = new LonLat(lon,lat);
+										String JIScode = AreaOverlapPref(p,JIScodes);
+										if(!JIScode.equals("null")){
+											map.put(id,p);
+										}
 									}
 								}
 							}
@@ -93,7 +95,7 @@ public class ExtractIDbyDate {
 
 	public static String AreaOverlapPref(LonLat point, ArrayList<String> JIScodes){ //JIScodes = 08,...
 		List<String> zonecodeList = gchecker.listOverlaps("JCODE",point.getLon(),point.getLat());
-//		System.out.println("point: " + point + ", zonecodelist: " + zonecodeList);
+		//		System.out.println("point: " + point + ", zonecodelist: " + zonecodeList);
 		if(zonecodeList == null || zonecodeList.isEmpty()) { //zonecodelist.get(0) = 8988, ...
 			return "null";
 		}
