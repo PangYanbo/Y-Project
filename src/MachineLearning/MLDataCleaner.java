@@ -22,8 +22,8 @@ public class MLDataCleaner {
 		subjects.add("office_exit_diff");
 
 		for(String subject : subjects){
-			File in = new File("c:/users/c-tyabe/Desktop/Exfiles/"+subject+"_ML.csv");
-			File out = new File("c:/users/c-tyabe/Desktop/Exfiles/"+subject+"_ML_ver2.csv");
+			File in = new File("c:/users/c-tyabe/Desktop/Exfiles/"+subject+"_ML_ver2.csv");
+			File out = new File("c:/users/c-tyabe/Desktop/Exfiles/"+subject+"_ML_ver3.csv");
 			RemoveOne(in,out);
 		}
 	}
@@ -36,10 +36,15 @@ public class MLDataCleaner {
 			ArrayList<String> temp = new ArrayList<String>();
 			String[] tokens = line.split(" ");
 			for(String s : tokens){
-				if(!(s.split(":")[1].equals("null"))){
-					if(!((Double.parseDouble(s.split(":")[1])==0))){
-						temp.add(s);
+				if(s.split(":").length==2){
+					if(!(s.split(":")[1].equals("null"))){
+						if(!((Double.parseDouble(s.split(":")[1])==0))){
+							temp.add(s);
+						}
 					}
+				}
+				else{
+					temp.add(s);
 				}
 			}
 			for(String t : temp){
@@ -75,7 +80,7 @@ public class MLDataCleaner {
 		bw.close();
 
 	}
-	
+
 	public static void MakeOne(File in, File out) throws IOException{
 		BufferedReader br = new BufferedReader(new FileReader(in));
 		BufferedWriter bw = new BufferedWriter(new FileWriter(out));
