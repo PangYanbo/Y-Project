@@ -47,7 +47,7 @@ public class YDisasterProject {
 		dir.mkdir();
 
 		File in = new File("/home/c-tyabe/Data/DisasterLogs/DisasterAlertData.csv");
-		File out = new File("/home/c-tyabe/Data/DisasterLogs/DisasterAlertData_shutoken_eq.csv");
+		File out = new File("/home/c-tyabe/Data/DisasterLogs/DisasterAlertData_shutoken_"+type+".csv");
 		File jiscodes = new File("/home/c-tyabe/Data/ShutokenSHP/JIScodes.csv");
 		DisLogDecider.choosebyAreaDateType(in,out,jiscodes,type,"2014-10-21","2015-08-17");		
 		
