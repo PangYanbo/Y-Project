@@ -25,8 +25,8 @@ public class MLData {
 	public static void main(String args[]) throws IOException{
 
 		ArrayList<String> subjects = new ArrayList<String>();
-//		subjects.add("tsukin_time_diff");
-//		subjects.add("office_time_diff");
+		subjects.add("tsukin_time_diff");
+		subjects.add("office_time_diff");
 		subjects.add("kitaku_time_diff");
 		subjects.add("home_exit_diff");
 		subjects.add("home_return_diff");
