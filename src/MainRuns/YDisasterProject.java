@@ -11,6 +11,7 @@ import java.util.HashSet;
 import jp.ac.ut.csis.pflow.geom.LonLat;
 import DataModify.ExtractFile;
 import DisasterAlert.DayChooser;
+import DisasterAlert.DisLogDecider;
 import DisasterAlert.DisasterLogs;
 import DisasterAlert.ExtractIDbyDate;
 import MobilityAnalyser.MovementAnalyzer;
@@ -36,7 +37,7 @@ public class YDisasterProject {
 	
 	protected static final SimpleDateFormat SDF_TS = new SimpleDateFormat("yyyy-MM-dd");//change time format
 
-	private static final String type = "rain";
+	private static final String type = "dosha";
 	private static final String city = "Tokyo";
 	private static final String homepath = "/home/c-tyabe/Data/"+type+city+"/";
 	private static final String GPSpath  = "/tmp/bousai_data/gps_";
@@ -45,6 +46,11 @@ public class YDisasterProject {
 		File dir = new File(homepath);
 		dir.mkdir();
 
+		File in = new File("/home/c-tyabe/Data/DisasterLogs/DisasterAlertData.csv");
+		File out = new File("/home/c-tyabe/Data/DisasterLogs/DisasterAlertData_shutoken_eq.csv");
+		File jiscodes = new File("/home/c-tyabe/Data/ShutokenSHP/JIScodes.csv");
+		DisLogDecider.choosebyAreaDateType(in,out,jiscodes,type,"2014-10-21","2015-08-17");		
+		
 		String disasterlogfile = "/home/c-tyabe/Data/DisasterLogs/DisasterAlertData_shutoken_"+type+".csv";
 		runforallevents(disasterlogfile);
 	}

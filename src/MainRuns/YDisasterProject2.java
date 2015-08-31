@@ -23,7 +23,7 @@ public class YDisasterProject2 {
 	/**
 	 * Class for running every step 
 	 * @param 
-	 * args[0] : disaster type (dosha,earthquake,eew,flood,heats,rain,tsunami,volc)
+	 * args[0] : disaster type (emg1)
 	 * args[1] : number of towns affected
 	 * 
 	 * @throws IOException 
