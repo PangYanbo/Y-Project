@@ -13,7 +13,7 @@ import jp.ac.ut.csis.pflow.geom.LonLat;
 
 public class MLData {
 
-	public static final String type      = "rain";
+	public static final String type      = "eq";
 	public static final String dir       = "/home/c-tyabe/Data/"+type+"Tokyo/";
 
 	//	public static final File popfile     = new File("/home/c-tyabe/Data/DataforML/popdata.csv");
