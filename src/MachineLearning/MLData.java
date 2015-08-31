@@ -35,6 +35,8 @@ public class MLData {
 
 		for(String subject : subjects){
 
+			String outdir = "/home/c-tyabe/Data/MLResults_"+type+"/";
+			File outputdir = new File(outdir); outputdir.mkdir();
 			String outfile   = "/home/c-tyabe/Data/MLResults_"+type+"/"+subject+"_ML.csv"; 
 
 			HashMap<String, String>  popmap       = GetPop.getpopmap(landusefile);
