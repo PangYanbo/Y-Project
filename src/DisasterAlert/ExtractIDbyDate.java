@@ -52,7 +52,7 @@ public class ExtractIDbyDate {
 										Double lat = Double.parseDouble(tokens[2]);
 										Double lon = Double.parseDouble(tokens[3]);
 										LonLat p = new LonLat(lon,lat);
-										String JIScode = AreaOverlapPref(p,JIScodes);
+										String JIScode = AreaOverlap(p,JIScodes);
 										if(!JIScode.equals("null")){
 											map.put(id,p);
 										}

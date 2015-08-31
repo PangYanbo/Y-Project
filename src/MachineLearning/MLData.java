@@ -48,7 +48,6 @@ public class MLData {
 			HashMap<LonLat, String>  trainmap     = GetTrainData.getpopmap(trainfile);
 			HashMap<LonLat, String>  pricemap     = GetLandPrice.getpricemap(pricefile);
 
-			//		int count = 0;
 			for(File typelevel : new File(dir).listFiles()){
 				String level = typelevel.getName().split("_")[1];
 				for(File datetime :typelevel.listFiles()){
@@ -58,7 +57,7 @@ public class MLData {
 							System.out.println("#working on " + f.toString());
 							getAttributes(f,new File(outfile),level,time,popmap,buildingmap,farmmap,sroadmap,broadmap,allroadmap,trainmap,pricemap);
 						}}}}
-			String newoutfile   = "/home/c-tyabe/Data/MLResults_"+type+"/"+subject+"_ML_real.csv"; 
+			String newoutfile   = "/home/c-tyabe/Data/MLResults_"+type+"/"+subject+"_ML_no1.csv"; 
 			MLDataCleaner.DataClean(new File(outfile), new File(newoutfile));
 			}
 		}

@@ -27,7 +27,7 @@ public class MLDataCleaner {
 			DataClean(in,out);
 		}
 	}
-
+	
 	public static void DataClean(File in, File out) throws IOException{
 		BufferedReader br = new BufferedReader(new FileReader(in));
 		BufferedWriter bw = new BufferedWriter(new FileWriter(out));
@@ -36,7 +36,7 @@ public class MLDataCleaner {
 			ArrayList<String> temp = new ArrayList<String>();
 			String[] tokens = line.split(" ");
 			for(String s : tokens){
-				if(s.split(":").length==2){
+				if(!s.split(":")[0].equals("1")){
 					if(!(s.split(":")[1].equals("null"))){
 						if(!((Double.parseDouble(s.split(":")[1])==0))){
 							temp.add(s);
@@ -44,7 +44,7 @@ public class MLDataCleaner {
 					}
 				}
 				else{
-					temp.add(s);
+					temp.add(s.split(":")[1]);
 				}
 			}
 			for(String t : temp){
@@ -78,7 +78,6 @@ public class MLDataCleaner {
 		}
 		br.close();
 		bw.close();
-
 	}
 
 	public static void MakeOne(File in, File out) throws IOException{
