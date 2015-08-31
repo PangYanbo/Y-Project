@@ -22,7 +22,7 @@ public class MLDataModifier {
 		subjects.add("office_exit_diff");
 
 		for(String subject : subjects){
-			File in = new File("c:/users/c-tyabe/Desktop/Exfiles/"+subject+"_ML_ver2.csv");
+			File in = new File("c:/users/c-tyabe/Desktop/Exfiles/"+subject+"_ML.csv");
 			File out = new File("c:/users/c-tyabe/Desktop/Exfiles/"+subject+"_ML_ver3.csv");
 			Modify(in,out);
 		}
@@ -47,11 +47,13 @@ public class MLDataModifier {
 		br.close();
 		bw.close();
 	}
-	
+
 	public static int numofline(Double num){
 		int res = 0;
-		
+		String abs = String.valueOf(Math.abs(num));
+		res = Integer.valueOf(abs);
 		return res;
+
 	}
 
 

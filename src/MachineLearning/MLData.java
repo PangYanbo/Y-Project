@@ -59,6 +59,9 @@ public class MLData {
 						}}}}
 			String newoutfile   = "/home/c-tyabe/Data/MLResults_"+type+"/"+subject+"_ML_no1.csv"; 
 			MLDataCleaner.DataClean(new File(outfile), new File(newoutfile));
+			
+			String multiplelines = "/home/c-tyabe/Data/MLResults_"+type+"/"+subject+"_ML_lineforeach.csv";
+			MLDataModifier.Modify(new File(outfile), new File(multiplelines));
 			}
 		}
 
