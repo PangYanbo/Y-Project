@@ -12,7 +12,7 @@ public class MLDataModifier {
 
 	public static void main(String args[]) throws IOException{
 
-		String type = "rain";
+		String type = "eq";
 		
 		ArrayList<String> subjects = new ArrayList<String>();
 		subjects.add("tsukin_time_diff");
