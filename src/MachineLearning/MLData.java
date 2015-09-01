@@ -61,7 +61,7 @@ public class MLData {
 			MLDataCleaner.DataClean(new File(outfile), new File(newoutfile));
 			
 			String multiplelines = "/home/c-tyabe/Data/MLResults_"+type+"/"+subject+"_ML_lineforeach.csv";
-			MLDataModifier.Modify(new File(outfile), new File(multiplelines));
+			MLDataModifier.Modify(new File(newoutfile), new File(multiplelines));
 			}
 		}
 
