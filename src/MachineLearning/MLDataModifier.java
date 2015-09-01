@@ -50,8 +50,13 @@ public class MLDataModifier {
 
 	public static int numofline(Double num){
 		int res = 0;
-		String abs = String.valueOf(Math.abs(num));
-		res = Integer.valueOf(abs);
+		if(num>=1){
+			String abs = String.valueOf(Math.abs(num));
+			res = Integer.valueOf(abs);
+		}
+		else{
+			res = 1;
+		}
 		return res;
 
 	}
