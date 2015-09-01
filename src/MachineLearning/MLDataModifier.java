@@ -51,8 +51,10 @@ public class MLDataModifier {
 	public static int numofline(Double num){
 		int res = 0;
 		if(num>=1){
-			String abs = String.valueOf(Math.abs(num));
-			res = Integer.valueOf(abs);
+			res = (int)Math.round(num);
+		}
+		else if(num>10){
+			res = 10;
 		}
 		else{
 			res = 1;
