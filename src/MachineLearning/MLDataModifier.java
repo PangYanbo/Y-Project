@@ -49,11 +49,12 @@ public class MLDataModifier {
 	}
 
 	public static int numofline(Double num){
+		double num2 = Math.abs(num);
 		int res = 0;
-		if(num>=1){
+		if(num2>=1){
 			res = (int)Math.round(num);
 		}
-		else if(num>10){
+		else if(num2>10){
 			res = 10;
 		}
 		else{
