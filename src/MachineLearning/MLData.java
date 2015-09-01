@@ -13,7 +13,7 @@ import jp.ac.ut.csis.pflow.geom.LonLat;
 
 public class MLData {
 
-	public static final String type      = "eq";
+	public static final String type      = "dosha";
 	public static final String dir       = "/home/c-tyabe/Data/"+type+"Tokyo/";
 
 	//	public static final File popfile     = new File("/home/c-tyabe/Data/DataforML/popdata.csv");
@@ -27,11 +27,11 @@ public class MLData {
 		ArrayList<String> subjects = new ArrayList<String>();
 		subjects.add("tsukin_time_diff");
 		subjects.add("office_time_diff");
-//		subjects.add("kitaku_time_diff");
-//		subjects.add("home_exit_diff");
-//		subjects.add("home_return_diff");
-//		subjects.add("office_enter_diff");
-//		subjects.add("office_exit_diff");
+		subjects.add("kitaku_time_diff");
+		subjects.add("home_exit_diff");
+		subjects.add("home_return_diff");
+		subjects.add("office_enter_diff");
+		subjects.add("office_exit_diff");
 
 		for(String subject : subjects){
 
