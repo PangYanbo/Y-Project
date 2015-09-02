@@ -24,9 +24,9 @@ public class MLDataModifier {
 		subjects.add("office_exit_diff");
 
 		for(String subject : subjects){
-			String in = "/home/c-tyabe/Data/MLResults_"+type+"/"+subject+"_ML_lineforeach.csv";
+			String in = "/home/c-tyabe/Data/MLResults_"+type+"/"+subject+"_ML_no1.csv";
 			
-			String newoutfile   = "/home/c-tyabe/Data/MLResults_"+type+"/"+subject+"_ML_lineforeach2.csv"; 
+			String newoutfile   = "/home/c-tyabe/Data/MLResults_"+type+"/"+subject+"_ML_no2.csv"; 
 			MLDataCleaner.ytoone(new File(in), new File(newoutfile));
 			
 //			String multiplelines = "/home/c-tyabe/Data/MLResults_"+type+"/"+subject+"_ML_lineforeach2.csv";
