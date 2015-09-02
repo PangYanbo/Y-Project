@@ -24,7 +24,7 @@ public class MLDataModifier {
 		subjects.add("office_exit_diff");
 
 		for(String subject : subjects){
-			String in = "/home/c-tyabe/Data/MLResults_"+type+"/"+subject+"_ML_lineforeach.csv.csv";
+			String in = "/home/c-tyabe/Data/MLResults_"+type+"/"+subject+"_ML_lineforeach.csv";
 			
 			String newoutfile   = "/home/c-tyabe/Data/MLResults_"+type+"/"+subject+"_ML_lineforeach2.csv"; 
 			MLDataCleaner.DataClean(new File(in), new File(newoutfile));
