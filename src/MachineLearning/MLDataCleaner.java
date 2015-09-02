@@ -27,7 +27,7 @@ public class MLDataCleaner {
 			DataClean(in,out);
 		}
 	}
-	
+
 	public static void DataClean(File in, File out) throws IOException{
 		BufferedReader br = new BufferedReader(new FileReader(in));
 		BufferedWriter bw = new BufferedWriter(new FileWriter(out));
@@ -44,12 +44,7 @@ public class MLDataCleaner {
 					}
 				}
 				else{
-					if(Double.parseDouble(s.split(":")[1])>0){
-						temp.add("1");
-					}
-					else{
-						temp.add("-1");
-					}
+					temp.add(s.split(":")[1]);
 				}
 			}
 			for(String t : temp){
@@ -61,29 +56,59 @@ public class MLDataCleaner {
 		bw.close();
 	}
 
-//	public static void RemoveOne(File in, File out) throws IOException{
-//		BufferedReader br = new BufferedReader(new FileReader(in));
-//		BufferedWriter bw = new BufferedWriter(new FileWriter(out));
-//		String line = null;
-//		while((line=br.readLine())!=null){
-//			ArrayList<String> temp = new ArrayList<String>();
-//			String[] tokens = line.split(" ");
-//			for(String s : tokens){
-//				if(s.split(":")[0].equals("1")){
-//					temp.add(s.split(":")[1]);
-//				}
-//				else{
-//					temp.add(s);
-//				}
-//			}
-//			for(String t : temp){
-//				bw.write(t+" ");
-//			}
-//			bw.newLine();
-//		}
-//		br.close();
-//		bw.close();
-//	}
+	public static void ytoone(File in, File out) throws IOException{
+		BufferedReader br = new BufferedReader(new FileReader(in));
+		BufferedWriter bw = new BufferedWriter(new FileWriter(out));
+		String line = null;
+		while((line=br.readLine())!=null){
+			ArrayList<String> temp = new ArrayList<String>();
+			String[] tokens = line.split(" ");
+			for(String s : tokens){
+				if(s.split(":").length==1){
+					Double y = Double.parseDouble(tokens[0]);
+					if(y>=0){
+						temp.add("1");
+					}
+					else{
+						temp.add("-1");
+					}
+				}
+				else{
+					temp.add(s);
+				}
+			}
+			for(String t : temp){
+				bw.write(t+" ");
+			}
+			bw.newLine();
+		}
+		br.close();
+		bw.close();
+	}
+
+	//	public static void RemoveOne(File in, File out) throws IOException{
+	//		BufferedReader br = new BufferedReader(new FileReader(in));
+	//		BufferedWriter bw = new BufferedWriter(new FileWriter(out));
+	//		String line = null;
+	//		while((line=br.readLine())!=null){
+	//			ArrayList<String> temp = new ArrayList<String>();
+	//			String[] tokens = line.split(" ");
+	//			for(String s : tokens){
+	//				if(s.split(":")[0].equals("1")){
+	//					temp.add(s.split(":")[1]);
+	//				}
+	//				else{
+	//					temp.add(s);
+	//				}
+	//			}
+	//			for(String t : temp){
+	//				bw.write(t+" ");
+	//			}
+	//			bw.newLine();
+	//		}
+	//		br.close();
+	//		bw.close();
+	//	}
 
 	public static void MakeOne(File in, File out) throws IOException{
 		BufferedReader br = new BufferedReader(new FileReader(in));
