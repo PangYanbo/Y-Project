@@ -28,7 +28,7 @@ public class OfficeSchoolDetection {
 
 //		File in = new File(args[0]);
 //		File result = new File (args[1]);
-		File in = new File("c:/users/yabetaka/desktop/dataforexp.csv");
+//		File in = new File("c:/users/yabetaka/desktop/dataforexp.csv");
 
 	}
 	

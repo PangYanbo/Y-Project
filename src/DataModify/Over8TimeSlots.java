@@ -16,8 +16,8 @@ import StayPointDetection.StayPointTools;
 public class Over8TimeSlots {
 	
 	public static void main(String args[]) throws IOException, ParseException{
-		String in = "c:/users/yabetaka/Desktop/dataforExp.csv";
-		HashMap<String, ArrayList<String>> map = OKAY_id_days(in);
+//		String in = "c:/users/yabetaka/Desktop/dataforExp.csv";
+//		HashMap<String, ArrayList<String>> map = OKAY_id_days(in);
 	}
 
 	protected static final SimpleDateFormat SDF_TS  = new SimpleDateFormat("HH:mm:ss");//change time format
