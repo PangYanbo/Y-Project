@@ -12,7 +12,7 @@ public class MLDataModifier {
 
 	public static void main(String args[]) throws IOException{
 
-		String type = "eq";
+		String type = "dosha";
 		
 		ArrayList<String> subjects = new ArrayList<String>();
 		subjects.add("tsukin_time_diff");
@@ -24,13 +24,13 @@ public class MLDataModifier {
 		subjects.add("office_exit_diff");
 
 		for(String subject : subjects){
-			String in = "/home/c-tyabe/Data/MLResults_"+type+"/"+subject+"_ML.csv";
+			String in = "/home/c-tyabe/Data/MLResults_"+type+"/"+subject+"_ML_lineforeach.csv.csv";
 			
-			String newoutfile   = "/home/c-tyabe/Data/MLResults_"+type+"/"+subject+"_ML_no1.csv"; 
+			String newoutfile   = "/home/c-tyabe/Data/MLResults_"+type+"/"+subject+"_ML_lineforeach2.csv"; 
 			MLDataCleaner.DataClean(new File(in), new File(newoutfile));
 			
-			String multiplelines = "/home/c-tyabe/Data/MLResults_"+type+"/"+subject+"_ML_lineforeach.csv";
-			MLDataModifier.Modify(new File(newoutfile), new File(multiplelines));
+//			String multiplelines = "/home/c-tyabe/Data/MLResults_"+type+"/"+subject+"_ML_lineforeach2.csv";
+//			MLDataModifier.Modify(new File(in), new File(multiplelines));
 		}
 	}
 
