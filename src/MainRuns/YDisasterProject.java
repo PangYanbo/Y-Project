@@ -33,13 +33,13 @@ public class YDisasterProject {
 	 * 
 	 */
 
-	// for disasters with 市町村コード！
+	// for disasters with 市町村コード！(rain,dosha)
 	
 	protected static final SimpleDateFormat SDF_TS = new SimpleDateFormat("yyyy-MM-dd");//change time format
 
 	private static final String type = "rain";
 	private static final String city = "Tokyo";
-	private static final String homepath = "/home/c-tyabe/Data/"+type+city+"/";
+	private static final String homepath = "/home/c-tyabe/Data/"+type+city+"2/";
 	private static final String GPSpath  = "/tmp/bousai_data/gps_";
 
 	public static void main(String args[]) throws IOException, NumberFormatException, ParseException{
@@ -71,13 +71,11 @@ public class YDisasterProject {
 			for(String time : dislogs.get(ymd).keySet()){
 				for(String level : dislogs.get(ymd).get(time).keySet()){
 					if(filedoublechecker(ymd,time,type,level,city)==true){
-//						if(ymd.equals("20150521")){
 							System.out.println("#starting run for " + ymd +", time: "+ time + ", level:" +level);
 							ArrayList<String> codes = dislogs.get(ymd).get(time).get(level);
 							run(codes, ymd, time, level, dislog);
 							System.out.println("------------------done " + count + " disasters------------------");
-							System.out.println("                ");
-//						}
+							System.out.println(" ");
 					}
 					count++;
 				}
@@ -127,8 +125,8 @@ public class YDisasterProject {
 				MotifFinder2.executeMotif(dataforexp, workpath, disasterday, targetIDs_code, id_homecode);
 
 				File data = new File(dataforexp); data.delete();
-				File home = new File(workpath+"id_home.csv"); home.delete();
-				File office = new File(workpath+"id_office.csv"); office.delete();
+//				File home = new File(workpath+"id_home.csv"); home.delete();
+//				File office = new File(workpath+"id_office.csv"); office.delete();
 			}
 
 //			if(!(new File(workpath+"home_exit.csv").exists())){

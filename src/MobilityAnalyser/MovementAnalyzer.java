@@ -214,7 +214,7 @@ public class MovementAnalyzer {
 				for(String day : officeexittime.get(id).keySet()){
 					if(officeentertime.get(id).containsKey(day)){
 						int time = officeexittime.get(id).get(day) - officeentertime.get(id).get(day);
-						if(time>1){
+						if(time>0){
 							if(officestaytimes.containsKey(id)){
 								officestaytimes.get(id).put(day, time);
 							}
