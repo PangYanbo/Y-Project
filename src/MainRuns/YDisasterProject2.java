@@ -38,7 +38,7 @@ public class YDisasterProject2 {
 
 	private static final String type = "eq";
 	private static final String city = "Tokyo";
-	private static final String homepath = "/home/c-tyabe/Data/"+type+city+"/";
+	private static final String homepath = "/home/c-tyabe/Data/"+type+city+"2/";
 	private static final String GPSpath  = "/tmp/bousai_data/gps_";
 
 	public static void main(String args[]) throws IOException, NumberFormatException, ParseException{
@@ -121,8 +121,8 @@ public class YDisasterProject2 {
 				MotifFinder2.executeMotif(dataforexp, workpath, disasterday, targetIDs_code, id_homecode);
 
 				File data = new File(dataforexp); data.delete();
-				File home = new File(workpath+"id_home.csv"); home.delete();
-				File office = new File(workpath+"id_office.csv"); office.delete();
+//				File home = new File(workpath+"id_home.csv"); home.delete();
+//				File office = new File(workpath+"id_office.csv"); office.delete();
 			}
 
 //			if(!(new File(workpath+"home_exit.csv").exists())){
