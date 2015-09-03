@@ -80,7 +80,7 @@ public class YDisasterProject2 {
 	}
 
 	public static boolean filedoublechecker(String ymd, String time, String type, String level, String city){
-		File file = new File("/home/c-tyabe/Data/"+type+city+"/"+type+"_"+level+"/"+ymd+"_"+time);
+		File file = new File(homepath+type+"_"+level+"/"+ymd+"_"+time);
 		if(file.exists()){
 			return false;
 		}
