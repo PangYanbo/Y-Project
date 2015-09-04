@@ -39,7 +39,7 @@ public class YDisasterProject {
 
 	private static final String type = "rain";
 	private static final String city = "Tokyo";
-	private static final String homepath = "/home/c-tyabe/Data/"+type+city+"2/";
+	private static final String homepath = "/home/c-tyabe/Data/"+type+city+"3/";
 	private static final String GPSpath  = "/tmp/bousai_data/gps_";
 
 	public static void main(String args[]) throws IOException, NumberFormatException, ParseException{

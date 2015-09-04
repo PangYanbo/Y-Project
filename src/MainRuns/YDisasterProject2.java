@@ -38,7 +38,7 @@ public class YDisasterProject2 {
 
 	private static final String type = "eq";
 	private static final String city = "Tokyo";
-	private static final String homepath = "/home/c-tyabe/Data/"+type+city+"2/";
+	private static final String homepath = "/home/c-tyabe/Data/"+type+city+"3/";
 	private static final String GPSpath  = "/tmp/bousai_data/gps_";
 
 	public static void main(String args[]) throws IOException, NumberFormatException, ParseException{
@@ -102,7 +102,7 @@ public class YDisasterProject2 {
 			ExtractFile.extractfromcommand(ymd); System.out.println("#done uncompressing " + disGPS);
 
 			String unzippedfile = FilePaths.deephomepath(ymd);
-			HashMap<String,LonLat> targetIDs_code = ExtractIDbyDate.extractID(unzippedfile,time,zones,0); //0: minimum logs
+			HashMap<String,LonLat> targetIDs_code = ExtractIDbyDate.extractIDPref(unzippedfile,time,zones,0); //0: minimum logs
 			System.out.println("#the number of IDs for " + ymd+time+ " is " + targetIDs_code.size());
 			File i = new File(unzippedfile); i.delete();
 

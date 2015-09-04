@@ -287,10 +287,11 @@ public class MovementAnalyzer {
 					x = x.setScale(2, BigDecimal.ROUND_HALF_UP);
 					List<String> zonecodeList = gchecker.listOverlaps("JCODE",id_area.get(id).getLon(),id_area.get(id).getLat());
 
-					bw.write(id + "," + x + "," + saigai+ "," + heiji+ "," + zonecodeList.get(0) + "," + id_homecode.get(id) + "," + dis 
+					bw.write(id + "," + x + "," + zonecodeList.get(0) + "," + id_homecode.get(id) + "," + dis 
 							+ "," + id_area.get(id).getLon() + "," + id_area.get(id).getLat() 
 							+ "," + id_home.get(id).getLon() + "," + id_home.get(id).getLat() 
-							+ "," + id_office.get(id).getLon() + "," + id_office.get(id).getLat());
+							+ "," + id_office.get(id).getLon() + "," + id_office.get(id).getLat()
+							+ "," + saigai+ "," + heiji);
 					bw.newLine();
 				}
 			}

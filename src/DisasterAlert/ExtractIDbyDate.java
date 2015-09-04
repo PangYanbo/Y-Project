@@ -79,6 +79,61 @@ public class ExtractIDbyDate {
 		}
 		return map;
 	}
+	
+	public static HashMap<String,LonLat> extractIDPref(String in, String t, ArrayList<String> JIScodes, int minimumlogs){
+		HashMap<String,LonLat> map = new HashMap<String,LonLat>();
+		File infile = new File(in);
+		BufferedReader br = null;
+		try {
+			br = new BufferedReader(new FileReader(infile));
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		String line = null;
+		String prevline = null;
+		try {
+			while((line=br.readLine())!=null){
+				if(ID_Extract_Tools.SameLogCheck(line,prevline)==true){
+					String[] tokens = line.split("\t");
+					if(tokens.length>=5){
+						String id = tokens[0];
+						if(!id.equals("null")){
+							if(!tokens[4].equals("null")){
+								if(tokens[4].length()>=18){
+									String tz = tokens[4].substring(11,19);
+									String time = DisasterLogs.converttime(tz);
+									if(time.equals(t)){
+										Double lat = Double.parseDouble(tokens[2]);
+										Double lon = Double.parseDouble(tokens[3]);
+										LonLat p = new LonLat(lon,lat);
+										String JIScode = AreaOverlapPref(p,JIScodes);
+										if(!JIScode.equals("null")){
+											map.put(id,p);
+										}
+									}
+								}
+							}
+						}
+					}
+					prevline = line;
+				}
+			}
+		} catch (NumberFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			br.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return map;
+	}
 
 	public static String AreaOverlap(LonLat point, ArrayList<String> JIScodes){
 		List<String> zonecodeList = gchecker.listOverlaps("JCODE",point.getLon(),point.getLat());
