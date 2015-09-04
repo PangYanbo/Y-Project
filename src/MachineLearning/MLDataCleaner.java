@@ -46,7 +46,7 @@ public class MLDataCleaner {
 					}
 				}
 				else{
-					temp.add(s.split(":")[1]);
+					temp.add(s);
 				}
 			}
 			for(String t : temp){
