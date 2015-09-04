@@ -37,6 +37,8 @@ public class MLData {
 
 			String outdir = "/home/c-tyabe/Data/MLResults_"+type+"/";
 			File outputdir = new File(outdir); outputdir.mkdir();
+			String outdir2 = "/home/c-tyabe/Data/MLResults_"+type+"/forML/"; 
+			File outputdir2 = new File(outdir2); outputdir2.mkdir();
 			String outfile   = "/home/c-tyabe/Data/MLResults_"+type+"/"+subject+"_ML.csv"; 
 
 			HashMap<String, String>  popmap       = GetPop.getpopmap(landusefile);
@@ -60,11 +62,14 @@ public class MLData {
 			String newoutfile   = "/home/c-tyabe/Data/MLResults_"+type+"/"+subject+"_ML_cleaned.csv"; 
 			MLDataCleaner.DataClean(new File(outfile), new File(newoutfile)); //delete 0s and Es
 
-			String plusminus  = "/home/c-tyabe/Data/MLResults_"+type+"/"+subject+"_ML_plusminus.csv";
-			MLDataCleaner.ytoone(new File(newoutfile), new File(plusminus));
-
+			String plusminus_normal  = "/home/c-tyabe/Data/MLResults_"+type+"/forML/"+subject+"_ML_plusminus_normal.csv";
+			MLDataCleaner.ytoone(new File(newoutfile), new File(plusminus_normal));
+		
 			String multiplelines = "/home/c-tyabe/Data/MLResults_"+type+"/"+subject+"_ML_lineforeach.csv";
-			MLDataModifier.Modify(new File(plusminus), new File(multiplelines));
+			MLDataModifier.Modify(new File(newoutfile), new File(multiplelines));
+			
+			String plusminus_multiplelines = "/home/c-tyabe/Data/MLResults_"+type+"/forML/"+subject+"_ML_plusminus_lineforeach.csv";
+			MLDataModifier.Modify(new File(plusminus_normal), new File(plusminus_multiplelines));
 		}
 	}
 
