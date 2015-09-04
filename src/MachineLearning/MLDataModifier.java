@@ -28,10 +28,13 @@ public class MLDataModifier {
 			subjects.add("office_exit_diff");
 
 			for(String subject : subjects){
-				String in = "/home/c-tyabe/Data/MLResults_"+type+"/"+subject+"_ML_no1.csv";
+				String in = "/home/c-tyabe/Data/MLResults_"+type+"/"+subject+"_ML_no2.csv";
+				String in2 = "/home/c-tyabe/Data/MLResults_"+type+"/"+subject+"_ML_lineforeach2.csv";
 
-				String newoutfile   = "/home/c-tyabe/Data/MLResults_"+type+"/"+subject+"_ML_no2.csv"; 
-				MLDataCleaner.ytoone(new File(in), new File(newoutfile));
+				String newoutfile   = "/home/c-tyabe/Data/MLResults_"+type+"/"+subject+"_ML_no3.csv"; 
+				String newoutfile2   = "/home/c-tyabe/Data/MLResults_"+type+"/"+subject+"_ML_lineforeach3.csv"; 
+				DeleteBisho(new File(in), new File(newoutfile));
+				DeleteBisho(new File(in2), new File(newoutfile2));
 
 				//			String multiplelines = "/home/c-tyabe/Data/MLResults_"+type+"/"+subject+"_ML_lineforeach2.csv";
 				//			MLDataModifier.Modify(new File(in), new File(multiplelines));
@@ -75,5 +78,30 @@ public class MLDataModifier {
 
 	}
 
+	public static void DeleteBisho(File in, File out) throws IOException{
+		BufferedReader br = new BufferedReader(new FileReader(in));
+		BufferedWriter bw = new BufferedWriter(new FileWriter(out));
+		String line = null;
+		while((line=br.readLine())!=null){
+			ArrayList<String> temp = new ArrayList<String>();
+			String[] tokens = line.split(" ");
+			for(String token: tokens){
+				if(token.split(":").length==2){
+					if(!token.split(":")[1].contains("E")){
+						temp.add(token);
+					}
+				}
+				else{
+					temp.add(token);
+				}
+			}
+			for(String t : temp){
+				bw.write(t+" ");
+			}
+			bw.newLine();
+		}
+		br.close();
+		bw.close();
+	}
 
 }
