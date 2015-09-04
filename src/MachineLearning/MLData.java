@@ -13,8 +13,8 @@ import jp.ac.ut.csis.pflow.geom.LonLat;
 
 public class MLData {
 
-	public static final String type      = "eq";
-	public static final String dir       = "/home/c-tyabe/Data/"+type+"Tokyo/";
+	public static final String type      = "rain";
+	public static final String dir       = "/home/c-tyabe/Data/"+type+"Tokyo2/";
 
 	//	public static final File popfile     = new File("/home/c-tyabe/Data/DataforML/popdata.csv");
 	public static final File landusefile = new File("/home/c-tyabe/Data/DataforML/landusedata.csv");
@@ -59,14 +59,14 @@ public class MLData {
 						}}}}
 			String newoutfile   = "/home/c-tyabe/Data/MLResults_"+type+"/"+subject+"_ML_cleaned.csv"; 
 			MLDataCleaner.DataClean(new File(outfile), new File(newoutfile)); //delete 0s and Es
-			
+
 			String plusminus  = "/home/c-tyabe/Data/MLResults_"+type+"/"+subject+"_ML_plusminus.csv";
 			MLDataCleaner.ytoone(new File(newoutfile), new File(plusminus));
-			
+
 			String multiplelines = "/home/c-tyabe/Data/MLResults_"+type+"/"+subject+"_ML_lineforeach.csv";
 			MLDataModifier.Modify(new File(plusminus), new File(multiplelines));
-			}
 		}
+	}
 
 
 	public static void getAttributes(File in, File out, String level, String time,
@@ -87,7 +87,7 @@ public class MLData {
 				nowp = new LonLat(Double.parseDouble(tokens[5].replace("(","")),Double.parseDouble(tokens[6].replace(")","")));
 				homep = new LonLat(Double.parseDouble(tokens[7].replace("(","")),Double.parseDouble(tokens[8].replace(")","")));
 				officep = new LonLat(Double.parseDouble(tokens[9].replace("(","")),Double.parseDouble(tokens[10].replace(")","")));
-				normaltime = tokens[12]; distime = tokens[11];
+				//				normaltime = tokens[12]; distime = tokens[11];
 				dis = String.valueOf(homep.distance(officep)/100000);
 			}
 			else{ // output version 2
@@ -95,7 +95,7 @@ public class MLData {
 				nowp = new LonLat(Double.parseDouble(tokens[5]),Double.parseDouble(tokens[6]));
 				homep = new LonLat(Double.parseDouble(tokens[7]),Double.parseDouble(tokens[8]));
 				officep = new LonLat(Double.parseDouble(tokens[9]),Double.parseDouble(tokens[10]));
-				distime = tokens[11]; normaltime = tokens[12];
+				//				distime = tokens[11]; normaltime = tokens[12];
 				dis = String.valueOf(homep.distance(officep)/100000);
 			}
 
@@ -126,11 +126,16 @@ public class MLData {
 	}
 
 	public static String timerange(String time){
-		Double timerange = Double.parseDouble(time);
-		if(timerange<6){return "0.2";}
-		else if ((timerange>=6)&&(timerange<10)){return "0.4";}
-		else if ((timerange>=10)&&(timerange<16)){return "0.6";}
-		else if ((timerange>=16)&&(timerange<20)){return "0.8";}
-		else{return "1";}
+		if(time==null){
+			return "0";
+		}
+		else{
+			Double timerange = Double.parseDouble(time);
+			if(timerange<6){return "0.2";}
+			else if ((timerange>=6)&&(timerange<10)){return "0.4";}
+			else if ((timerange>=10)&&(timerange<16)){return "0.6";}
+			else if ((timerange>=16)&&(timerange<20)){return "0.8";}
+			else{return "1";}
+		}
 	}
 }
