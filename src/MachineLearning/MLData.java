@@ -57,11 +57,14 @@ public class MLData {
 							System.out.println("#working on " + f.toString());
 							getAttributes(f,new File(outfile),level,time,popmap,buildingmap,farmmap,sroadmap,broadmap,allroadmap,trainmap,pricemap);
 						}}}}
-			String newoutfile   = "/home/c-tyabe/Data/MLResults_"+type+"/"+subject+"_ML_no1.csv"; 
-			MLDataCleaner.DataClean(new File(outfile), new File(newoutfile));
+			String newoutfile   = "/home/c-tyabe/Data/MLResults_"+type+"/"+subject+"_ML_cleaned.csv"; 
+			MLDataCleaner.DataClean(new File(outfile), new File(newoutfile)); //delete 0s and Es
+			
+			String plusminus  = "/home/c-tyabe/Data/MLResults_"+type+"/"+subject+"_ML_plusminus.csv";
+			MLDataCleaner.ytoone(new File(newoutfile), new File(plusminus));
 			
 			String multiplelines = "/home/c-tyabe/Data/MLResults_"+type+"/"+subject+"_ML_lineforeach.csv";
-			MLDataModifier.Modify(new File(newoutfile), new File(multiplelines));
+			MLDataModifier.Modify(new File(plusminus), new File(multiplelines));
 			}
 		}
 
@@ -75,7 +78,7 @@ public class MLData {
 		BufferedWriter bw = new BufferedWriter(new FileWriter(out,true));
 		String line = null;
 		while((line=br.readLine())!=null){
-			String diff = null; String dis = null; 
+			String diff = null; String dis = null; String normaltime = null; String distime = null;
 			LonLat nowp = null; LonLat homep = null; LonLat officep = null; 
 
 			String[] tokens = line.split(",");
@@ -84,6 +87,7 @@ public class MLData {
 				nowp = new LonLat(Double.parseDouble(tokens[5].replace("(","")),Double.parseDouble(tokens[6].replace(")","")));
 				homep = new LonLat(Double.parseDouble(tokens[7].replace("(","")),Double.parseDouble(tokens[8].replace(")","")));
 				officep = new LonLat(Double.parseDouble(tokens[9].replace("(","")),Double.parseDouble(tokens[10].replace(")","")));
+				normaltime = tokens[12]; distime = tokens[11];
 				dis = String.valueOf(homep.distance(officep)/100000);
 			}
 			else{ // output version 2
@@ -91,16 +95,17 @@ public class MLData {
 				nowp = new LonLat(Double.parseDouble(tokens[5]),Double.parseDouble(tokens[6]));
 				homep = new LonLat(Double.parseDouble(tokens[7]),Double.parseDouble(tokens[8]));
 				officep = new LonLat(Double.parseDouble(tokens[9]),Double.parseDouble(tokens[10]));
+				distime = tokens[11]; normaltime = tokens[12];
 				dis = String.valueOf(homep.distance(officep)/100000);
 			}
 
-			String res = "1:"+diff+" 2:"+level+" 3:"+timerange(time)
+			String res = diff+" 1:"+timerange(normaltime)+" 2:"+level+" 3:"+timerange(time)
 					+GetPop.getpop(popmap,nowp,homep,officep)
 					+GetLanduse.getlanduse(buildingmap, farmmap, nowp, homep, officep)
 					+GetRoadData.getroaddata(sroadmap, broadmap, allroadmap, nowp, homep, officep)
 					+GetTrainData.getstationpop(trainmap, nowp, homep, officep)
 					+GetLandPrice.getlandprice(pricemap, nowp, homep, officep)
-					+" 28:"+dis;
+					+" 28:"+dis+" 29:"+timerange(distime);
 
 			bw.write(res);
 			bw.newLine();

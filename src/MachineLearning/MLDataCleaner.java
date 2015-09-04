@@ -36,10 +36,12 @@ public class MLDataCleaner {
 			ArrayList<String> temp = new ArrayList<String>();
 			String[] tokens = line.split(" ");
 			for(String s : tokens){
-				if(!s.split(":")[0].equals("1")){
+				if(s.split(":").length==2){
 					if(!(s.split(":")[1].equals("null"))){
 						if(!((Double.parseDouble(s.split(":")[1])==0))){
-							temp.add(s);
+							if(!s.split(":")[1].contains("E")){
+								temp.add(s);
+							}
 						}
 					}
 				}
