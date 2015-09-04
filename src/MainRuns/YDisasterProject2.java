@@ -102,7 +102,7 @@ public class YDisasterProject2 {
 			ExtractFile.extractfromcommand(ymd); System.out.println("#done uncompressing " + disGPS);
 
 			String unzippedfile = FilePaths.deephomepath(ymd);
-			HashMap<String,LonLat> targetIDs_code = ExtractIDbyDate.extractID(unzippedfile,time,zones,0); //0: minimum logs
+			HashMap<String,LonLat> targetIDs_code = ExtractIDbyDate.extractIDPref(unzippedfile,time,zones,0); //0: minimum logs
 			System.out.println("#the number of IDs for " + ymd+time+ " is " + targetIDs_code.size());
 			File i = new File(unzippedfile); i.delete();
 
