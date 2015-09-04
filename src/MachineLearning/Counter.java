@@ -20,8 +20,10 @@ public class Counter {
 				count1++;
 			}
 		}
+		int all = count + count1;
+		double rate = (double)count/(double)all;
 		br.close();
-		System.out.println(count + " "+ count1 + " " + count/count1);
+		System.out.println(count + " "+ all + " " + rate);
 	}
 	
 	public static void main(String args[]) throws IOException{
