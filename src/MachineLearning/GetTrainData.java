@@ -17,7 +17,7 @@ public class GetTrainData {
 		String homepop = getpopofnearestStation(popmap,home);
 		String offpop = getpopofnearestStation(popmap,office);
 
-		String res = " 22:"+nowpop +" 23:"+homepop+" 24:"+offpop;
+		String res = getline(nowpop)+","+getline(homepop)+","+getline(offpop);
 		return res;
 	}
 
@@ -58,4 +58,18 @@ public class GetTrainData {
 		return String.valueOf(pop);
 	}
 
+	public static String getline(String poprate){
+		if(poprate==null){
+			return "0,0,0,0,0";
+		}
+		else{
+			Double poprange = Double.parseDouble(poprate);
+			if(poprange<0.05){return "1,0,0,0,0";}
+			else if ((poprange>=0.05)&&(poprange<0.1)){return "0,1,0,0,0";}
+			else if ((poprange>=0.1)&&(poprange<0.3)){return "0,0,1,0,0";}
+			else if ((poprange>=0.3)&&(poprange<0.6)){return "0,0,0,1,0";}
+			else{return "0,0,0,0,1";}
+		}
+	}
+	
 }

@@ -15,7 +15,8 @@ public class MLData {
 
 	public static final String type      = "rain";
 	public static final String dir       = "/home/c-tyabe/Data/"+type+"Tokyo3/";
-	public static final String outdir    = "/home/c-tyabe/Data/MLResults_"+type+"2/";
+	public static final String outdir    = "/home/c-tyabe/Data/MLResults_"+type+"3/";
+	public static final double min       = 0.5;
 
 	public static final File popfile     = new File("/home/c-tyabe/Data/DataforML/mesh_daytimepop.csv");
 	public static final File landusefile = new File("/home/c-tyabe/Data/DataforML/landusedata.csv");
@@ -28,7 +29,7 @@ public class MLData {
 		File outputdir = new File(outdir); outputdir.mkdir();
 		String outdir2 = outdir+"forML/"; File outputdir2 = new File(outdir2); outputdir2.mkdir();
 
-		
+
 		ArrayList<String> subjects = new ArrayList<String>();
 		subjects.add("tsukin_time_diff");
 		subjects.add("office_time_diff");
@@ -42,7 +43,7 @@ public class MLData {
 
 			String outfile   = outdir+subject+"_ML.csv"; 
 
-			HashMap<String, String>  popmap       = GetPop.getpopmap(landusefile);
+			HashMap<String, String>  popmap       = GetPop.getpopmap(popfile);
 			HashMap<String, String>  buildingmap  = GetLanduse.getmeshbuilding(landusefile);
 			HashMap<String, String>  farmmap      = GetLanduse.getmeshfarm(landusefile);
 			HashMap<String, String>  sroadmap     = GetRoadData.getsmallroad(roadfile);
@@ -65,10 +66,10 @@ public class MLData {
 
 			String plusminus_normal  = outdir2+subject+"_ML_plusminus_normal.csv";
 			MLDataCleaner.ytoone(new File(newoutfile), new File(plusminus_normal));
-		
+
 			String multiplelines = outdir+subject+"_ML_lineforeach.csv";
 			MLDataModifier.Modify(new File(newoutfile), new File(multiplelines));
-			
+
 			String plusminus_multiplelines = outdir2+subject+"_ML_plusminus_lineforeach.csv";
 			MLDataCleaner.ytoone(new File(multiplelines), new File(plusminus_multiplelines));
 		}
@@ -93,7 +94,7 @@ public class MLData {
 				nowp = new LonLat(Double.parseDouble(tokens[5].replace("(","")),Double.parseDouble(tokens[6].replace(")","")));
 				homep = new LonLat(Double.parseDouble(tokens[7].replace("(","")),Double.parseDouble(tokens[8].replace(")","")));
 				officep = new LonLat(Double.parseDouble(tokens[9].replace("(","")),Double.parseDouble(tokens[10].replace(")","")));
-				//				normaltime = tokens[12]; distime = tokens[11];
+				normaltime = tokens[12]; distime = tokens[11];
 				dis = String.valueOf(homep.distance(officep)/100000);
 			}
 			else{ // output version 2
@@ -101,21 +102,57 @@ public class MLData {
 				nowp = new LonLat(Double.parseDouble(tokens[5]),Double.parseDouble(tokens[6]));
 				homep = new LonLat(Double.parseDouble(tokens[7]),Double.parseDouble(tokens[8]));
 				officep = new LonLat(Double.parseDouble(tokens[9]),Double.parseDouble(tokens[10]));
-				//				distime = tokens[11]; normaltime = tokens[12];
+				distime = tokens[11]; normaltime = tokens[12];
 				dis = String.valueOf(homep.distance(officep)/100000);
 			}
 
-			String res = diff+" 1:"+timerange(normaltime)+" 2:"+level+" 3:"+timerange(time)
-					+GetPop.getpop(popmap,nowp,homep,officep)
-					+GetLanduse.getlanduse(buildingmap, farmmap, nowp, homep, officep)
-					+GetRoadData.getroaddata(sroadmap, broadmap, allroadmap, nowp, homep, officep)
-					+GetTrainData.getstationpop(trainmap, nowp, homep, officep)
-					+GetLandPrice.getlandprice(pricemap, nowp, homep, officep)
-					+" 28:"+dis+" 29:"+timerange(distime);
-
-			bw.write(res);
-			bw.newLine();
-
+			if(Math.abs(Double.parseDouble(diff))>min){
+//								String res = diff+" 1:"+timerange(normaltime)+" 2:"+level+" 3:"+timerange(time)
+//										+GetPop.getpop(popmap,nowp,homep,officep)
+//										+GetLanduse.getlanduse(buildingmap, farmmap, nowp, homep, officep)
+//										+GetRoadData.getroaddata(sroadmap, broadmap, allroadmap, nowp, homep, officep)
+//										+GetTrainData.getstationpop(trainmap, nowp, homep, officep)
+//										+GetLandPrice.getlandprice(pricemap, nowp, homep, officep)
+//										+" 28:"+dis+" 29:"+timerange(distime);
+//				
+				ArrayList<String> list = new ArrayList<String>();
+				for(String l  : GetLevel.getLevel(level).split(",")){ //level (0,0,0,0 etc.)
+					list.add(l);
+				}
+				for(String t  : timerange(time).split(",")){ //time of disaster 
+					list.add(t);
+				}
+				for(String nt : timerange(normaltime).split(",")){ //time of action (normal)
+					list.add(nt);
+				}
+				for(String dt : timerange(distime).split(",")){ //time of action (disaster)
+					list.add(dt);
+				}
+				for(String p  : GetPop.getpop(popmap, nowp, homep, officep).split(",")){ //pop data
+					list.add(p);
+				}
+				for(String la : GetLanduse.getlanduse(buildingmap, farmmap, nowp, homep, officep).split(",")){
+					list.add(la);
+				}
+				for(String r  : GetRoadData.getroaddata(sroadmap, broadmap, allroadmap, nowp, homep, officep).split(",")){
+					list.add(r);
+				}
+				for(String st : GetTrainData.getstationpop(trainmap, nowp, homep, officep).split(",")){
+					list.add(st);
+				}
+				for(String lp : GetLandPrice.getlandprice(pricemap, nowp, homep, officep).split(",")){
+					list.add(lp);
+				}
+				for(String ds : getlineDistance(dis).split(",")){
+					list.add(ds);
+				}
+						
+				bw.write(diff);
+				for(int i = 1; i<=list.size(); i++){
+					bw.write(" "+i+":"+list.get(i-1));
+				}
+				bw.newLine();
+			}
 		}
 		br.close();
 		bw.close();
@@ -133,15 +170,29 @@ public class MLData {
 
 	public static String timerange(String time){
 		if(time==null){
-			return "0";
+			return "0,0,0,0,0";
 		}
 		else{
 			Double timerange = Double.parseDouble(time);
-			if(timerange<6){return "0.2";}
-			else if ((timerange>=6)&&(timerange<10)){return "0.4";}
-			else if ((timerange>=10)&&(timerange<16)){return "0.6";}
-			else if ((timerange>=16)&&(timerange<20)){return "0.8";}
-			else{return "1";}
+			if(timerange<6){return "1,0,0,0,0";}
+			else if ((timerange>=6)&&(timerange<10)){return "0,1,0,0,0";}
+			else if ((timerange>=10)&&(timerange<16)){return "0,0,1,0,0";}
+			else if ((timerange>=16)&&(timerange<20)){return "0,0,0,1,0";}
+			else{return "0,0,0,0,1";}
+		}
+	}
+	
+	public static String getlineDistance(String poprate){
+		if(poprate==null){
+			return "0,0,0,0,0";
+		}
+		else{
+			Double poprange = Double.parseDouble(poprate);
+			if(poprange<0.01){return "1,0,0,0,0";}
+			else if ((poprange>=0.01)&&(poprange<0.05)){return "0,1,0,0,0";}
+			else if ((poprange>=0.05)&&(poprange<0.25)){return "0,0,1,0,0";}
+			else if ((poprange>=0.25)&&(poprange<0.40)){return "0,0,0,1,0";}
+			else{return "0,0,0,0,1";}
 		}
 	}
 }

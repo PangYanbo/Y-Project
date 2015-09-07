@@ -26,8 +26,8 @@ public class GetLanduse {
 		String homef = farm.get(homem);
 		String offf = farm.get(offm);
 		
-		String res = " 7:"+nowb+" 8:"+homeb+" 9:"+offb+
-				     " 10:"+nowf+" 11:"+homef+" 12:"+offf;
+		String res = getlineb(nowb)+","+getlineb(homeb)+","+getlineb(offb)+
+				     ","+getlinef(nowf)+","+getlinef(homef)+","+getlinef(offf);
 		return res;
 	}
 	
@@ -81,5 +81,31 @@ public class GetLanduse {
 		return res;
 	}
 	
+	public static String getlinef(String poprate){
+		if(poprate==null){
+			return "0,0,0,0,0";
+		}
+		else{
+			Double poprange = Double.parseDouble(poprate);
+			if(poprange<0.01){return "1,0,0,0,0";}
+			else if ((poprange>=0.01)&&(poprange<0.05)){return "0,1,0,0,0";}
+			else if ((poprange>=0.05)&&(poprange<0.1)){return "0,0,1,0,0";}
+			else if ((poprange>=0.1)&&(poprange<0.3)){return "0,0,0,1,0";}
+			else{return "0,0,0,0,1";}
+		}
+	}
 	
+	public static String getlineb(String poprate){
+		if(poprate==null){
+			return "0,0,0,0,0";
+		}
+		else{
+			Double poprange = Double.parseDouble(poprate);
+			if(poprange<0.3){return "1,0,0,0,0";}
+			else if ((poprange>=0.3)&&(poprange<0.6)){return "0,1,0,0,0";}
+			else if ((poprange>=0.6)&&(poprange<0.8)){return "0,0,1,0,0";}
+			else if ((poprange>=0.8)&&(poprange<0.9)){return "0,0,0,1,0";}
+			else{return "0,0,0,0,1";}
+		}
+	}
 }
