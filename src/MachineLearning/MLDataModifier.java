@@ -67,6 +67,9 @@ public class MLDataModifier {
 		int res = 0;
 		if((num2>=min)&&(num2<10)){
 			res = (int)Math.round(num2);
+			if(res==0){
+				res = 1;
+			}
 		}
 		else if(num2>=10){
 			res = 10;
@@ -75,7 +78,6 @@ public class MLDataModifier {
 			res = 0;
 		}
 		return res;
-
 	}
 
 	public static void DeleteBisho(File in, File out) throws IOException{
