@@ -59,16 +59,16 @@ public class MLData {
 							System.out.println("#working on " + f.toString());
 							getAttributes(f,new File(outfile),level,time,popmap,buildingmap,farmmap,sroadmap,broadmap,allroadmap,trainmap,pricemap);
 						}}}}
-			String newoutfile   = "/home/c-tyabe/Data/MLResults_"+type+"/"+subject+"_ML_cleaned.csv"; 
+			String newoutfile   = "/home/c-tyabe/Data/MLResults_"+type+"2/"+subject+"_ML_cleaned.csv"; 
 			MLDataCleaner.DataClean(new File(outfile), new File(newoutfile)); //delete 0s and Es
 
-			String plusminus_normal  = "/home/c-tyabe/Data/MLResults_"+type+"/forML/"+subject+"_ML_plusminus_normal.csv";
+			String plusminus_normal  = "/home/c-tyabe/Data/MLResults_"+type+"2/forML/"+subject+"_ML_plusminus_normal.csv";
 			MLDataCleaner.ytoone(new File(newoutfile), new File(plusminus_normal));
 		
-			String multiplelines = "/home/c-tyabe/Data/MLResults_"+type+"/"+subject+"_ML_lineforeach.csv";
+			String multiplelines = "/home/c-tyabe/Data/MLResults_"+type+"2/"+subject+"_ML_lineforeach.csv";
 			MLDataModifier.Modify(new File(newoutfile), new File(multiplelines));
 			
-			String plusminus_multiplelines = "/home/c-tyabe/Data/MLResults_"+type+"/forML/"+subject+"_ML_plusminus_lineforeach.csv";
+			String plusminus_multiplelines = "/home/c-tyabe/Data/MLResults_"+type+"2/forML/"+subject+"_ML_plusminus_lineforeach.csv";
 			MLDataCleaner.ytoone(new File(multiplelines), new File(plusminus_multiplelines));
 		}
 	}
