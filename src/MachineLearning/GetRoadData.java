@@ -31,9 +31,9 @@ public class GetRoadData {
 		String homea = allroad.get(homem);
 		String offa = allroad.get(offm);
 		
-		String res = " 13:"+nows +" 14:"+homes+" 15:"+offs +
-				     " 16:"+nowb +" 17:"+homeb+" 18:"+ offb+
-				     " 19:"+nowa +" 20:"+homea+" 21:"+ offa;
+		String res = getlines(nows) +","+getlines(homes)+","+getlines(offs) +
+				     ","+getlineb(nowb) +","+getlineb(homeb)+","+ getlineb(offb)+
+				     ","+getlinea(nowa) +","+getlinea(homea)+","+ getlinea(offa);
 		return res;
 	}
 	
@@ -111,5 +111,48 @@ public class GetRoadData {
 		}
 		return res;
 	}
+	
+	public static String getlines(String poprate){
+		if(poprate==null){
+			return "0,0,0,0,0";
+		}
+		else{
+			Double poprange = Double.parseDouble(poprate);
+			if(poprange<0.2){return "1,0,0,0,0";}
+			else if ((poprange>=0.2)&&(poprange<0.4)){return "0,1,0,0,0";}
+			else if ((poprange>=0.4)&&(poprange<0.6)){return "0,0,1,0,0";}
+			else if ((poprange>=0.6)&&(poprange<0.8)){return "0,0,0,1,0";}
+			else{return "0,0,0,0,1";}
+		}
+	}
+	
+	public static String getlineb(String poprate){
+		if(poprate==null){
+			return "0,0,0,0,0";
+		}
+		else{
+			Double poprange = Double.parseDouble(poprate);
+			if(poprange<0.1){return "1,0,0,0,0";}
+			else if ((poprange>=0.1)&&(poprange<0.2)){return "0,1,0,0,0";}
+			else if ((poprange>=0.2)&&(poprange<0.3)){return "0,0,1,0,0";}
+			else if ((poprange>=0.3)&&(poprange<0.45)){return "0,0,0,1,0";}
+			else{return "0,0,0,0,1";}
+		}
+	}
+	
+	public static String getlinea(String poprate){
+		if(poprate==null){
+			return "0,0,0,0,0";
+		}
+		else{
+			Double poprange = Double.parseDouble(poprate);
+			if(poprange<0.15){return "1,0,0,0,0";}
+			else if ((poprange>=0.15)&&(poprange<0.3)){return "0,1,0,0,0";}
+			else if ((poprange>=0.3)&&(poprange<0.5)){return "0,0,1,0,0";}
+			else if ((poprange>=0.5)&&(poprange<0.65)){return "0,0,0,1,0";}
+			else{return "0,0,0,0,1";}
+		}
+	}
+	
 	
 }

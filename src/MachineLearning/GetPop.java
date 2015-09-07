@@ -23,7 +23,7 @@ public class GetPop {
 		String homepop = popmap.get(homem);
 		String offpop = popmap.get(offm);
 
-		String res = " 4:"+nowpop +" 5:"+homepop+" 6:"+offpop;
+		String res = getline(nowpop)+","+getline(homepop)+","+getline(offpop);
 		return res;
 	}
 
@@ -41,4 +41,18 @@ public class GetPop {
 		return res;
 	}
 
+	public static String getline(String poprate){
+		if(poprate==null){
+			return "0,0,0,0,0";
+		}
+		else{
+			Double poprange = Double.parseDouble(poprate);
+			if(poprange<0.00025){return "1,0,0,0,0";}
+			else if ((poprange>=0.00025)&&(poprange<0.001)){return "0,1,0,0,0";}
+			else if ((poprange>=0.001)&&(poprange<0.005)){return "0,0,1,0,0";}
+			else if ((poprange>=0.005)&&(poprange<0.01)){return "0,0,0,1,0";}
+			else{return "0,0,0,0,1";}
+		}
+	}
+	
 }

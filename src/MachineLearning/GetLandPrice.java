@@ -17,7 +17,7 @@ public class GetLandPrice {
 		String homepop = getnearestprice(pricemap,home);
 		String offpop = getnearestprice(pricemap,office);
 
-		String res = " 25:"+nowpop +" 26:"+homepop+" 27:"+offpop;
+		String res = getline(nowpop) +","+ getline(homepop) +","+ getline(offpop);
 		return res;
 	}
 
@@ -58,5 +58,18 @@ public class GetLandPrice {
 		return String.valueOf(price);
 	}
 
+	public static String getline(String poprate){
+		if(poprate==null){
+			return "0,0,0,0,0";
+		}
+		else{
+			Double poprange = Double.parseDouble(poprate);
+			if(poprange<0.0015){return "1,0,0,0,0";}
+			else if ((poprange>=0.0015)&&(poprange<0.003)){return "0,1,0,0,0";}
+			else if ((poprange>=0.003)&&(poprange<0.01)){return "0,0,1,0,0";}
+			else if ((poprange>=0.01)&&(poprange<0.05)){return "0,0,0,1,0";}
+			else{return "0,0,0,0,1";}
+		}
+	}
 	
 }
