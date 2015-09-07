@@ -27,9 +27,9 @@ public class Counter {
 	}
 	
 	public static void main(String args[]) throws IOException{
-		String type = "eq";
-		String subject = "office_exit_diff";
-		File in = new File("/home/c-tyabe/Data/MLResults_"+type+"/"+subject+"_ML_lineforeach3.csv");
+		String type = "rain";
+		String subject = "office_enter_diff";
+		File in = new File("/home/c-tyabe/Data/MLResults_"+type+"/"+subject+"_ML_plusminus_normal.csv");
 		count(in);
 	}
 	
