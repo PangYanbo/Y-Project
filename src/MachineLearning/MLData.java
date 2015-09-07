@@ -35,11 +35,11 @@ public class MLData {
 
 		for(String subject : subjects){
 
-			String outdir = "/home/c-tyabe/Data/MLResults_"+type+"/";
+			String outdir = "/home/c-tyabe/Data/MLResults_"+type+"2/";
 			File outputdir = new File(outdir); outputdir.mkdir();
-			String outdir2 = "/home/c-tyabe/Data/MLResults_"+type+"/forML/"; 
+			String outdir2 = "/home/c-tyabe/Data/MLResults_"+type+"2/forML/"; 
 			File outputdir2 = new File(outdir2); outputdir2.mkdir();
-			String outfile   = "/home/c-tyabe/Data/MLResults_"+type+"/"+subject+"_ML.csv"; 
+			String outfile   = "/home/c-tyabe/Data/MLResults_"+type+"2/"+subject+"_ML.csv"; 
 
 			HashMap<String, String>  popmap       = GetPop.getpopmap(landusefile);
 			HashMap<String, String>  buildingmap  = GetLanduse.getmeshbuilding(landusefile);

@@ -65,14 +65,14 @@ public class MLDataModifier {
 	public static int numofline(Double num){
 		double num2 = Math.abs(num);
 		int res = 0;
-		if((num2>=1)&&(num2<10)){
+		if((num2>=0.5)&&(num2<10)){
 			res = (int)Math.round(num2);
 		}
 		else if(num2>=10){
 			res = 10;
 		}
 		else{
-			res = 1;
+			res = 0;
 		}
 		return res;
 
