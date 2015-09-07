@@ -29,7 +29,7 @@ public class Counter {
 	public static void main(String args[]) throws IOException{
 		String type = "rain";
 		String subject = "office_enter_diff";
-		File in = new File("/home/c-tyabe/Data/MLResults_"+type+"/"+subject+"_ML_plusminus_normal.csv");
+		File in = new File("/home/c-tyabe/Data/MLResults_"+type+"/forML/"+subject+"_ML_plusminus_normal.csv");
 		count(in);
 	}
 	
