@@ -14,7 +14,7 @@ import jp.ac.ut.csis.pflow.geom.LonLat;
 public class MLData {
 
 	public static final String type      = "rain";
-	public static final String dir       = "/home/c-tyabe/Data/"+type+"Tokyo2/";
+	public static final String dir       = "/home/c-tyabe/Data/"+type+"Tokyo3/";
 
 	public static final File popfile     = new File("/home/c-tyabe/Data/DataforML/mesh_daytimepop.csv");
 	public static final File landusefile = new File("/home/c-tyabe/Data/DataforML/landusedata.csv");
