@@ -30,7 +30,7 @@ public class Counter {
 		String type = args[0];
 		String subject = args[1];
 		String version = args[2];
-		File in = new File("/home/c-tyabe/Data/MLResults_"+type+"/forML/"+subject+"_diff_ML_"+version+".csv");
+		File in = new File("/home/c-tyabe/Data/MLResults_"+type+"/forML/"+subject+"_diff_ML_plusminus_"+version+".csv");
 		count(in);
 	}
 	
