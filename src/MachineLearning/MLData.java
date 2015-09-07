@@ -15,6 +15,7 @@ public class MLData {
 
 	public static final String type      = "rain";
 	public static final String dir       = "/home/c-tyabe/Data/"+type+"Tokyo3/";
+	public static final String outdir    = "/home/c-tyabe/Data/MLResults_"+type+"2/";
 
 	public static final File popfile     = new File("/home/c-tyabe/Data/DataforML/mesh_daytimepop.csv");
 	public static final File landusefile = new File("/home/c-tyabe/Data/DataforML/landusedata.csv");
@@ -24,6 +25,10 @@ public class MLData {
 
 	public static void main(String args[]) throws IOException{
 
+		File outputdir = new File(outdir); outputdir.mkdir();
+		String outdir2 = outdir+"forML/"; File outputdir2 = new File(outdir2); outputdir2.mkdir();
+
+		
 		ArrayList<String> subjects = new ArrayList<String>();
 		subjects.add("tsukin_time_diff");
 		subjects.add("office_time_diff");
@@ -35,11 +40,7 @@ public class MLData {
 
 		for(String subject : subjects){
 
-			String outdir = "/home/c-tyabe/Data/MLResults_"+type+"2/";
-			File outputdir = new File(outdir); outputdir.mkdir();
-			String outdir2 = "/home/c-tyabe/Data/MLResults_"+type+"2/forML/"; 
-			File outputdir2 = new File(outdir2); outputdir2.mkdir();
-			String outfile   = "/home/c-tyabe/Data/MLResults_"+type+"2/"+subject+"_ML.csv"; 
+			String outfile   = outdir+subject+"_ML.csv"; 
 
 			HashMap<String, String>  popmap       = GetPop.getpopmap(landusefile);
 			HashMap<String, String>  buildingmap  = GetLanduse.getmeshbuilding(landusefile);
@@ -59,16 +60,16 @@ public class MLData {
 							System.out.println("#working on " + f.toString());
 							getAttributes(f,new File(outfile),level,time,popmap,buildingmap,farmmap,sroadmap,broadmap,allroadmap,trainmap,pricemap);
 						}}}}
-			String newoutfile   = "/home/c-tyabe/Data/MLResults_"+type+"2/"+subject+"_ML_cleaned.csv"; 
+			String newoutfile   = outdir+subject+"_ML_cleaned.csv"; 
 			MLDataCleaner.DataClean(new File(outfile), new File(newoutfile)); //delete 0s and Es
 
-			String plusminus_normal  = "/home/c-tyabe/Data/MLResults_"+type+"2/forML/"+subject+"_ML_plusminus_normal.csv";
+			String plusminus_normal  = outdir2+subject+"_ML_plusminus_normal.csv";
 			MLDataCleaner.ytoone(new File(newoutfile), new File(plusminus_normal));
 		
-			String multiplelines = "/home/c-tyabe/Data/MLResults_"+type+"2/"+subject+"_ML_lineforeach.csv";
+			String multiplelines = outdir+subject+"_ML_lineforeach.csv";
 			MLDataModifier.Modify(new File(newoutfile), new File(multiplelines));
 			
-			String plusminus_multiplelines = "/home/c-tyabe/Data/MLResults_"+type+"2/forML/"+subject+"_ML_plusminus_lineforeach.csv";
+			String plusminus_multiplelines = outdir2+subject+"_ML_plusminus_lineforeach.csv";
 			MLDataCleaner.ytoone(new File(multiplelines), new File(plusminus_multiplelines));
 		}
 	}
