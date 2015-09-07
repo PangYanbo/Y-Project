@@ -69,7 +69,7 @@ public class MLData {
 			MLDataModifier.Modify(new File(newoutfile), new File(multiplelines));
 			
 			String plusminus_multiplelines = "/home/c-tyabe/Data/MLResults_"+type+"/forML/"+subject+"_ML_plusminus_lineforeach.csv";
-			MLDataModifier.Modify(new File(multiplelines), new File(plusminus_multiplelines));
+			MLDataCleaner.ytoone(new File(multiplelines), new File(plusminus_multiplelines));
 		}
 	}
 
