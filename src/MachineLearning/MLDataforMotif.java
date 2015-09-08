@@ -11,11 +11,11 @@ import java.util.HashMap;
 
 import jp.ac.ut.csis.pflow.geom.LonLat;
 
-public class MLData {
+public class MLDataforMotif {
 
-	public static final String type      = "eq";
+	public static final String type      = "rain";
 	public static final String dir       = "/home/c-tyabe/Data/"+type+"Tokyo3/";
-	public static final String outdir    = "/home/c-tyabe/Data/MLResults_"+type+"3/";
+	public static final String outdir    = "/home/c-tyabe/Data/MLResults_"+type+"4/";
 	public static final double min       = 0;
 
 	public static final File popfile     = new File("/home/c-tyabe/Data/DataforML/mesh_daytimepop.csv");
@@ -28,52 +28,41 @@ public class MLData {
 
 		File outputdir = new File(outdir); outputdir.mkdir();
 		String outdir2 = outdir+"forML/"; File outputdir2 = new File(outdir2); outputdir2.mkdir();
+		
+		String subject = "id_day_motifs";
+		String outfile   = outdir+subject+"_ML.csv"; 
 
+		HashMap<String, String>  popmap       = GetPop.getpopmap(popfile);
+		HashMap<String, String>  buildingmap  = GetLanduse.getmeshbuilding(landusefile);
+		HashMap<String, String>  farmmap      = GetLanduse.getmeshfarm(landusefile);
+		HashMap<String, String>  sroadmap     = GetRoadData.getsmallroad(roadfile);
+		HashMap<String, String>  broadmap     = GetRoadData.getfatroad(roadfile);
+		HashMap<String, String>  allroadmap   = GetRoadData.getallroad(roadfile);
+		HashMap<LonLat, String>  trainmap     = GetTrainData.getpopmap(trainfile);
+		HashMap<LonLat, String>  pricemap     = GetLandPrice.getpricemap(pricefile);
 
-		ArrayList<String> subjects = new ArrayList<String>();
-		subjects.add("tsukin_time_diff");
-		subjects.add("office_time_diff");
-		subjects.add("kitaku_time_diff");
-		subjects.add("home_exit_diff");
-		subjects.add("home_return_diff");
-		subjects.add("office_enter_diff");
-		subjects.add("office_exit_diff");
+		for(File typelevel : new File(dir).listFiles()){
+			String level = typelevel.getName().split("_")[1];
+			for(File datetime :typelevel.listFiles()){
+				String time = datetime.getName().split("_")[1];
+				for(File f : datetime.listFiles()){
+					if(f.toString().contains(subject)){
+						System.out.println("#working on " + f.toString());
+						getAttributes(f,new File(outfile),level,time,popmap,buildingmap,farmmap,sroadmap,broadmap,allroadmap,trainmap,pricemap);
+					}}}}
 
-		for(String subject : subjects){
+		String newoutfile   = outdir+subject+"_ML_cleaned.csv"; 
+		MLDataCleaner.DataClean(new File(outfile), new File(newoutfile)); //delete 0s and Es
 
-			String outfile   = outdir+subject+"_ML.csv"; 
+		String plusminus_normal  = outdir2+subject+"_ML_plusminus_normal.csv";
+		MLDataCleaner.ytoone(new File(newoutfile), new File(plusminus_normal));
 
-			HashMap<String, String>  popmap       = GetPop.getpopmap(popfile);
-			HashMap<String, String>  buildingmap  = GetLanduse.getmeshbuilding(landusefile);
-			HashMap<String, String>  farmmap      = GetLanduse.getmeshfarm(landusefile);
-			HashMap<String, String>  sroadmap     = GetRoadData.getsmallroad(roadfile);
-			HashMap<String, String>  broadmap     = GetRoadData.getfatroad(roadfile);
-			HashMap<String, String>  allroadmap   = GetRoadData.getallroad(roadfile);
-			HashMap<LonLat, String>  trainmap     = GetTrainData.getpopmap(trainfile);
-			HashMap<LonLat, String>  pricemap     = GetLandPrice.getpricemap(pricefile);
+		String multiplelines = outdir+subject+"_ML_lineforeach.csv";
+		MLDataModifier.Modify(new File(newoutfile), new File(multiplelines), min);
 
-			for(File typelevel : new File(dir).listFiles()){
-				String level = typelevel.getName().split("_")[1];
-				for(File datetime :typelevel.listFiles()){
-					String time = datetime.getName().split("_")[1];
-					for(File f : datetime.listFiles()){
-						if(f.toString().contains(subject)){
-							System.out.println("#working on " + f.toString());
-							getAttributes(f,new File(outfile),level,time,popmap,buildingmap,farmmap,sroadmap,broadmap,allroadmap,trainmap,pricemap);
-						}}}}
-			
-			String newoutfile   = outdir+subject+"_ML_cleaned.csv"; 
-			MLDataCleaner.DataClean(new File(outfile), new File(newoutfile)); //delete 0s and Es
+		String plusminus_multiplelines = outdir2+subject+"_ML_plusminus_lineforeach.csv";
+		MLDataCleaner.ytoone(new File(multiplelines), new File(plusminus_multiplelines));
 
-			String plusminus_normal  = outdir2+subject+"_ML_plusminus_normal.csv";
-			MLDataCleaner.ytoone(new File(newoutfile), new File(plusminus_normal));
-
-			String multiplelines = outdir+subject+"_ML_lineforeach.csv";
-			MLDataModifier.Modify(new File(newoutfile), new File(multiplelines), min);
-
-			String plusminus_multiplelines = outdir2+subject+"_ML_plusminus_lineforeach.csv";
-			MLDataCleaner.ytoone(new File(multiplelines), new File(plusminus_multiplelines));
-		}
 	}
 
 
@@ -108,14 +97,7 @@ public class MLData {
 			}
 
 			if(Math.abs(Double.parseDouble(diff))>min){
-//								String res = diff+" 1:"+timerange(normaltime)+" 2:"+level+" 3:"+timerange(time)
-//										+GetPop.getpop(popmap,nowp,homep,officep)
-//										+GetLanduse.getlanduse(buildingmap, farmmap, nowp, homep, officep)
-//										+GetRoadData.getroaddata(sroadmap, broadmap, allroadmap, nowp, homep, officep)
-//										+GetTrainData.getstationpop(trainmap, nowp, homep, officep)
-//										+GetLandPrice.getlandprice(pricemap, nowp, homep, officep)
-//										+" 28:"+dis+" 29:"+timerange(distime);
-//				
+				
 				ArrayList<String> list = new ArrayList<String>();
 				for(String l  : GetLevel.getLevel(level).split(",")){ //level (0,0,0,0 etc.)
 					list.add(l);
@@ -147,7 +129,7 @@ public class MLData {
 				for(String ds : getlineDistance(dis).split(",")){
 					list.add(ds);
 				}
-						
+
 				bw.write(diff);
 				for(int i = 1; i<=list.size(); i++){
 					bw.write(" "+i+":"+list.get(i-1));
@@ -182,7 +164,7 @@ public class MLData {
 			else{return "0,0,0,0,1";}
 		}
 	}
-	
+
 	public static String getlineDistance(String poprate){
 		if(poprate==null){
 			return "0,0,0,0,0";
@@ -196,4 +178,21 @@ public class MLData {
 			else{return "0,0,0,0,1";}
 		}
 	}
+	
+	public static HashMap<String, HashMap<String,String>> getMotifMap(File in) throws IOException{
+		HashMap<String, HashMap<String,String>> res = new HashMap<String, HashMap<String,String>>();
+		BufferedReader br = new BufferedReader(new FileReader(in));
+//		String line = null;
+//		while((line=br.readLine())!=null){
+//			
+//		}
+		br.close();
+		return res;
+	}
+	
+	/*
+	 * wait a minute... how are we going to set the ñ⁄ìIïœêî!?
+	 * @ ask Tsubochan
+	 * 
+	 */
 }
