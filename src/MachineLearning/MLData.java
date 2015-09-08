@@ -16,7 +16,7 @@ public class MLData {
 	public static final String type      = "eq";
 	public static final String dir       = "/home/c-tyabe/Data/"+type+"Tokyo3/";
 	public static final String outdir    = "/home/c-tyabe/Data/MLResults_"+type+"3/";
-	public static final double min       = 0;
+	public static final double min       = 0.5;
 
 	public static final File popfile     = new File("/home/c-tyabe/Data/DataforML/mesh_daytimepop.csv");
 	public static final File landusefile = new File("/home/c-tyabe/Data/DataforML/landusedata.csv");
