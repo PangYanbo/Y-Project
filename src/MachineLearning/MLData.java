@@ -16,6 +16,7 @@ public class MLData {
 	public static final String type      = "dosha";
 	public static final String dir       = "/home/c-tyabe/Data/"+type+"Tokyo3/";
 	public static final String outdir    = "/home/c-tyabe/Data/MLResults_"+type+"3/";
+	public static final String outdir2   = outdir+"forML/";
 	public static final double min       = 0.5;
 
 	public static final File popfile     = new File("/home/c-tyabe/Data/DataforML/mesh_daytimepop.csv");
@@ -27,22 +28,28 @@ public class MLData {
 	public static void main(String args[]) throws IOException{
 
 		File outputdir = new File(outdir); outputdir.mkdir();
-		String outdir2 = outdir+"forML/"; File outputdir2 = new File(outdir2); outputdir2.mkdir();
+		File outputdir2 = new File(outdir2); outputdir2.mkdir();
 
+		ArrayList<String> subjects1 = new ArrayList<String>();
+		subjects1.add("tsukin_time_diff");
+		subjects1.add("kitaku_time_diff");
+		runMLData(subjects1, 0);
 
 		ArrayList<String> subjects = new ArrayList<String>();
-		subjects.add("tsukin_time_diff");
 		subjects.add("office_time_diff");
-		subjects.add("kitaku_time_diff");
 		subjects.add("home_exit_diff");
 		subjects.add("home_return_diff");
 		subjects.add("office_enter_diff");
 		subjects.add("office_exit_diff");
+		runMLData(subjects, 1);
+
+	}
+
+	public static void runMLData(ArrayList<String> subjects, int mode) throws IOException{
 
 		for(String subject : subjects){
 
 			String outfile   = outdir+subject+"_ML.csv"; 
-
 			HashMap<String, String>  popmap       = GetPop.getpopmap(popfile);
 			HashMap<String, String>  buildingmap  = GetLanduse.getmeshbuilding(landusefile);
 			HashMap<String, String>  farmmap      = GetLanduse.getmeshfarm(landusefile);
@@ -59,9 +66,10 @@ public class MLData {
 					for(File f : datetime.listFiles()){
 						if(f.toString().contains(subject)){
 							System.out.println("#working on " + f.toString());
-							getAttributes(f,new File(outfile),level,time,popmap,buildingmap,farmmap,sroadmap,broadmap,allroadmap,trainmap,pricemap);
+							getAttributes(f,new File(outfile),level,time,popmap,buildingmap,farmmap,
+									sroadmap,broadmap,allroadmap,trainmap,pricemap,mode);
 						}}}}
-			
+
 			String newoutfile   = outdir+subject+"_ML_cleaned.csv"; 
 			MLDataCleaner.DataClean(new File(outfile), new File(newoutfile)); //delete 0s and Es
 
@@ -80,13 +88,13 @@ public class MLData {
 	public static void getAttributes(File in, File out, String level, String time,
 			HashMap<String, String> popmap, HashMap<String, String> buildingmap, HashMap<String, String> farmmap, 
 			HashMap<String, String> sroadmap, HashMap<String, String> broadmap, HashMap<String, String> allroadmap,
-			HashMap<LonLat, String> trainmap, HashMap<LonLat, String> pricemap) throws IOException{
+			HashMap<LonLat, String> trainmap, HashMap<LonLat, String> pricemap, int mode) throws IOException{
 
 		BufferedReader br = new BufferedReader(new FileReader(in));
 		BufferedWriter bw = new BufferedWriter(new FileWriter(out,true));
 		String line = null;
 		while((line=br.readLine())!=null){
-			String diff = null; String dis = null; String normaltime = null; String distime = null;
+			String diff = null; String dis = null; String normaltime = null; //String distime = null;
 			LonLat nowp = null; LonLat homep = null; LonLat officep = null; 
 
 			String[] tokens = line.split(",");
@@ -95,7 +103,7 @@ public class MLData {
 				nowp = new LonLat(Double.parseDouble(tokens[5].replace("(","")),Double.parseDouble(tokens[6].replace(")","")));
 				homep = new LonLat(Double.parseDouble(tokens[7].replace("(","")),Double.parseDouble(tokens[8].replace(")","")));
 				officep = new LonLat(Double.parseDouble(tokens[9].replace("(","")),Double.parseDouble(tokens[10].replace(")","")));
-				normaltime = tokens[12]; distime = tokens[11];
+				normaltime = tokens[12]; //distime = tokens[11];
 				dis = String.valueOf(homep.distance(officep)/100000);
 			}
 			else{ // output version 2
@@ -103,19 +111,13 @@ public class MLData {
 				nowp = new LonLat(Double.parseDouble(tokens[5]),Double.parseDouble(tokens[6]));
 				homep = new LonLat(Double.parseDouble(tokens[7]),Double.parseDouble(tokens[8]));
 				officep = new LonLat(Double.parseDouble(tokens[9]),Double.parseDouble(tokens[10]));
-				distime = tokens[11]; normaltime = tokens[12];
+				//distime = tokens[11]; 
+				normaltime = tokens[12];
 				dis = String.valueOf(homep.distance(officep)/100000);
 			}
 
 			if(Math.abs(Double.parseDouble(diff))>min){
-//								String res = diff+" 1:"+timerange(normaltime)+" 2:"+level+" 3:"+timerange(time)
-//										+GetPop.getpop(popmap,nowp,homep,officep)
-//										+GetLanduse.getlanduse(buildingmap, farmmap, nowp, homep, officep)
-//										+GetRoadData.getroaddata(sroadmap, broadmap, allroadmap, nowp, homep, officep)
-//										+GetTrainData.getstationpop(trainmap, nowp, homep, officep)
-//										+GetLandPrice.getlandprice(pricemap, nowp, homep, officep)
-//										+" 28:"+dis+" 29:"+timerange(distime);
-//				
+
 				ArrayList<String> list = new ArrayList<String>();
 				for(String l  : GetLevel.getLevel(level).split(",")){ //level (0,0,0,0 etc.)
 					list.add(l);
@@ -123,11 +125,15 @@ public class MLData {
 				for(String t  : timerange(time).split(",")){ //time of disaster 
 					list.add(t);
 				}
-				for(String nt : timerange(normaltime).split(",")){ //time of action (normal)
-					list.add(nt);
+				if(mode == 1){
+					for(String nt : timerange(normaltime).split(",")){ //time of action (normal)
+						list.add(nt);
+					}
 				}
-				for(String dt : timerange(distime).split(",")){ //time of action (disaster)
-					list.add(dt);
+				else{
+					for(String nt : timerangeshort(normaltime).split(",")){ //time of action (normal)
+						list.add(nt);
+					}
 				}
 				for(String p  : GetPop.getpop(popmap, nowp, homep, officep).split(",")){ //pop data
 					list.add(p);
@@ -146,8 +152,7 @@ public class MLData {
 				}
 				for(String ds : getlineDistance(dis).split(",")){
 					list.add(ds);
-				}
-						
+				}		
 				bw.write(diff);
 				for(int i = 1; i<=list.size(); i++){
 					bw.write(" "+i+":"+list.get(i-1));
@@ -182,7 +187,21 @@ public class MLData {
 			else{return "0,0,0,0,1";}
 		}
 	}
-	
+
+	public static String timerangeshort(String time){
+		if(time==null){
+			return "0,0,0,0,0";
+		}
+		else{
+			Double timerange = Double.parseDouble(time);
+			if(timerange<1){return "1,0,0,0,0";}
+			else if ((timerange>=1)&&(timerange<2)){return "0,1,0,0,0";}
+			else if ((timerange>=2)&&(timerange<3)){return "0,0,1,0,0";}
+			else if ((timerange>=4)&&(timerange<5)){return "0,0,0,1,0";}
+			else{return "0,0,0,0,1";}
+		}
+	}
+
 	public static String getlineDistance(String poprate){
 		if(poprate==null){
 			return "0,0,0,0,0";
