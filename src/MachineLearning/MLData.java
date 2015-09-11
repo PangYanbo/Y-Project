@@ -36,19 +36,21 @@ public class MLData {
 		runMLData(subjects1, 0);
 
 		ArrayList<String> subjects = new ArrayList<String>();
-		subjects.add("office_time_diff");
 		subjects.add("home_exit_diff");
-		subjects.add("home_return_diff");
 		subjects.add("office_enter_diff");
 		subjects.add("office_exit_diff");
+		subjects.add("home_return_diff");
 		runMLData(subjects, 1);
 
+		ArrayList<String> subjects2 = new ArrayList<String>();
+		subjects.add("office_time_diff");
+		runMLData(subjects2, 2);
+		
 	}
 
 	public static void runMLData(ArrayList<String> subjects, int mode) throws IOException{
 
 		for(String subject : subjects){
-
 			String outfile   = outdir+subject+"_ML.csv"; 
 			HashMap<String, String>  popmap       = GetPop.getpopmap(popfile);
 			HashMap<String, String>  buildingmap  = GetLanduse.getmeshbuilding(landusefile);
@@ -130,6 +132,11 @@ public class MLData {
 						list.add(nt);
 					}
 				}
+				else if(mode==2){
+					for(String nt : timerangeoffice(normaltime).split(",")){ //time of action (normal)
+						list.add(nt);
+					}
+				}
 				else{
 					for(String nt : timerangeshort(normaltime).split(",")){ //time of action (normal)
 						list.add(nt);
@@ -198,6 +205,20 @@ public class MLData {
 			else if ((timerange>=1)&&(timerange<2)){return "0,1,0,0,0";}
 			else if ((timerange>=2)&&(timerange<3)){return "0,0,1,0,0";}
 			else if ((timerange>=4)&&(timerange<5)){return "0,0,0,1,0";}
+			else{return "0,0,0,0,1";}
+		}
+	}
+	
+	public static String timerangeoffice(String time){
+		if(time==null){
+			return "0,0,0,0,0";
+		}
+		else{
+			Double timerange = Double.parseDouble(time);
+			if(timerange<1){return "1,0,0,0,0";}
+			else if ((timerange>=1)&&(timerange<3)){return "0,1,0,0,0";}
+			else if ((timerange>=3)&&(timerange<6)){return "0,0,1,0,0";}
+			else if ((timerange>=6)&&(timerange<10)){return "0,0,0,1,0";}
 			else{return "0,0,0,0,1";}
 		}
 	}
