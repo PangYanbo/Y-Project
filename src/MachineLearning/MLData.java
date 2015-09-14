@@ -30,7 +30,7 @@ public class MLData {
 
 		File outputdir = new File(outdir); outputdir.mkdir();
 		File outputdir2 = new File(outdir2); outputdir2.mkdir();
-		File outputdir3 = new File(outdir2); outputdir3.mkdir();
+		File outputdir3 = new File(outdir3); outputdir3.mkdir();
 
 		ArrayList<String> subjects = new ArrayList<String>();
 		subjects.add("home_exit_diff");
