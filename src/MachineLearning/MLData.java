@@ -56,8 +56,10 @@ public class MLData {
 		HashMap<LonLat, String>  pricemap     = GetLandPrice.getpricemap(pricefile);
 
 		HashMap<String, HashMap<String,String>> homeexit   = new HashMap<String, HashMap<String,String>>();
+		HashMap<String, HashMap<String,String>> officeent  = new HashMap<String, HashMap<String,String>>();
 		HashMap<String, HashMap<String,String>> officeexit = new HashMap<String, HashMap<String,String>>();
 		HashMap<String, HashMap<String,String>> dis_he     = new HashMap<String, HashMap<String,String>>();
+		HashMap<String, HashMap<String,String>> dis_ox     = new HashMap<String, HashMap<String,String>>();
 		HashMap<String, HashMap<String,String>> dis_oe     = new HashMap<String, HashMap<String,String>>();
 
 		for(File typelevel : new File(dir).listFiles()){
@@ -70,9 +72,13 @@ public class MLData {
 						getActionMap(f,level,date+time,homeexit);
 						getSaigaiMap(f,level,date+time,dis_he);
 					}
+					else if(f.toString().contains("office_enter_diff")){
+						getActionMap(f,level,date+time,officeent);
+						getSaigaiMap(f,level,date+time,dis_oe);
+					}
 					else if(f.toString().contains("office_exit_diff")){
 						getActionMap(f,level,date+time,officeexit);
-						getSaigaiMap(f,level,date+time,dis_oe);
+						getSaigaiMap(f,level,date+time,dis_ox);
 					}
 				}}}
 
@@ -95,7 +101,7 @@ public class MLData {
 							System.out.println("#working on " + f.toString());
 							getAttributes(f,new File(outfile),level,date,time,
 									popmap,buildingmap,farmmap,sroadmap,broadmap,allroadmap,trainmap,pricemap,
-									homeexit, officeexit, dis_he, dis_oe, subject);
+									homeexit, officeent, officeexit, dis_he, dis_oe, dis_ox, subject);
 						}}}}
 
 			String newoutfile   = outdir+subject+"_ML_cleaned.csv"; 
@@ -158,6 +164,7 @@ public class MLData {
 			HashMap<LonLat, String> trainmap, HashMap<LonLat, String> pricemap,
 			HashMap<String, HashMap<String,String>> homeexit, HashMap<String, HashMap<String,String>>officeexit, 
 			HashMap<String, HashMap<String,String>> dis_he, HashMap<String, HashMap<String,String>>dis_oe, 
+			HashMap<String, HashMap<String,String>> officeent, HashMap<String, HashMap<String,String>>dis_ox, 
 			String subject) throws IOException{
 
 		BufferedReader br = new BufferedReader(new FileReader(in));
@@ -244,10 +251,10 @@ public class MLData {
 					else{ for(int i = 1; i <=5 ; i++){list.add("0");}}
 				}else{ for(int i = 1; i <=5 ; i++){list.add("0");}}
 
-				if((subject.equals("office_time_diff"))||(subject.equals("home_return_diff"))){
-					if(officeexit.containsKey(id)){
-						if(officeexit.get(id).containsKey(date+time+level)){
-							for(String oe : Bins.h_e_line(officeexit.get(id).get(date+time+level)).split(",")){
+				if(!(subject.equals("home_exit_diff"))||(subject.equals("tsukin_time_diff"))||(subject.equals("office_enter_diff"))){
+					if(officeent.containsKey(id)){
+						if(officeent.get(id).containsKey(date+time+level)){
+							for(String oe : Bins.h_e_line(officeent.get(id).get(date+time+level)).split(",")){
 								list.add(oe);
 								checkline3++;
 							}}
@@ -255,11 +262,33 @@ public class MLData {
 					else{ for(int i = 1; i <=5 ; i++){list.add("0");}}
 				}else{ for(int i = 1; i <=5 ; i++){list.add("0");}}
 
-				if((subject.equals("office_time_diff"))||(subject.equals("home_return_diff"))){
+				if(!(subject.equals("home_exit_diff"))||(subject.equals("tsukin_time_diff"))||(subject.equals("office_enter_diff"))){
 					if(dis_oe.containsKey(id)){
 						if(dis_oe.get(id).containsKey(date+time+level)){
-							for(String oe2 : Bins.getline4Diffs("office_exit_diff",dis_oe.get(id).get(date+time+level)).split(",")){
+							for(String oe2 : Bins.getline4Diffs("office_enter_diff",dis_oe.get(id).get(date+time+level)).split(",")){
 								list.add(oe2);
+								checkline4++;
+							}}
+						else{ for(int i = 1; i <=5 ; i++){list.add("0");}}}
+					else{ for(int i = 1; i <=5 ; i++){list.add("0");}}
+				}else{ for(int i = 1; i <=5 ; i++){list.add("0");}}
+				
+				if((subject.equals("kitaku_time_diff"))||(subject.equals("home_return_diff"))){
+					if(officeexit.containsKey(id)){
+						if(officeexit.get(id).containsKey(date+time+level)){
+							for(String ox : Bins.h_e_line(officeexit.get(id).get(date+time+level)).split(",")){
+								list.add(ox);
+								checkline3++;
+							}}
+						else{ for(int i = 1; i <=5 ; i++){list.add("0");}}}
+					else{ for(int i = 1; i <=5 ; i++){list.add("0");}}
+				}else{ for(int i = 1; i <=5 ; i++){list.add("0");}}
+
+				if((subject.equals("kitaku_time_diff"))||(subject.equals("home_return_diff"))){
+					if(dis_ox.containsKey(id)){
+						if(dis_ox.get(id).containsKey(date+time+level)){
+							for(String ox2 : Bins.getline4Diffs("office_exit_diff",dis_ox.get(id).get(date+time+level)).split(",")){
+								list.add(ox2);
 								checkline4++;
 							}}
 						else{ for(int i = 1; i <=5 ; i++){list.add("0");}}}
