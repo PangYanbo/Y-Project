@@ -34,11 +34,13 @@ public class YDisasterProject {
 	 */
 
 	// for disasters with 市町村コード！(rain,dosha)
-	
+
 	protected static final SimpleDateFormat SDF_TS = new SimpleDateFormat("yyyy-MM-dd");//change time format
 
 	private static final String type = "rain";
 	private static final String city = "Tokyo";
+	private static final String targetlevel = "3";
+	private static final String targetlevel2 = "4";
 	private static final String homepath = "/home/c-tyabe/Data/"+type+city+"4/";
 	private static final String GPSpath  = "/tmp/bousai_data/gps_";
 
@@ -50,7 +52,7 @@ public class YDisasterProject {
 		File out = new File("/home/c-tyabe/Data/DisasterLogs/DisasterAlertData_shutoken_"+type+".csv");
 		File jiscodes = new File("/home/c-tyabe/Data/ShutokenSHP/JIScodes.csv");
 		DisLogDecider.choosebyAreaDateType(in,out,jiscodes,type,"2014-10-21","2015-08-17");		
-		
+
 		String disasterlogfile = "/home/c-tyabe/Data/DisasterLogs/DisasterAlertData_shutoken_"+type+".csv";
 		runforallevents(disasterlogfile);
 	}
@@ -70,14 +72,16 @@ public class YDisasterProject {
 		for(String ymd : dislogs.keySet()){
 			for(String time : dislogs.get(ymd).keySet()){
 				for(String level : dislogs.get(ymd).get(time).keySet()){
-					if(filedoublechecker(ymd,time,type,level,city)==true){
+					if((level.equals(targetlevel))||level.equals(targetlevel2)){
+						if(filedoublechecker(ymd,time,type,level,city)==true){
 							System.out.println("#starting run for " + ymd +", time: "+ time + ", level:" +level);
 							ArrayList<String> codes = dislogs.get(ymd).get(time).get(level);
 							run(codes, ymd, time, level, dislog);
 							System.out.println("------------------done " + count + " disasters------------------");
 							System.out.println(" ");
+						}
+						count++;
 					}
-					count++;
 				}
 			}
 		}
@@ -125,13 +129,13 @@ public class YDisasterProject {
 				MotifFinder2.executeMotif(dataforexp, workpath, disasterday, targetIDs_code, id_homecode);
 
 				File data = new File(dataforexp); data.delete();
-//				File home = new File(workpath+"id_home.csv"); home.delete();
-//				File office = new File(workpath+"id_office.csv"); office.delete();
+				//				File home = new File(workpath+"id_home.csv"); home.delete();
+				//				File office = new File(workpath+"id_office.csv"); office.delete();
 			}
 
-//			if(!(new File(workpath+"home_exit.csv").exists())){
-//				File emptydir = new File(workpath); emptydir.delete();
-//			}
+			//			if(!(new File(workpath+"home_exit.csv").exists())){
+			//				File emptydir = new File(workpath); emptydir.delete();
+			//			}
 
 		}
 	}

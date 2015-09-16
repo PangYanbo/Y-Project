@@ -98,7 +98,7 @@ public class MLData {
 					String time = datetime.getName().split("_")[1];
 					for(File f : datetime.listFiles()){
 						if(f.toString().contains(subject)){
-							System.out.println("#working on " + f.toString());
+//							System.out.println("#working on " + f.toString());
 							getAttributes(f,new File(outfile),level,date,time,
 									popmap,buildingmap,farmmap,sroadmap,broadmap,allroadmap,trainmap,pricemap,
 									homeexit, officeent, officeexit, dis_he, dis_oe, dis_ox, subject);
@@ -309,7 +309,7 @@ public class MLData {
 			
 			totallines++;
 		}
-		System.out.println("#lines which have cleared sigma " +k+" restriction: " + sigmalines +" out of " + totallines);
+		System.out.println("#lines which have cleared sigma "+k+" restriction: "+sigmalines+" out of "+totallines);
 		System.out.println("#check lines " + totallines + " " + checkline1 + " " + checkline2 + " " + checkline3 + " " + checkline4);
 		
 		br.close();
