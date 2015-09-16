@@ -42,7 +42,7 @@ public class MLDataModifier {
 		}
 	}
 
-	public static void Modify(File in, File out, Double min) throws IOException{
+	public static void Modify(File in, File out) throws IOException{
 		BufferedReader br = new BufferedReader(new FileReader(in));
 		BufferedWriter bw = new BufferedWriter(new FileWriter(out));
 		String line = null;
@@ -50,7 +50,7 @@ public class MLDataModifier {
 			String[] tokens = line.split(" ");
 			Double y = Double.parseDouble(tokens[0]);
 
-			Integer numoflines = numofline(y, min);
+			Integer numoflines = numofline(y);
 
 			for(int i = 0; i<numoflines; i++){
 				bw.write(line);
@@ -62,10 +62,10 @@ public class MLDataModifier {
 		bw.close();
 	}
 
-	public static int numofline(Double num, double min){
+	public static int numofline(Double num){
 		double num2 = Math.abs(num);
 		int res = 0;
-		if((num2>=min)&&(num2<10)){
+		if(num2<10){
 			res = (int)Math.round(num2);
 			if(res==0){
 				res = 1;
