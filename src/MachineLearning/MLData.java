@@ -28,7 +28,7 @@ public class MLData {
 
 	public static void main(String args[]) throws IOException{
 
-		File outputdir = new File(outdir); outputdir.mkdir();
+		File outputdir  = new File(outdir);  outputdir.mkdir();
 		File outputdir2 = new File(outdir2); outputdir2.mkdir();
 		File outputdir3 = new File(outdir3); outputdir3.mkdir();
 
