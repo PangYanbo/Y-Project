@@ -55,11 +55,11 @@ public class MovementAnalyzer {
 		writeout(tsukintime,  outputpath, "tsukin_time.csv" , disasterday, id_area, id_homecode);
 		writeout(kitakutime,  outputpath, "kitaku_time.csv" , disasterday, id_area, id_homecode);
 		writeout(officetime,  outputpath, "office_time.csv" , disasterday, id_area, id_homecode);
-//		System.out.println("#done everything");
+		//		System.out.println("#done everything");
 
 		HashMap<String,LonLat> id_Home = HomeOfficeMaps.getXMap(Home);
 		HashMap<String,LonLat> id_Office = HomeOfficeMaps.getXMap(Office);
-//		System.out.println("#writing everything out...");
+		//		System.out.println("#writing everything out...");
 		writeoutDiff(officeenter, outputpath, "office_enter_diff.csv", disasterday, id_area, id_homecode, id_Home, id_Office);
 		writeoutDiff(officeexit,  outputpath, "office_exit_diff.csv" , disasterday, id_area, id_homecode, id_Home, id_Office);
 		writeoutDiff(homeexit,    outputpath, "home_exit_diff.csv"   , disasterday, id_area, id_homecode, id_Home, id_Office);
@@ -282,7 +282,7 @@ public class MovementAnalyzer {
 				heiji = sum/temp.size();
 				if((heiji!=0d)&&(saigai!=0d)){
 					double diff = saigai - heiji;
-//					System.out.println(diff);
+					//					System.out.println(diff);
 					BigDecimal x = new BigDecimal(diff);
 					x = x.setScale(2, BigDecimal.ROUND_HALF_UP);
 					List<String> zonecodeList = gchecker.listOverlaps("JCODE",id_area.get(id).getLon(),id_area.get(id).getLat());
@@ -291,13 +291,32 @@ public class MovementAnalyzer {
 							+ "," + id_area.get(id).getLon() + "," + id_area.get(id).getLat() 
 							+ "," + id_home.get(id).getLon() + "," + id_home.get(id).getLat() 
 							+ "," + id_office.get(id).getLon() + "," + id_office.get(id).getLat()
-							+ "," + saigai+ "," + heiji);
+							+ "," + saigai+ "," + heiji + "," + sigma(temp));
 					bw.newLine();
 				}
 			}
 		}
 		bw.close();
 		return out;
+	}
+
+	public static double sigma(ArrayList<Double> list){
+		double sigma = 0d;
+		if(list.size()>0){
+			double tempsum = 0d;
+			for(Double l : list){
+				tempsum = tempsum + l;
+			}
+			double ave = tempsum/(double)list.size();
+
+			double temp = 0d;
+			for(Double e : list){
+				temp = temp + Math.pow(e-ave, 2);
+			}
+
+			sigma = Math.pow(temp/(double)list.size(),0.5);
+		}
+		return sigma;
 	}
 
 }
