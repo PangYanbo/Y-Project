@@ -18,7 +18,7 @@ public class MLData {
 	public static final String outdir    = "/home/c-tyabe/Data/MLResults_"+type+"6/";
 	public static final String outdir2   = outdir+"forML/";
 	public static final String outdir3   = outdir+"forML/calc/";
-	public static final double min       = 0.5;
+	public static final double k         = 0.5;
 
 	public static final File popfile     = new File("/home/c-tyabe/Data/DataforML/mesh_daytimepop.csv");
 	public static final File landusefile = new File("/home/c-tyabe/Data/DataforML/landusedata.csv");
@@ -28,7 +28,7 @@ public class MLData {
 
 	public static void main(String args[]) throws IOException{
 
-		File outputdir = new File(outdir); outputdir.mkdir();
+		File outputdir  = new File(outdir);  outputdir.mkdir();
 		File outputdir2 = new File(outdir2); outputdir2.mkdir();
 		File outputdir3 = new File(outdir3); outputdir3.mkdir();
 
@@ -111,7 +111,7 @@ public class MLData {
 			MLDataCleaner.ytoone(new File(newoutfile), new File(plusminus_normal));
 
 			String multiplelines = outdir+subject+"_ML_lineforeach.csv";
-			MLDataModifier.Modify(new File(newoutfile), new File(multiplelines), min);
+			MLDataModifier.Modify(new File(newoutfile), new File(multiplelines));
 
 			String plusminus_multiplelines = outdir3+subject+"_ML_plusminus_lineforeach.csv";
 			MLDataCleaner.ytoone(new File(multiplelines), new File(plusminus_multiplelines));
@@ -176,10 +176,11 @@ public class MLData {
 		int checkline2 = 0;
 		int checkline3 = 0;
 		int checkline4 = 0;
+		int sigmalines = 0;
 		
 		while((line=br.readLine())!=null){
 			String id = null; String diff = null; String dis = null; String normaltime = null; //String distime = null;
-			LonLat nowp = null; LonLat homep = null; LonLat officep = null; 
+			LonLat nowp = null; LonLat homep = null; LonLat officep = null; Double sigma = 0d;
 
 			String[] tokens = line.split(",");
 			if(tokens[5].contains("(")){ // output version 1 
@@ -188,6 +189,7 @@ public class MLData {
 				homep = new LonLat(Double.parseDouble(tokens[7].replace("(","")),Double.parseDouble(tokens[8].replace(")","")));
 				officep = new LonLat(Double.parseDouble(tokens[9].replace("(","")),Double.parseDouble(tokens[10].replace(")","")));
 				normaltime = tokens[12]; 
+				sigma = Double.parseDouble(tokens[13]);
 				dis = String.valueOf(homep.distance(officep)/100000);
 			}
 			else{ // output version 2
@@ -195,11 +197,14 @@ public class MLData {
 				nowp = new LonLat(Double.parseDouble(tokens[5]),Double.parseDouble(tokens[6]));
 				homep = new LonLat(Double.parseDouble(tokens[7]),Double.parseDouble(tokens[8]));
 				officep = new LonLat(Double.parseDouble(tokens[9]),Double.parseDouble(tokens[10]));
-				normaltime = tokens[12]; dis = String.valueOf(homep.distance(officep)/100000);
+				normaltime = tokens[12]; sigma = Double.parseDouble(tokens[13]);
+				dis = String.valueOf(homep.distance(officep)/100000);
 			}
 
-			if(Math.abs(Double.parseDouble(diff))>min){
+			if(Math.abs(Double.parseDouble(diff))>k*sigma){
 
+				sigmalines++;
+				
 				ArrayList<String> list = new ArrayList<String>();
 				for(String l  : GetLevel.getLevel(level).split(",")){ //level (0,0,0,0 etc.)
 					list.add(l);
@@ -304,7 +309,7 @@ public class MLData {
 			
 			totallines++;
 		}
-		
+		System.out.println("#lines which have cleared sigma " +k+" restriction: " + sigmalines +" out of " + totallines);
 		System.out.println("#check lines " + totallines + " " + checkline1 + " " + checkline2 + " " + checkline3 + " " + checkline4);
 		
 		br.close();

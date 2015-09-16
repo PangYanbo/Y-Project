@@ -58,7 +58,7 @@ public class MLDataforMotif {
 		MLDataCleaner.ytoone(new File(newoutfile), new File(plusminus_normal));
 
 		String multiplelines = outdir+subject+"_ML_lineforeach.csv";
-		MLDataModifier.Modify(new File(newoutfile), new File(multiplelines), min);
+		MLDataModifier.Modify(new File(newoutfile), new File(multiplelines));
 
 		String plusminus_multiplelines = outdir2+subject+"_ML_plusminus_lineforeach.csv";
 		MLDataCleaner.ytoone(new File(multiplelines), new File(plusminus_multiplelines));
