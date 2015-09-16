@@ -39,8 +39,8 @@ public class YDisasterProject {
 
 	private static final String type = "rain";
 	private static final String city = "Tokyo";
-	private static final String targetlevel = "3";
-	private static final String targetlevel2 = "4";
+	private static final String targetlevel = "1";
+	private static final String targetlevel2 = "2";
 	private static final String homepath = "/home/c-tyabe/Data/"+type+city+"4/";
 	private static final String GPSpath  = "/tmp/bousai_data/gps_";
 
