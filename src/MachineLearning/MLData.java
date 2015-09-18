@@ -14,11 +14,11 @@ import jp.ac.ut.csis.pflow.geom.LonLat;
 public class MLData {
 
 	public static final String type      = "rain";
-	public static final String dir       = "/home/c-tyabe/Data/"+type+"Tokyo3/";
-	public static final String outdir    = "/home/c-tyabe/Data/MLResults_"+type+"6/";
+	public static final String dir       = "/home/c-tyabe/Data/"+type+"Tokyo4/";
+	public static final String outdir    = "/home/c-tyabe/Data/MLResults_"+type+"7/";
 	public static final String outdir2   = outdir+"forML/";
 	public static final String outdir3   = outdir+"forML/calc/";
-	public static final double k         = 0.5;
+	public static final double k         = 1;
 
 	public static final File popfile     = new File("/home/c-tyabe/Data/DataforML/mesh_daytimepop.csv");
 	public static final File landusefile = new File("/home/c-tyabe/Data/DataforML/landusedata.csv");
@@ -309,7 +309,7 @@ public class MLData {
 			
 			totallines++;
 		}
-		System.out.println("#lines which have cleared sigma "+k+" restriction: "+sigmalines+" out of "+totallines);
+		System.out.println("#lines which have cleared sigma*"+k+" restriction: "+sigmalines+" out of "+totallines);
 		System.out.println("#check lines " + totallines + " " + checkline1 + " " + checkline2 + " " + checkline3 + " " + checkline4);
 		
 		br.close();
