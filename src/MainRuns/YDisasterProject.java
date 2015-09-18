@@ -39,8 +39,8 @@ public class YDisasterProject {
 
 	private static final String type = "rain";
 	private static final String city = "Tokyo";
-	private static final String targetlevel = "1";
-	private static final String targetlevel2 = "2";
+//	private static final String targetlevel = "1";
+//	private static final String targetlevel2 = "2";
 	private static final String homepath = "/home/c-tyabe/Data/"+type+city+"4/";
 	private static final String GPSpath  = "/tmp/bousai_data/gps_";
 
@@ -72,7 +72,7 @@ public class YDisasterProject {
 		for(String ymd : dislogs.keySet()){
 			for(String time : dislogs.get(ymd).keySet()){
 				for(String level : dislogs.get(ymd).get(time).keySet()){
-					if((level.equals(targetlevel))||level.equals(targetlevel2)){
+//					if((level.equals(targetlevel))||level.equals(targetlevel2)){
 						if(filedoublechecker(ymd,time,type,level,city)==true){
 							System.out.println("#starting run for " + ymd +", time: "+ time + ", level:" +level);
 							ArrayList<String> codes = dislogs.get(ymd).get(time).get(level);
@@ -81,7 +81,7 @@ public class YDisasterProject {
 							System.out.println(" ");
 						}
 						count++;
-					}
+//					}
 				}
 			}
 		}
