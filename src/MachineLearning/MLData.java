@@ -87,7 +87,7 @@ public class MLData {
 		System.out.println("#actionmap for ofce exit : " + officeexit.size());
 		System.out.println("#saigai timemap for home exit : " + dis_he.size());
 		System.out.println("#saigai timemap for ofce exit : " + dis_oe.size());
-		
+
 		for(String subject : subjects){
 			String outfile   = outdir+subject+"_ML.csv"; 
 
@@ -98,7 +98,7 @@ public class MLData {
 					String time = datetime.getName().split("_")[1];
 					for(File f : datetime.listFiles()){
 						if(f.toString().contains(subject)){
-//							System.out.println("#working on " + f.toString());
+							//							System.out.println("#working on " + f.toString());
 							getAttributes(f,new File(outfile),level,date,time,
 									popmap,buildingmap,farmmap,sroadmap,broadmap,allroadmap,trainmap,pricemap,
 									homeexit, officeent, officeexit, dis_he, dis_oe, dis_ox, subject);
@@ -170,16 +170,16 @@ public class MLData {
 		BufferedReader br = new BufferedReader(new FileReader(in));
 		BufferedWriter bw = new BufferedWriter(new FileWriter(out,true));
 		String line = null;
-		
+
 		int totallines = 0;
 		int checkline1 = 0;
 		int checkline2 = 0;
 		int checkline3 = 0;
 		int checkline4 = 0;
 		int sigmalines = 0;
-		
+
 		while((line=br.readLine())!=null){
-			String id = null; String diff = null; String dis = null; String normaltime = null; //String distime = null;
+			String id = null; String diff = null; String dis = null; String normaltime = null; String disdaytime = null;
 			LonLat nowp = null; LonLat homep = null; LonLat officep = null; Double sigma = 0d;
 
 			String[] tokens = line.split(",");
@@ -188,7 +188,7 @@ public class MLData {
 				nowp = new LonLat(Double.parseDouble(tokens[5].replace("(","")),Double.parseDouble(tokens[6].replace(")","")));
 				homep = new LonLat(Double.parseDouble(tokens[7].replace("(","")),Double.parseDouble(tokens[8].replace(")","")));
 				officep = new LonLat(Double.parseDouble(tokens[9].replace("(","")),Double.parseDouble(tokens[10].replace(")","")));
-				normaltime = tokens[12]; 
+				disdaytime = tokens[11]; normaltime = tokens[12]; 
 				sigma = Double.parseDouble(tokens[13]);
 				dis = String.valueOf(homep.distance(officep)/100000);
 			}
@@ -197,14 +197,14 @@ public class MLData {
 				nowp = new LonLat(Double.parseDouble(tokens[5]),Double.parseDouble(tokens[6]));
 				homep = new LonLat(Double.parseDouble(tokens[7]),Double.parseDouble(tokens[8]));
 				officep = new LonLat(Double.parseDouble(tokens[9]),Double.parseDouble(tokens[10]));
-				normaltime = tokens[12]; sigma = Double.parseDouble(tokens[13]);
+				disdaytime = tokens[11]; normaltime = tokens[12]; sigma = Double.parseDouble(tokens[13]);
 				dis = String.valueOf(homep.distance(officep)/100000);
 			}
 
 			if(Math.abs(Double.parseDouble(diff))>k*sigma){
 
 				sigmalines++;
-				
+
 				ArrayList<String> list = new ArrayList<String>();
 				for(String l  : GetLevel.getLevel(level).split(",")){ //level (0,0,0,0 etc.)
 					list.add(l);
@@ -234,84 +234,88 @@ public class MLData {
 					list.add(ds);
 				}		
 
-				if(!subject.equals("home_exit_diff")){
-					if(homeexit.containsKey(id)){
-						if(homeexit.get(id).containsKey(date+time+level)){
-							for(String he : Bins.h_e_line(homeexit.get(id).get(date+time+level)).split(",")){
-								list.add(he);
-								checkline1++;
-							}}
-						else{ for(int i = 1; i <=5 ; i++){list.add("0");}}}
-					else{ for(int i = 1; i <=5 ; i++){list.add("0");}}
-				}else{ for(int i = 1; i <=5 ; i++){list.add("0");}}
+				if(isEarly(time,disdaytime)==true){
+					if(!subject.equals("home_exit_diff")){
+						if(homeexit.containsKey(id)){
+							if(homeexit.get(id).containsKey(date+time+level)){
+								for(String he : Bins.h_e_line(homeexit.get(id).get(date+time+level)).split(",")){
+									list.add(he);
+									checkline1++;
+								}}
+							else{ for(int i = 1; i <=5 ; i++){list.add("0");}}}
+						else{ for(int i = 1; i <=5 ; i++){list.add("0");}}
+					}else{ for(int i = 1; i <=5 ; i++){list.add("0");}}
 
-				if(!subject.equals("home_exit_diff")){
-					if(dis_he.containsKey(id)){
-						if(dis_he.get(id).containsKey(date+time+level)){
-							for(String he2 : Bins.getline4Diffs("home_exit_diff",dis_he.get(id).get(date+time+level)).split(",")){
-								list.add(he2);
-								checkline2++;
-							}}						
-						else{ for(int i = 1; i <=5 ; i++){list.add("0");}}}
-					else{ for(int i = 1; i <=5 ; i++){list.add("0");}}
-				}else{ for(int i = 1; i <=5 ; i++){list.add("0");}}
+					if(!subject.equals("home_exit_diff")){
+						if(dis_he.containsKey(id)){
+							if(dis_he.get(id).containsKey(date+time+level)){
+								for(String he2 : Bins.getline4Diffs("home_exit_diff",dis_he.get(id).get(date+time+level)).split(",")){
+									list.add(he2);
+									checkline2++;
+								}}						
+							else{ for(int i = 1; i <=5 ; i++){list.add("0");}}}
+						else{ for(int i = 1; i <=5 ; i++){list.add("0");}}
+					}else{ for(int i = 1; i <=5 ; i++){list.add("0");}}
 
-				if(!(subject.equals("home_exit_diff"))||(subject.equals("tsukin_time_diff"))||(subject.equals("office_enter_diff"))){
-					if(officeent.containsKey(id)){
-						if(officeent.get(id).containsKey(date+time+level)){
-							for(String oe : Bins.h_e_line(officeent.get(id).get(date+time+level)).split(",")){
-								list.add(oe);
-								checkline3++;
-							}}
-						else{ for(int i = 1; i <=5 ; i++){list.add("0");}}}
-					else{ for(int i = 1; i <=5 ; i++){list.add("0");}}
-				}else{ for(int i = 1; i <=5 ; i++){list.add("0");}}
+					if(!(subject.equals("home_exit_diff"))||(subject.equals("tsukin_time_diff"))||(subject.equals("office_enter_diff"))){
+						if(officeent.containsKey(id)){
+							if(officeent.get(id).containsKey(date+time+level)){
+								for(String oe : Bins.h_e_line(officeent.get(id).get(date+time+level)).split(",")){
+									list.add(oe);
+									checkline3++;
+								}}
+							else{ for(int i = 1; i <=5 ; i++){list.add("0");}}}
+						else{ for(int i = 1; i <=5 ; i++){list.add("0");}}
+					}else{ for(int i = 1; i <=5 ; i++){list.add("0");}}
 
-				if(!(subject.equals("home_exit_diff"))||(subject.equals("tsukin_time_diff"))||(subject.equals("office_enter_diff"))){
-					if(dis_oe.containsKey(id)){
-						if(dis_oe.get(id).containsKey(date+time+level)){
-							for(String oe2 : Bins.getline4Diffs("office_enter_diff",dis_oe.get(id).get(date+time+level)).split(",")){
-								list.add(oe2);
-								checkline4++;
-							}}
-						else{ for(int i = 1; i <=5 ; i++){list.add("0");}}}
-					else{ for(int i = 1; i <=5 ; i++){list.add("0");}}
-				}else{ for(int i = 1; i <=5 ; i++){list.add("0");}}
-				
-				if((subject.equals("kitaku_time_diff"))||(subject.equals("home_return_diff"))){
-					if(officeexit.containsKey(id)){
-						if(officeexit.get(id).containsKey(date+time+level)){
-							for(String ox : Bins.h_e_line(officeexit.get(id).get(date+time+level)).split(",")){
-								list.add(ox);
-								checkline3++;
-							}}
-						else{ for(int i = 1; i <=5 ; i++){list.add("0");}}}
-					else{ for(int i = 1; i <=5 ; i++){list.add("0");}}
-				}else{ for(int i = 1; i <=5 ; i++){list.add("0");}}
+					if(!(subject.equals("home_exit_diff"))||(subject.equals("tsukin_time_diff"))||(subject.equals("office_enter_diff"))){
+						if(dis_oe.containsKey(id)){
+							if(dis_oe.get(id).containsKey(date+time+level)){
+								for(String oe2 : Bins.getline4Diffs("office_enter_diff",dis_oe.get(id).get(date+time+level)).split(",")){
+									list.add(oe2);
+									checkline4++;
+								}}
+							else{ for(int i = 1; i <=5 ; i++){list.add("0");}}}
+						else{ for(int i = 1; i <=5 ; i++){list.add("0");}}
+					}else{ for(int i = 1; i <=5 ; i++){list.add("0");}}
 
-				if((subject.equals("kitaku_time_diff"))||(subject.equals("home_return_diff"))){
-					if(dis_ox.containsKey(id)){
-						if(dis_ox.get(id).containsKey(date+time+level)){
-							for(String ox2 : Bins.getline4Diffs("office_exit_diff",dis_ox.get(id).get(date+time+level)).split(",")){
-								list.add(ox2);
-								checkline4++;
-							}}
-						else{ for(int i = 1; i <=5 ; i++){list.add("0");}}}
-					else{ for(int i = 1; i <=5 ; i++){list.add("0");}}
-				}else{ for(int i = 1; i <=5 ; i++){list.add("0");}}
+					if((subject.equals("kitaku_time_diff"))||(subject.equals("home_return_diff"))){
+						if(officeexit.containsKey(id)){
+							if(officeexit.get(id).containsKey(date+time+level)){
+								for(String ox : Bins.h_e_line(officeexit.get(id).get(date+time+level)).split(",")){
+									list.add(ox);
+									checkline3++;
+								}}
+							else{ for(int i = 1; i <=5 ; i++){list.add("0");}}}
+						else{ for(int i = 1; i <=5 ; i++){list.add("0");}}
+					}else{ for(int i = 1; i <=5 ; i++){list.add("0");}}
 
+					if((subject.equals("kitaku_time_diff"))||(subject.equals("home_return_diff"))){
+						if(dis_ox.containsKey(id)){
+							if(dis_ox.get(id).containsKey(date+time+level)){
+								for(String ox2 : Bins.getline4Diffs("office_exit_diff",dis_ox.get(id).get(date+time+level)).split(",")){
+									list.add(ox2);
+									checkline4++;
+								}}
+							else{ for(int i = 1; i <=5 ; i++){list.add("0");}}}
+						else{ for(int i = 1; i <=5 ; i++){list.add("0");}}
+					}else{ for(int i = 1; i <=5 ; i++){list.add("0");}}
+				}
+				else{
+					for(int i = 1; i <=30 ; i++){list.add("0");}
+				}
 				bw.write(diff);
 				for(int i = 1; i<=list.size(); i++){
 					bw.write(" "+i+":"+list.get(i-1));
 				}
 				bw.newLine();
 			}
-			
+
 			totallines++;
 		}
 		System.out.println("#lines which have cleared sigma*"+k+" restriction: "+sigmalines+" out of "+totallines);
 		System.out.println("#check lines " + totallines + " " + checkline1 + " " + checkline2 + " " + checkline3 + " " + checkline4);
-		
+
 		br.close();
 		bw.close();
 	}
@@ -325,5 +329,16 @@ public class MLData {
 		LonLat p = new LonLat(lon,lat);
 		return p;
 	}
-	
+
+	public static boolean isEarly(String disastertime, String disdayactiontime){
+		Double disaster = Double.parseDouble(disastertime);
+		Double disdayaction = Double.parseDouble(disdayactiontime);
+		if(disdayaction<disaster){
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+
 }
