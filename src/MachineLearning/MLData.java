@@ -315,8 +315,8 @@ public class MLData {
 				bw.write(diff);
 				for(int i = 1; i<=list.size(); i++){
 					bw.write(" "+i+":"+list.get(i-1));
-					bw.write(" #"+diff);
 				}
+				bw.write(" #"+diff);
 				bw.newLine();
 			}
 
