@@ -72,7 +72,7 @@ public class MLDataCleaner {
 			else{
 				temp.add("-1");
 			}
-			for(int i = 1; i<=tokens.length; i++){
+			for(int i = 1; i<tokens.length; i++){
 				temp.add(tokens[i]);
 			}
 			
