@@ -12,9 +12,9 @@ public class SoukanChecker {
 
 	public static void main(String args[]) throws IOException{
 
-		String subject = "home_exit_diff";
-		String c = "0.1";
-		String b = "1";
+		String subject = args[0];
+		String c = args[1];
+		String b = args[2];
 		
 		File in1 = new File("/home/c-tyabe/yabe/tmp/"+subject+"_ML_plusminus_lineforeach.csv_model_"+c+"_"+b+"_out");
 		File in2 = new File("/home/c-tyabe/yabe/tmp/evaldata_a.txt");
