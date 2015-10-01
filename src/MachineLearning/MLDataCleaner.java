@@ -65,20 +65,17 @@ public class MLDataCleaner {
 		while((line=br.readLine())!=null){
 			ArrayList<String> temp = new ArrayList<String>();
 			String[] tokens = line.split(" ");
-			for(String s : tokens){
-				if(s.split(":").length==1){
-					Double y = Double.parseDouble(tokens[0]);
-					if(y>=0){
-						temp.add("1");
-					}
-					else{
-						temp.add("-1");
-					}
-				}
-				else{
-					temp.add(s);
-				}
+			Double y = Double.parseDouble(tokens[0]);
+			if(y>=0){
+				temp.add("1");
 			}
+			else{
+				temp.add("-1");
+			}
+			for(int i = 1; i<=tokens.length; i++){
+				temp.add(tokens[i]);
+			}
+			
 			for(String t : temp){
 				bw.write(t+" ");
 			}
@@ -87,7 +84,7 @@ public class MLDataCleaner {
 		br.close();
 		bw.close();
 	}
-	
+
 	public static void ytooneanddeletesmallones(File in, File out) throws IOException{
 		BufferedReader br = new BufferedReader(new FileReader(in));
 		BufferedWriter bw = new BufferedWriter(new FileWriter(out));
