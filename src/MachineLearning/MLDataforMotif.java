@@ -55,7 +55,11 @@ public class MLDataforMotif {
 				String time = datetime.getName().split("_")[1];
 				for(File f : datetime.listFiles()){
 					if(f.toString().contains(subject)){
-						getAttributesMotif(f,new File(outfile),level,date,time,
+
+						HashMap<String, HashMap<String,String>> motifmap = MotifMap(f);
+						HashMap<String, ArrayList<LonLat>>      locmap   = LocMap(f);
+
+						getAttributesMotif(motifmap,locmap,new File(outfile),level,date,time,
 								popmap,buildingmap,farmmap,sroadmap,broadmap,allroadmap,trainmap,pricemap,
 								subject);
 					}}}
@@ -74,25 +78,22 @@ public class MLDataforMotif {
 		}
 	}
 
-
-	public static HashMap<String, HashMap<String,String>> MotifMap(File in, String date, HashMap<String, HashMap<String,String>> res) throws IOException{
+	public static HashMap<String, HashMap<String,String>> MotifMap(File in) throws IOException{
+		HashMap<String, HashMap<String,String>> res = new HashMap<String,HashMap<String,String>>();		
 		BufferedReader br = new BufferedReader(new FileReader(in));
 		String line = null;
 		while((line=br.readLine())!=null){
 			String[] tokens = line.split(",");
 			String id = tokens[0];
-			String day = tokens[2];
-			if(!day.equals("99")){
-				date = date.substring(0,6)+day;
-			}
-			String motif = tokens[3];
+			String day = tokens[1];
+			String motif = tokens[2];
 
 			if(res.containsKey(id)){
-				res.get(id).put(date, motif);
+				res.get(id).put(day, motif);
 			}
 			else{
 				HashMap<String,String> temp = new HashMap<String,String>();
-				temp.put(date, motif);
+				temp.put(day, motif);
 				res.put(id, temp);
 			}
 		}
@@ -100,80 +101,111 @@ public class MLDataforMotif {
 		return res;
 	}
 
-	public static void getAttributesMotif(File in, File out, String level, String date, String time,
+	public static HashMap<String, ArrayList<LonLat>> LocMap(File in) throws IOException{
+		HashMap<String, ArrayList<LonLat>> res = new HashMap<String, ArrayList<LonLat>>();
+		BufferedReader br = new BufferedReader(new FileReader(in));
+		String line = null;
+		while((line=br.readLine())!=null){
+			String[] tokens = line.split(",");
+			String id = tokens[0];
+			LonLat now  = new LonLat(Double.parseDouble(tokens[3]),Double.parseDouble(tokens[4]));
+			LonLat home = new LonLat(Double.parseDouble(tokens[5]),Double.parseDouble(tokens[6]));
+			LonLat off  = new LonLat(Double.parseDouble(tokens[7]),Double.parseDouble(tokens[8]));
+
+			if(res.containsKey(id)){
+				continue;
+			}
+			else{
+				ArrayList<LonLat> temp = new ArrayList<LonLat>();
+				temp.add(now);
+				temp.add(home);
+				temp.add(off);
+				res.put(id, temp);
+			}
+		}
+		br.close();
+		return res;
+	}
+
+	public static void getAttributesMotif(HashMap<String, HashMap<String,String>> motifmap, HashMap<String, ArrayList<LonLat>> locmap,
+			File out, String level, String date, String time,
 			HashMap<String, String> popmap, HashMap<String, String> buildingmap, HashMap<String, String> farmmap, 
 			HashMap<String, String> sroadmap, HashMap<String, String> broadmap, HashMap<String, String> allroadmap,
 			HashMap<LonLat, String> trainmap, HashMap<LonLat, String> pricemap, String subject) throws IOException{
 
-		BufferedReader br = new BufferedReader(new FileReader(in));
 		BufferedWriter bw = new BufferedWriter(new FileWriter(out,true));
-		String line = null;
 
-		while((line=br.readLine())!=null){
-			String id = null; String diff = null; String dis = null; String normaltime = null;
-			LonLat nowp = null; LonLat homep = null; LonLat officep = null; Double sigma = 0d;
+		for(String id : motifmap.keySet()){
+			if(motifmap.get(id).containsKey("99")){
+				String dis = null; String normaltime = null;
+				LonLat nowp = null; LonLat homep = null; LonLat officep = null;
 
-			String[] tokens = line.split(",");
-			if(tokens[5].contains("(")){ // output version 1 
-				id = tokens[0]; diff = tokens[1]; dis = tokens[4];
-				nowp = new LonLat(Double.parseDouble(tokens[5].replace("(","")),Double.parseDouble(tokens[6].replace(")","")));
-				homep = new LonLat(Double.parseDouble(tokens[7].replace("(","")),Double.parseDouble(tokens[8].replace(")","")));
-				officep = new LonLat(Double.parseDouble(tokens[9].replace("(","")),Double.parseDouble(tokens[10].replace(")","")));
-				normaltime = tokens[12]; 
-				sigma = Double.parseDouble(tokens[13]);
-				dis = String.valueOf(homep.distance(officep)/100000);
-			}
-			else{ // output version 2
-				id = tokens[0]; diff = tokens[1]; dis = tokens[4];
-				nowp = new LonLat(Double.parseDouble(tokens[5]),Double.parseDouble(tokens[6]));
-				homep = new LonLat(Double.parseDouble(tokens[7]),Double.parseDouble(tokens[8]));
-				officep = new LonLat(Double.parseDouble(tokens[9]),Double.parseDouble(tokens[10]));
-				normaltime = tokens[12]; sigma = Double.parseDouble(tokens[13]);
-				dis = String.valueOf(homep.distance(officep)/100000);
-			}
+				nowp    = locmap.get(id).get(0);
+				homep   = locmap.get(id).get(1);
+				officep = locmap.get(id).get(2);
+				dis     = String.valueOf(homep.distance(officep)/100000);
 
-			ArrayList<String> list = new ArrayList<String>();
-			for(String l  : GetLevel.getLevel(level).split(",")){ //level (0,0,0,0 etc.)
-				list.add(l);
-			}
-			for(String t  : Bins.timerange(time).split(",")){ //time of disaster 
-				list.add(t);
-			}
-			for(String df : Bins.getline4Diffs(subject, normaltime).split(",")){
-				list.add(df);
-			}
-			for(String p  : GetPop.getpop(popmap, nowp, homep, officep).split(",")){ //pop data
-				list.add(p);
-			}
-			for(String la : GetLanduse.getlanduse(buildingmap, farmmap, nowp, homep, officep).split(",")){
-				list.add(la);
-			}
-			for(String r  : GetRoadData.getroaddata(sroadmap, broadmap, allroadmap, nowp, homep, officep).split(",")){
-				list.add(r);
-			}
-			for(String st : GetTrainData.getstationpop(trainmap, nowp, homep, officep).split(",")){
-				list.add(st);
-			}
-			for(String lp : GetLandPrice.getlandprice(pricemap, nowp, homep, officep).split(",")){
-				list.add(lp);
-			}
-			for(String ds : Bins.getlineDistance(dis).split(",")){
-				list.add(ds);
-			}		
+				ArrayList<String> list = new ArrayList<String>();
+				for(String l  : GetLevel.getLevel(level).split(",")){ //level (0,0,0,0 etc.)
+					list.add(l);
+				}
+				for(String t  : Bins.timerange(time).split(",")){ //time of disaster 
+					list.add(t);
+				}
+				for(String df : Bins.getline4Diffs(subject, normaltime).split(",")){
+					list.add(df);
+				}
+				for(String p  : GetPop.getpop(popmap, nowp, homep, officep).split(",")){ //pop data
+					list.add(p);
+				}
+				for(String la : GetLanduse.getlanduse(buildingmap, farmmap, nowp, homep, officep).split(",")){
+					list.add(la);
+				}
+				for(String r  : GetRoadData.getroaddata(sroadmap, broadmap, allroadmap, nowp, homep, officep).split(",")){
+					list.add(r);
+				}
+				for(String st : GetTrainData.getstationpop(trainmap, nowp, homep, officep).split(",")){
+					list.add(st);
+				}
+				for(String lp : GetLandPrice.getlandprice(pricemap, nowp, homep, officep).split(",")){
+					list.add(lp);
+				}
+				for(String ds : Bins.getlineDistance(dis).split(",")){
+					list.add(ds);
+				}	
+				for(String m : motiflist(motifmap.get(id))){
+					list.add(m);
+				}
 
-			//put daily motifs in this area				
+				bw.write(motifmap.get(id).get("99"));
+				for(int i = 1; i<=list.size(); i++){
+					bw.write(" "+i+":"+list.get(i-1));
+				}
+				bw.write(" #"+motifmap.get(id).get("99"));
+				bw.newLine();
 
-			bw.write(diff);
-			for(int i = 1; i<=list.size(); i++){
-				bw.write(" "+i+":"+list.get(i-1));
 			}
-			bw.write(" #"+diff);
-			bw.newLine();
+		}
+		bw.close();
+	}
 
+	public static ArrayList<String> motiflist(HashMap<String,String> map){
+		ArrayList<String> res = new ArrayList<String>();
+		for(int i=1; i<=17; i++){
+			res.add("0");
 		}
 
-		br.close();
-		bw.close();
+		for(String day: map.keySet()){
+			if(!day.equals("99")){
+				if(!map.get(day).equals("0")){
+					Integer motif = Integer.valueOf(map.get(day));
+					if(res.get(motif-1).equals("0")){
+						res.get(motif-1).replace("0","1");
+					}
+				}
+			}
+		}
+		return res;
 	}
 
 }

@@ -61,7 +61,7 @@ public class MLData {
 		HashMap<String, HashMap<String,String>> dis_he     = new HashMap<String, HashMap<String,String>>();
 		HashMap<String, HashMap<String,String>> dis_ox     = new HashMap<String, HashMap<String,String>>();
 		HashMap<String, HashMap<String,String>> dis_oe     = new HashMap<String, HashMap<String,String>>();
-		HashMap<String, HashMap<String,String>> motifmap   = new HashMap<String, HashMap<String,String>>();
+//		HashMap<String, HashMap<String,String>> motifmap   = new HashMap<String, HashMap<String,String>>();
 
 		for(File typelevel : new File(dir).listFiles()){
 			String level = typelevel.getName().split("_")[1];
@@ -81,9 +81,9 @@ public class MLData {
 						getActionMap(f,level,date+time,officeexit);
 						getSaigaiMap(f,level,date+time,dis_ox);
 					}
-					else if(f.toString().contains("id_day_motifs")){
-						MLDataforMotif.MotifMap(f, date, motifmap);
-					}
+//					else if(f.toString().contains("id_day_motifs")){
+//						MLDataforMotif.MotifMap(f, date, motifmap);
+//					}
 				}}}
 
 		//--- test if working properly
@@ -91,7 +91,7 @@ public class MLData {
 		System.out.println("#actionmap for ofce exit : " + officeexit.size());
 		System.out.println("#saigai timemap for home exit : " + dis_he.size());
 		System.out.println("#saigai timemap for ofce exit : " + dis_oe.size());
-		System.out.println("#motif map size : " + motifmap.size());
+//		System.out.println("#motif map size : " + motifmap.size());
 
 		for(String subject : subjects){
 			String outfile   = outdir+subject+"_ML.csv"; 
@@ -106,7 +106,7 @@ public class MLData {
 							//							System.out.println("#working on " + f.toString());
 							getAttributes(f,new File(outfile),level,date,time,
 									popmap,buildingmap,farmmap,sroadmap,broadmap,allroadmap,trainmap,pricemap,
-									homeexit, officeent, officeexit, dis_he, dis_oe, dis_ox, motifmap, subject);
+									homeexit, officeent, officeexit, dis_he, dis_oe, dis_ox, subject);
 						}}}}
 
 			String newoutfile   = outdir+subject+"_ML_cleaned.csv"; 
@@ -170,7 +170,7 @@ public class MLData {
 			HashMap<String, HashMap<String,String>> homeexit, HashMap<String, HashMap<String,String>>officeexit, 
 			HashMap<String, HashMap<String,String>> dis_he, HashMap<String, HashMap<String,String>>dis_oe, 
 			HashMap<String, HashMap<String,String>> officeent, HashMap<String, HashMap<String,String>>dis_ox, 
-			HashMap<String, HashMap<String,String>> motifmap, 
+//			HashMap<String, HashMap<String,String>> motifmap, 
 			String subject) throws IOException{
 
 		BufferedReader br = new BufferedReader(new FileReader(in));

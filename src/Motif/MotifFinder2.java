@@ -34,14 +34,14 @@ public class MotifFinder2 {
 	}
 
 	public static void executeMotif(String in, String path, String disasterday,
-			HashMap<String,LonLat> id_area, HashMap<String,String> id_homecode) throws IOException, ParseException{
-		HashMap<String,ArrayList<LonLat>> id_SPs = StayPointGetter.getSPs2(new File(in), 500, 300);
+			HashMap<String,LonLat> id_area, HashMap<String,String> id_homecode, double r, double threshold) throws IOException, ParseException{
+		HashMap<String,ArrayList<LonLat>> id_SPs = StayPointGetter.getSPs2(new File(in), r, threshold);
 
 		HashMap<String, HashMap<String, ArrayList<LonLat>>> map = SPFinder.intomapY(in,"weekday"); 
 		HashMap<String, ArrayList<String>> id_days = Over8TimeSlots.OKAY_id_days(in);
 		HashMap<String, HashMap<String, Integer>> id_day_motif = getID_day_motif2(map, id_SPs, id_days); //[id|day|motifnumber]
 
-		writeout(id_day_motif,path+"id_day_motifs.csv", disasterday,id_area, id_homecode);
+		writeout(id_day_motif,path+"id_day_motifs_"+r+"_"+threshold+".csv", disasterday,id_area, id_homecode);
 //		motifPercentage(id_day_motif, path+"motif%s.csv");
 	}
 	
@@ -60,7 +60,6 @@ public class MotifFinder2 {
 						if(count%10000==0){
 							System.out.println("#done " + count + " ID*days");
 						}
-						//						System.out.println(id + ","+day+","+locchain);
 						Integer motif = MotifNumber.motifs(locchain);
 						temp.put(day, motif);
 						res.put(id, temp);

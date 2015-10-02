@@ -72,7 +72,6 @@ public class Bins {
 	}
 	
 	public static String getline4Diffs(String subject, String normaltime){
-		String res = null;
 		if((subject.equals("tsukin_time_diff"))||(subject.equals("kitaku_time_diff"))){
 			if(normaltime==null){
 				return "0,0,0,0,0";
@@ -151,7 +150,8 @@ public class Bins {
 				else{return "0,0,0,0,1";}
 			}
 		}
-		
-		return res;
+		else{
+			return "0,0,0,0,0";
+		}
 	}
 }

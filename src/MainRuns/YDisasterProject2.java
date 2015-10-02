@@ -118,7 +118,10 @@ public class YDisasterProject2 {
 				MovementAnalyzer.executeAnalyser
 				(dataforexp, FilePaths.dirfile(workpath,"id_home.csv"), FilePaths.dirfile(workpath,"id_office.csv"), 
 						workpath, disasterday, targetIDs_code, id_homecode);
-				MotifFinder2.executeMotif(dataforexp, workpath, disasterday, targetIDs_code, id_homecode);
+				MotifFinder2.executeMotif(dataforexp, workpath, disasterday, targetIDs_code, id_homecode,500,300);
+				MotifFinder2.executeMotif(dataforexp, workpath, disasterday, targetIDs_code, id_homecode,1000,500);
+				MotifFinder2.executeMotif(dataforexp, workpath, disasterday, targetIDs_code, id_homecode,1500,800);
+				MotifFinder2.executeMotif(dataforexp, workpath, disasterday, targetIDs_code, id_homecode,2000,1000);
 
 				File data = new File(dataforexp); data.delete();
 //				File home = new File(workpath+"id_home.csv"); home.delete();
