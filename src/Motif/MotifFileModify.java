@@ -54,10 +54,12 @@ public class MotifFileModify {
 			String lon = tokens[4].replace("(", "");
 			String lat = tokens[5].replace(")", "");
 
-			bw.write(id + "," + day + "," + motif + "," + lon + "," + lat
-					+ "," + idhome.get(id).getLon() + "," + idhome.get(id).getLat() 
-					+ "," + idoff.get(id).getLon() + "," + idoff.get(id).getLat());
-			bw.newLine();
+			if((idhome.containsKey(id)&&(idoff.containsKey(id)))){
+				bw.write(id + "," + day + "," + motif + "," + lon + "," + lat
+						+ "," + idhome.get(id).getLon() + "," + idhome.get(id).getLat() 
+						+ "," + idoff.get(id).getLon() + "," + idoff.get(id).getLat());
+				bw.newLine();
+			}
 		}
 		br.close();
 		bw.close();
