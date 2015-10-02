@@ -41,7 +41,8 @@ public class YDisasterProject {
 	private static final String city = "Tokyo";
 //	private static final String targetlevel = "1";
 //	private static final String targetlevel2 = "2";
-	private static final String homepath = "/home/c-tyabe/Data/"+type+city+"4/";
+
+	private static final String homepath = "/home/c-tyabe/Data/"+type+city+"5/";
 	private static final String GPSpath  = "/tmp/bousai_data/gps_";
 
 	public static void main(String args[]) throws IOException, NumberFormatException, ParseException{
@@ -126,8 +127,11 @@ public class YDisasterProject {
 				MovementAnalyzer.executeAnalyser
 				(dataforexp, FilePaths.dirfile(workpath,"id_home.csv"), FilePaths.dirfile(workpath,"id_office.csv"), 
 						workpath, disasterday, targetIDs_code, id_homecode);
-				MotifFinder2.executeMotif(dataforexp, workpath, disasterday, targetIDs_code, id_homecode);
-
+				MotifFinder2.executeMotif(dataforexp, workpath, disasterday, targetIDs_code, id_homecode,500,300);
+				MotifFinder2.executeMotif(dataforexp, workpath, disasterday, targetIDs_code, id_homecode,1000,500);
+				MotifFinder2.executeMotif(dataforexp, workpath, disasterday, targetIDs_code, id_homecode,1500,800);
+				MotifFinder2.executeMotif(dataforexp, workpath, disasterday, targetIDs_code, id_homecode,2000,1000);
+				
 				File data = new File(dataforexp); data.delete();
 				//				File home = new File(workpath+"id_home.csv"); home.delete();
 				//				File office = new File(workpath+"id_office.csv"); office.delete();
