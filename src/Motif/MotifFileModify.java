@@ -24,6 +24,7 @@ public class MotifFileModify {
 			for(File datetime :typelevel.listFiles()){
 				for(File f : datetime.listFiles()){
 					if(f.toString().contains(subject)){
+						System.out.println("doing " + f.toString());
 						modifymotiffile(f,new File(datetime.toString()+"/id_home.csv"),
 								new File(datetime.toString()+"/id_office.csv"),new File(datetime.toString()+"/id_motif_new.csv"));						
 					}
@@ -34,7 +35,13 @@ public class MotifFileModify {
 
 	public static File modifymotiffile(File in, File id_home, File id_office, File out) throws NumberFormatException, IOException{
 		HashMap<String, LonLat> idhome = intomap(id_home);
+		if(idhome==null){
+			System.out.println("shit "+in.toString());
+		}
 		HashMap<String, LonLat> idoff  = intomap(id_office);
+		if(idoff==null){
+			System.out.println("shit2 "+in.toString());
+		}
 
 		BufferedReader br = new BufferedReader(new FileReader(in));
 		BufferedWriter bw = new BufferedWriter(new FileWriter(out));
