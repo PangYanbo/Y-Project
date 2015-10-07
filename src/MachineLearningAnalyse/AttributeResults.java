@@ -30,7 +30,7 @@ public class AttributeResults {
 			String[] tokens = line.split(" ");
 			String val = tokens[0];
 			for(int i=start; i<=end; i++){
-				if(line.contains(String.valueOf(i)+":1")){
+				if(line.contains(" "+String.valueOf(i)+":1 ")){
 					bw.write(val + "," + i);
 					bw.newLine();
 				}
