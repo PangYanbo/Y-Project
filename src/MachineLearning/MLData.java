@@ -209,6 +209,20 @@ public class MLData {
 
 			if(Math.abs(Double.parseDouble(diff))>k*sigma){
 
+				//ここに、地域の制限などを加える
+				/*
+				 * for instance, if its Tokyo business workers,
+				 * geocheck [office GPS point] with [Tokyo business district shape file] 
+				 * 
+				 */
+				
+				/*
+				 * シェープファイルを作成しておく
+				 * geocheckerを用いて空間検索
+				 * 人を絞り込み
+				 * 
+				 */
+				
 				sigmalines++;
 
 				ArrayList<String> list = new ArrayList<String>();

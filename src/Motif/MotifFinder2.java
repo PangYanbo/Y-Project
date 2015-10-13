@@ -26,7 +26,7 @@ public class MotifFinder2 {
 		/*
 		 * test file
 		 */
-//				String in = "c:/users/yabetaka/Desktop/dataforExp.csv";
+//		String in = "c:/users/yabetaka/Desktop/dataforExp.csv";
 
 //		String in = args[0];
 //		executeMotif(in, args[1],args[2]);
@@ -35,6 +35,7 @@ public class MotifFinder2 {
 
 	public static void executeMotif(String in, String path, String disasterday,
 			HashMap<String,LonLat> id_area, HashMap<String,String> id_homecode, double r, double threshold) throws IOException, ParseException{
+		
 		HashMap<String,ArrayList<LonLat>> id_SPs = StayPointGetter.getSPs2(new File(in), r, threshold);
 
 		HashMap<String, HashMap<String, ArrayList<LonLat>>> map = SPFinder.intomapY(in,"weekday"); 
@@ -42,9 +43,9 @@ public class MotifFinder2 {
 		HashMap<String, HashMap<String, Integer>> id_day_motif = getID_day_motif2(map, id_SPs, id_days); //[id|day|motifnumber]
 
 		writeout(id_day_motif,path+"id_day_motifs_"+r+"_"+threshold+".csv", disasterday,id_area, id_homecode);
-//		motifPercentage(id_day_motif, path+"motif%s.csv");
+		//		motifPercentage(id_day_motif, path+"motif%s.csv");
 	}
-	
+
 	public static HashMap<String, HashMap<String,Integer>> getID_day_motif2
 	(HashMap<String, HashMap<String, ArrayList<LonLat>>> map, HashMap<String,ArrayList<LonLat>> id_SPs, HashMap<String, ArrayList<String>> id_days){
 		HashMap<String, HashMap<String,Integer>> res = new HashMap<String, HashMap<String,Integer>>();
@@ -167,7 +168,7 @@ public class MotifFinder2 {
 		System.out.println("#done calculating motifs");
 		bw.close();
 	}
-	
+
 	public static File writeout(HashMap<String, HashMap<String, Integer>> map, String path, String disasterday,
 			HashMap<String,LonLat> id_area, HashMap<String,String> id_homecode) throws IOException{
 		File out = new File(path);
