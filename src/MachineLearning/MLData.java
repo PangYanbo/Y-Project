@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import DisasterAlert.ExtractIDbyDate;
 import jp.ac.ut.csis.pflow.geom.GeometryChecker;
 import jp.ac.ut.csis.pflow.geom.LonLat;
 
@@ -16,7 +17,7 @@ public class MLData {
 
 	public static final String type      = "rain";
 	public static final String dir       = "/home/c-tyabe/Data/"+type+"Tokyo4/";
-	public static final String outdir    = "/home/c-tyabe/Data/MLResults_"+type+"8_irr/";
+	public static final String outdir    = "/home/c-tyabe/Data/MLResults_"+type+"8_Yokohama/";
 	public static final String outdir2   = outdir+"forML/";
 	public static final String outdir3   = outdir+"forML/calc/";
 	public static final double k         = 1;
@@ -211,7 +212,7 @@ public class MLData {
 				dis = String.valueOf(homep.distance(officep)/100000);
 			}
 
-//			if(Math.abs(Double.parseDouble(diff))>k*sigma){
+			if(Math.abs(Double.parseDouble(diff))>k*sigma){
 
 				//Ç±Ç±Ç…ÅAínàÊÇÃêßå¿Ç»Ç«Çâ¡Ç¶ÇÈ
 				/*
@@ -228,13 +229,12 @@ public class MLData {
 				 */
 
 				ArrayList<String> JIScodes = new ArrayList<String>();
-				JIScodes.add("13113");
-				JIScodes.add("13103");
-				JIScodes.add("13101");
-				JIScodes.add("13104");
+				JIScodes.add("14102");
+				JIScodes.add("14103");
+				JIScodes.add("14104");
+			
 				
-				
-//				if(!ExtractIDbyDate.AreaOverlap(new LonLat(officep.getLon(),officep.getLat()),JIScodes).equals("null")){
+				if(!ExtractIDbyDate.AreaOverlap(new LonLat(officep.getLon(),officep.getLat()),JIScodes).equals("null")){
 
 					sigmalines++;
 
@@ -339,21 +339,14 @@ public class MLData {
 					}
 
 
-//					bw.write(diff);
-					if(Math.abs(Double.parseDouble(diff))>k*sigma){
-						bw.write("1");
-					}
-					else{
-						bw.write("-1");
-					}
-					
+					bw.write(diff);
 					for(int i = 1; i<=list.size(); i++){
 						bw.write(" "+i+":"+list.get(i-1));
 					}
 					bw.write(" #"+diff);
 					bw.newLine();
-//				}
-//			}
+				}
+			}
 
 			totallines++;
 		}
