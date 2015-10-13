@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import DisasterAlert.ExtractIDbyDate;
 import jp.ac.ut.csis.pflow.geom.GeometryChecker;
 import jp.ac.ut.csis.pflow.geom.LonLat;
 
@@ -27,7 +28,7 @@ public class MLData {
 	public static final File trainfile   = new File("/home/c-tyabe/Data/DataforML/railnodedata.csv");
 	public static final File pricefile   = new File("/home/c-tyabe/Data/DataforML/landpricedata.csv");
 
-	static File shapedir = new File("/home/c-tyabe/Data/toshin4shp");
+	static File shapedir = new File("/home/c-tyabe/Data/jpnshp");
 	static GeometryChecker gchecker = new GeometryChecker(shapedir);
 
 	public static void main(String args[]) throws IOException{
@@ -227,7 +228,14 @@ public class MLData {
 				 * 
 				 */
 
-				if(gchecker.listOverlaps("A03_001",officep.getLon(),officep.getLat()).size()>0){
+				ArrayList<String> JIScodes = new ArrayList<String>();
+				JIScodes.add("13113");
+				JIScodes.add("13103");
+				JIScodes.add("13101");
+				JIScodes.add("13104");
+				
+				
+				if(!ExtractIDbyDate.AreaOverlap(new LonLat(officep.getLon(),officep.getLat()),JIScodes).equals("null")){
 
 					sigmalines++;
 
