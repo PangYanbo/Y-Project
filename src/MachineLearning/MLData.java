@@ -17,7 +17,7 @@ public class MLData {
 
 	public static final String type      = "rain";
 	public static final String dir       = "/home/c-tyabe/Data/"+type+"Tokyo4/";
-	public static final String outdir    = "/home/c-tyabe/Data/MLResults_"+type+"8_Yokohama/";
+	public static final String outdir    = "/home/c-tyabe/Data/MLResults_"+type+"8_YokohamaHome/";
 	public static final String outdir2   = outdir+"forML/";
 	public static final String outdir3   = outdir+"forML/calc/";
 	public static final double k         = 1;
@@ -234,7 +234,7 @@ public class MLData {
 				JIScodes.add("14104");
 			
 				
-				if(!ExtractIDbyDate.AreaOverlap(new LonLat(officep.getLon(),officep.getLat()),JIScodes).equals("null")){
+				if(!ExtractIDbyDate.AreaOverlap(new LonLat(homep.getLon(),homep.getLat()),JIScodes).equals("null")){
 
 					sigmalines++;
 
