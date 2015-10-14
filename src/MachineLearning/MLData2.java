@@ -118,14 +118,14 @@ public class MLData2 {
 			String newoutfile   = outdir+subject+"_ML_cleaned.csv"; 
 			MLDataCleaner.DataClean(new File(outfile), new File(newoutfile)); //delete 0s and Es
 
-			String plusminus_normal  = outdir2+subject+"_ML_plusminus_normal.csv";
-			MLDataCleaner.ytoone(new File(newoutfile), new File(plusminus_normal));
+//			String plusminus_normal  = outdir2+subject+"_ML_plusminus_normal.csv";
+//			MLDataCleaner.ytoone(new File(newoutfile), new File(plusminus_normal));
 
-			String multiplelines = outdir+subject+"_ML_lineforeach.csv";
-			MLDataModifier.Modify(new File(newoutfile), new File(multiplelines));
-
-			String plusminus_multiplelines = outdir3+subject+"_ML_plusminus_lineforeach.csv";
-			MLDataCleaner.ytoone(new File(multiplelines), new File(plusminus_multiplelines));
+			//			String multiplelines = outdir+subject+"_ML_lineforeach.csv";
+			//			MLDataModifier.Modify(new File(newoutfile), new File(multiplelines));
+			//
+			//			String plusminus_multiplelines = outdir3+subject+"_ML_plusminus_lineforeach.csv";
+			//			MLDataCleaner.ytoone(new File(multiplelines), new File(plusminus_multiplelines));
 		}
 	}
 
@@ -251,6 +251,9 @@ public class MLData2 {
 			for(String df : Bins.getline4Diffs(subject, normaltime).split(",")){
 				list.add(df);
 			}
+			for(String si : Bins.sigmaline(k*sigma).split(",")){
+				list.add(si);
+			}
 			for(String p  : GetPop.getpop(popmap, nowp, homep, officep).split(",")){ //pop data
 				list.add(p);
 			}
@@ -342,10 +345,15 @@ public class MLData2 {
 			}
 
 			if(Math.abs(Double.parseDouble(diff))>k*sigma){
-				bw.write("1");
+				if(Double.parseDouble(diff)>0){
+					bw.write("1");
+				}
+				else{
+					bw.write("-1");
+				}
 			}
 			else{
-				bw.write("-1");
+				bw.write("0");
 			}
 
 			for(int i = 1; i<=list.size(); i++){
