@@ -109,7 +109,7 @@ public class MLData2 {
 					String time = datetime.getName().split("_")[1];
 					for(File f : datetime.listFiles()){
 						if(f.toString().contains(subject)){
-							//							System.out.println("#working on " + f.toString());
+							System.out.println("#working on " + f.toString());
 							getAttributes(f,new File(outfile),level,date,time,
 									popmap,buildingmap,farmmap,sroadmap,broadmap,allroadmap,trainmap,pricemap,
 									homeexit, officeent, officeexit, dis_he, dis_oe, dis_ox, subject);
@@ -118,8 +118,8 @@ public class MLData2 {
 			String newoutfile   = outdir+subject+"_ML_cleaned.csv"; 
 			MLDataCleaner.DataClean(new File(outfile), new File(newoutfile)); //delete 0s and Es
 
-//			String plusminus_normal  = outdir2+subject+"_ML_plusminus_normal.csv";
-//			MLDataCleaner.ytoone(new File(newoutfile), new File(plusminus_normal));
+			//			String plusminus_normal  = outdir2+subject+"_ML_plusminus_normal.csv";
+			//			MLDataCleaner.ytoone(new File(newoutfile), new File(plusminus_normal));
 
 			//			String multiplelines = outdir+subject+"_ML_lineforeach.csv";
 			//			MLDataModifier.Modify(new File(newoutfile), new File(multiplelines));
@@ -183,12 +183,12 @@ public class MLData2 {
 		BufferedWriter bw = new BufferedWriter(new FileWriter(out,true));
 		String line = null;
 
-		int totallines = 0;
-		int checkline1 = 0;
-		int checkline2 = 0;
-		int checkline3 = 0;
-		int checkline4 = 0;
-		int sigmalines = 0;
+		//		int totallines = 0;
+		//		int checkline1 = 0;
+		//		int checkline2 = 0;
+		//		int checkline3 = 0;
+		//		int checkline4 = 0;
+		//		int sigmalines = 0;
 
 		while((line=br.readLine())!=null){
 			String id = null; String diff = null; String dis = null; String normaltime = null; String disdaytime = null;
@@ -239,7 +239,7 @@ public class MLData2 {
 			//					if(!ExtractIDbyDate.AreaOverlap(new LonLat(officep.getLon(),officep.getLat()),JIScodes2).equals("null")){
 
 
-			sigmalines++;
+			//			sigmalines++;
 
 			ArrayList<String> list = new ArrayList<String>();
 			for(String l  : GetLevel.getLevel(level).split(",")){ //level (0,0,0,0 etc.)
@@ -279,7 +279,7 @@ public class MLData2 {
 						if(homeexit.get(id).containsKey(date+time+level)){
 							for(String he : Bins.h_e_line(homeexit.get(id).get(date+time+level)).split(",")){
 								list.add(he);
-								checkline1++;
+								//								checkline1++;
 							}}
 						else{ for(int i = 1; i <=5 ; i++){list.add("0");}}}
 					else{ for(int i = 1; i <=5 ; i++){list.add("0");}}
@@ -290,7 +290,7 @@ public class MLData2 {
 						if(dis_he.get(id).containsKey(date+time+level)){
 							for(String he2 : Bins.getline4Diffs("home_exit_diff",dis_he.get(id).get(date+time+level)).split(",")){
 								list.add(he2);
-								checkline2++;
+								//								checkline2++;
 							}}						
 						else{ for(int i = 1; i <=5 ; i++){list.add("0");}}}
 					else{ for(int i = 1; i <=5 ; i++){list.add("0");}}
@@ -301,7 +301,7 @@ public class MLData2 {
 						if(officeent.get(id).containsKey(date+time+level)){
 							for(String oe : Bins.h_e_line(officeent.get(id).get(date+time+level)).split(",")){
 								list.add(oe);
-								checkline3++;
+								//								checkline3++;
 							}}
 						else{ for(int i = 1; i <=5 ; i++){list.add("0");}}}
 					else{ for(int i = 1; i <=5 ; i++){list.add("0");}}
@@ -312,7 +312,7 @@ public class MLData2 {
 						if(dis_oe.get(id).containsKey(date+time+level)){
 							for(String oe2 : Bins.getline4Diffs("office_enter_diff",dis_oe.get(id).get(date+time+level)).split(",")){
 								list.add(oe2);
-								checkline4++;
+								//								checkline4++;
 							}}
 						else{ for(int i = 1; i <=5 ; i++){list.add("0");}}}
 					else{ for(int i = 1; i <=5 ; i++){list.add("0");}}
@@ -323,7 +323,7 @@ public class MLData2 {
 						if(officeexit.get(id).containsKey(date+time+level)){
 							for(String ox : Bins.h_e_line(officeexit.get(id).get(date+time+level)).split(",")){
 								list.add(ox);
-								checkline3++;
+								//								checkline3++;
 							}}
 						else{ for(int i = 1; i <=5 ; i++){list.add("0");}}}
 					else{ for(int i = 1; i <=5 ; i++){list.add("0");}}
@@ -334,7 +334,7 @@ public class MLData2 {
 						if(dis_ox.get(id).containsKey(date+time+level)){
 							for(String ox2 : Bins.getline4Diffs("office_exit_diff",dis_ox.get(id).get(date+time+level)).split(",")){
 								list.add(ox2);
-								checkline4++;
+								//							checkline4++;
 							}}
 						else{ for(int i = 1; i <=5 ; i++){list.add("0");}}}
 					else{ for(int i = 1; i <=5 ; i++){list.add("0");}}
@@ -365,10 +365,10 @@ public class MLData2 {
 
 		//			}
 
-		totallines++;
+		//		totallines++;
 		//		}
-		System.out.println("#lines which have cleared sigma*"+k+" restriction: "+sigmalines+" out of "+totallines);
-		System.out.println("#check lines " + totallines + " " + checkline1 + " " + checkline2 + " " + checkline3 + " " + checkline4);
+		//		System.out.println("#lines which have cleared sigma*"+k+" restriction: "+sigmalines+" out of "+totallines);
+		//		System.out.println("#check lines " + totallines + " " + checkline1 + " " + checkline2 + " " + checkline3 + " " + checkline4);
 
 		br.close();
 		bw.close();
