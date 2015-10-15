@@ -8,6 +8,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 
 import jp.ac.ut.csis.pflow.geom.GeometryChecker;
 import jp.ac.ut.csis.pflow.geom.LonLat;
@@ -18,7 +19,7 @@ public class MLData2 {
 
 	public static final String type      = "rain";
 	public static final String dir       = "/home/c-tyabe/Data/"+type+"Tokyo4/";
-	public static final String outdir    = "/home/c-tyabe/Data/MLResults_"+type+"8_irr/";
+	public static final String outdir    = "/home/c-tyabe/Data/MLResults_"+type+"9/";
 	public static final String outdir2   = outdir+"forML/";
 	public static final String outdir3   = outdir+"forML/calc/";
 	public static final double k         = 1;
@@ -118,14 +119,14 @@ public class MLData2 {
 			String newoutfile   = outdir+subject+"_ML_cleaned.csv"; 
 			MLDataCleaner.DataClean(new File(outfile), new File(newoutfile)); //delete 0s and Es
 
-			//			String plusminus_normal  = outdir2+subject+"_ML_plusminus_normal.csv";
-			//			MLDataCleaner.ytoone(new File(newoutfile), new File(plusminus_normal));
+			String plusminus_normal  = outdir2+subject+"_ML_plusminus_normal.csv";
+			MLDataCleaner.ytoone2(new File(newoutfile), new File(plusminus_normal),k);
 
-			//			String multiplelines = outdir+subject+"_ML_lineforeach.csv";
-			//			MLDataModifier.Modify(new File(newoutfile), new File(multiplelines));
-			//
-			//			String plusminus_multiplelines = outdir3+subject+"_ML_plusminus_lineforeach.csv";
-			//			MLDataCleaner.ytoone(new File(multiplelines), new File(plusminus_multiplelines));
+			String multiplelines = outdir+subject+"_ML_lineforeach.csv";
+			MLDataModifier.Modify(new File(newoutfile), new File(multiplelines));
+
+			String plusminus_multiplelines = outdir3+subject+"_ML_plusminus_lineforeach.csv";
+			MLDataCleaner.ytoone2(new File(multiplelines), new File(plusminus_multiplelines),k);
 		}
 	}
 
@@ -271,7 +272,8 @@ public class MLData2 {
 			}
 			for(String ds : Bins.getlineDistance(dis).split(",")){
 				list.add(ds);
-			}		
+			}	
+			
 
 			if(isEarly(time,disdaytime)==true){
 				if(!subject.equals("home_exit_diff")){
@@ -344,20 +346,19 @@ public class MLData2 {
 				for(int i = 1; i <=30 ; i++){list.add("0");}
 			}
 
-			if(Math.abs(Double.parseDouble(diff))>k*sigma){
-				if(Double.parseDouble(diff)>0){
-					bw.write("1");
-				}
-				else{
-					bw.write("-1");
-				}
-			}
-			else{
-				bw.write("0");
-			}
+			bw.write(diff);
 
 			for(int i = 1; i<=list.size(); i++){
 				bw.write(" "+i+":"+list.get(i-1));
+			}
+			
+			HashSet<String> codes = new HashSet<String>();
+			codes.add(gchecker.listOverlaps("JCODE", nowp.getLon(), nowp.getLat()).get(0));
+			codes.add(gchecker.listOverlaps("JCODE", homep.getLon(), homep.getLat()).get(0));
+			codes.add(gchecker.listOverlaps("JCODE", officep.getLon(), officep.getLat()).get(0));
+			
+			for(String code : codes){
+				bw.write(" "+code+":1");
 			}
 			bw.write(" #"+diff+"A"+sigma);
 			bw.newLine();

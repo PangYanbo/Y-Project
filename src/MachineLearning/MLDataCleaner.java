@@ -85,6 +85,41 @@ public class MLDataCleaner {
 		bw.close();
 	}
 	
+	public static void ytoone2(File in, File out, double k) throws IOException{
+		BufferedReader br = new BufferedReader(new FileReader(in));
+		BufferedWriter bw = new BufferedWriter(new FileWriter(out));
+		String line = null;
+		while((line=br.readLine())!=null){
+			ArrayList<String> temp = new ArrayList<String>();
+			String[] tokens = line.split(" ");
+			Double y = Double.parseDouble(tokens[0]);
+			Double sigma = Double.parseDouble(tokens[tokens.length-1].split("A")[1]);
+			
+			if(Math.abs(y)>k*sigma){
+				if(y>0){
+					bw.write("1");
+				}
+				else{
+					bw.write("-1");
+				}
+			}
+			else{
+				bw.write("0");
+			}
+			
+			for(int i = 1; i<tokens.length; i++){
+				temp.add(tokens[i]);
+			}
+			
+			for(String t : temp){
+				bw.write(t+" ");
+			}
+			bw.newLine();
+		}
+		br.close();
+		bw.close();
+	}
+	
 	public static void ytoonemotif(File in, File out) throws IOException{
 		BufferedReader br = new BufferedReader(new FileReader(in));
 		BufferedWriter bw = new BufferedWriter(new FileWriter(out));
