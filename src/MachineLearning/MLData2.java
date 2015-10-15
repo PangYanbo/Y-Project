@@ -358,13 +358,13 @@ public class MLData2 {
 			String homecode = getCode(homep.getLon(),homep.getLat());
 			String offcode  = getCode(officep.getLon(),officep.getLat());
 
-			if(nowcode.equals("null")){
+			if(!nowcode.equals("null")){
 				codes.add(nowcode);
 			}
-			if(homecode.equals("null")){
+			if(!homecode.equals("null")){
 				codes.add(homecode);
 			}
-			if(offcode.equals("null")){
+			if(!offcode.equals("null")){
 				codes.add(offcode);
 			}
 			if(!codes.isEmpty()){
