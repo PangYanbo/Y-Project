@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 
 import jp.ac.ut.csis.pflow.geom.GeometryChecker;
 import jp.ac.ut.csis.pflow.geom.LonLat;
@@ -273,7 +274,7 @@ public class MLData2 {
 			for(String ds : Bins.getlineDistance(dis).split(",")){
 				list.add(ds);
 			}	
-			
+
 
 			if(isEarly(time,disdaytime)==true){
 				if(!subject.equals("home_exit_diff")){
@@ -351,14 +352,25 @@ public class MLData2 {
 			for(int i = 1; i<=list.size(); i++){
 				bw.write(" "+i+":"+list.get(i-1));
 			}
-			
+
 			HashSet<String> codes = new HashSet<String>();
-			codes.add(gchecker.listOverlaps("JCODE", nowp.getLon(), nowp.getLat()).get(0));
-			codes.add(gchecker.listOverlaps("JCODE", homep.getLon(), homep.getLat()).get(0));
-			codes.add(gchecker.listOverlaps("JCODE", officep.getLon(), officep.getLat()).get(0));
-			
-			for(String code : codes){
-				bw.write(" "+code+":1");
+			String nowcode = getCode(nowp.getLon(),nowp.getLat());
+			String homecode = getCode(homep.getLon(),homep.getLat());
+			String offcode  = getCode(officep.getLon(),officep.getLat());
+
+			if(nowcode.equals("null")){
+				codes.add(nowcode);
+			}
+			if(homecode.equals("null")){
+				codes.add(homecode);
+			}
+			if(offcode.equals("null")){
+				codes.add(offcode);
+			}
+			if(!codes.isEmpty()){
+				for(String code : codes){
+					bw.write(" "+code+":1");
+				}
 			}
 			bw.write(" #"+diff+"A"+sigma);
 			bw.newLine();
@@ -373,6 +385,16 @@ public class MLData2 {
 
 		br.close();
 		bw.close();
+	}
+
+	public static String getCode(double lon, double lat){
+		List<String> list = gchecker.listOverlaps("JCODE", lon, lat);
+		if(!list.isEmpty()){
+			return list.get(0);
+		}
+		else{
+			return "null";
+		}
 	}
 
 	public static LonLat StringtoLonLat(String x){
