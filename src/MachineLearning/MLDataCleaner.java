@@ -97,14 +97,14 @@ public class MLDataCleaner {
 			
 			if(Math.abs(y)>k*sigma){
 				if(y>0){
-					bw.write("1");
+					bw.write("1 ");
 				}
 				else{
-					bw.write("-1");
+					bw.write("-1 ");
 				}
 			}
 			else{
-				bw.write("0");
+				bw.write("0 ");
 			}
 			
 			for(int i = 1; i<tokens.length; i++){
