@@ -58,7 +58,7 @@ public class MLclean1020 {
 			String[] tokens = line.split(" ");
 			bw.write(tokens[0]);
 			ArrayList<Integer> list = new ArrayList<Integer>();
-			for(int i=1; i<tokens.length; i++){
+			for(int i=1; i<tokens.length-1; i++){
 				Integer num = Integer.valueOf(tokens[i].split(":")[0]);
 				list.add(num);
 			}
