@@ -14,7 +14,7 @@ import java.util.Collections;
 public class MLclean1020 {
 
 	public static final String type      = "rain";
-	public static final String outdir    = "/home/c-tyabe/Data/MLResults_"+type+"10/";
+	public static final String outdir    = "/home/c-tyabe/Data/MLResults_"+type+"9/";
 	public static final String outdir2   = outdir+"forML/";
 	public static final String outdir3   = outdir+"forML/calc/";
 
