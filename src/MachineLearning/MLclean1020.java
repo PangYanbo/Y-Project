@@ -41,9 +41,9 @@ public class MLclean1020 {
 
 		for(String subject : subjects){
 			String infile   = outdir3+subject+"_ML_plusminus_lineforeach.csv"; 
-			String outfile   = outdir3+subject+"_ML2_plusminus_lineforeach.csv"; 
+//			String outfile   = outdir3+subject+"_ML2_plusminus_lineforeach.csv"; 
 
-			naosu(infile,outfile);
+			count(infile,subject);
 		}
 	}
 
@@ -73,6 +73,33 @@ public class MLclean1020 {
 		}
 		br.close();
 		bw.close();
+	}
+	
+	public static void count(String infile, String subject) throws IOException{
+
+		BufferedReader br = new BufferedReader(new FileReader(new File(infile)));
+		String line = null;
+
+		int count1 = 0;
+		int count0 = 0;
+		int counti = 0;
+		
+		while((line=br.readLine())!=null){
+			String[] tokens = line.split(" ");
+			if(tokens[0].equals("1")){
+				count1++;
+			}
+			else if(tokens[0].equals("0")){
+				count0++;
+			}
+			else{
+				counti++;
+			}
+		}
+		br.close();
+		
+		System.out.println(subject+": 1:"+count1+", 0:"+count0+", -1:"+counti);
+		
 	}
 
 
