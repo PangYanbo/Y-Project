@@ -98,7 +98,12 @@ public class MLclean1020 {
 		}
 		br.close();
 		
-		System.out.println(subject+": 1:"+count1+", 0:"+count0+", -1:"+counti);
+		double perc1 = (double)count1/(double)(count1+count0+counti);
+		double perc0 = (double)count0/(double)(count1+count0+counti);
+		double perci = (double)counti/(double)(count1+count0+counti);
+		
+		
+		System.out.println(subject+": 1:"+perc1+", 0:"+perc0+", -1:"+perci);
 		
 	}
 
