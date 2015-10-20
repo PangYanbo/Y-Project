@@ -42,7 +42,7 @@ public class MLclean1020 {
 		for(String subject : subjects){
 			String infile   = outdir3+subject+"_ML_plusminus_lineforeach.csv"; 
 			String outfile   = outdir3+subject+"_ML2_plusminus_lineforeach.csv"; 
-			
+
 			naosu(infile,outfile);
 		}
 	}
@@ -59,8 +59,10 @@ public class MLclean1020 {
 			bw.write(tokens[0]);
 			ArrayList<Integer> list = new ArrayList<Integer>();
 			for(int i=1; i<tokens.length-1; i++){
-				Integer num = Integer.valueOf(tokens[i].split(":")[0]);
-				list.add(num);
+				if(!tokens[i].split(":")[0].isEmpty()){
+					Integer num = Integer.valueOf(tokens[i].split(":")[0]);
+					list.add(num);
+				}
 			}
 			Collections.sort(list);
 			for(Integer n : list){
