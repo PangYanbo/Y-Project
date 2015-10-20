@@ -7,6 +7,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -20,7 +21,7 @@ public class MLData2 {
 
 	public static final String type      = "rain";
 	public static final String dir       = "/home/c-tyabe/Data/"+type+"Tokyo4/";
-	public static final String outdir    = "/home/c-tyabe/Data/MLResults_"+type+"9/";
+	public static final String outdir    = "/home/c-tyabe/Data/MLResults_"+type+"10/";
 	public static final String outdir2   = outdir+"forML/";
 	public static final String outdir3   = outdir+"forML/calc/";
 	public static final double k         = 1;
@@ -354,6 +355,7 @@ public class MLData2 {
 			}
 
 			HashSet<String> codes = new HashSet<String>();
+			ArrayList<String> codesinorder = new ArrayList<String>();
 			String nowcode = getCode(nowp.getLon(),nowp.getLat());
 			String homecode = getCode(homep.getLon(),homep.getLat());
 			String offcode  = getCode(officep.getLon(),officep.getLat());
@@ -369,7 +371,11 @@ public class MLData2 {
 			}
 			if(!codes.isEmpty()){
 				for(String code : codes){
-					bw.write(" "+code+":1");
+					codesinorder.add(code);
+				}
+				Collections.sort(codesinorder);
+				for(String c : codesinorder){
+				bw.write(" "+c+":1");
 				}
 			}
 			bw.write(" #"+diff+"A"+sigma);
