@@ -42,14 +42,16 @@ public class AttributeResults {
 			for(String ele : tokens){
 				if(ele.split(":").length==2){
 					String elenum = ele.split(":")[0];
-					if((Integer.valueOf(elenum)<=Integer.valueOf(end))&&(Integer.valueOf(elenum)>=Integer.valueOf(start))){
-						if(res.containsKey(elenum)){
-							res.get(elenum).add(val);
-						}
-						else{
-							ArrayList<String> list = new ArrayList<String>();
-							list.add(val);
-							res.put(elenum, list);
+					if(!elenum.isEmpty()){
+						if((Integer.valueOf(elenum)<=Integer.valueOf(end))&&(Integer.valueOf(elenum)>=Integer.valueOf(start))){
+							if(res.containsKey(elenum)){
+								res.get(elenum).add(val);
+							}
+							else{
+								ArrayList<String> list = new ArrayList<String>();
+								list.add(val);
+								res.put(elenum, list);
+							}
 						}
 					}
 				}
