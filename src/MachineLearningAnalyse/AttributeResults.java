@@ -42,7 +42,7 @@ public class AttributeResults {
 			for(String ele : tokens){
 				if(ele.split(":").length==2){
 					String elenum = ele.split(":")[0];
-					if(!elenum.isEmpty()){
+					if(!elenum.equals("")){
 						if((Integer.valueOf(elenum)<=Integer.valueOf(end))&&(Integer.valueOf(elenum)>=Integer.valueOf(start))){
 							if(res.containsKey(elenum)){
 								res.get(elenum).add(val);
