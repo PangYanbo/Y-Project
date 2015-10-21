@@ -13,10 +13,21 @@ public class AttributeResults {
 
 	public static void main(String args[]) throws IOException{
 
-		File in = new File("/home/c-tyabe/Data/MLResults_rain6/"+args[0]+"_diff_ML_lineforeach.csv");
-		File out = new File("/home/c-tyabe/Data/MLResults_rain6/"+args[0]+"_diff_ML_lineforeach_elements.csv");
-		
-		makeMap(in,out);
+		ArrayList<String> subjects = new ArrayList<String>();
+		subjects.add("home_exit_diff");
+		subjects.add("tsukin_time_diff");
+		subjects.add("office_enter_diff");
+		subjects.add("office_time_diff");
+		subjects.add("office_exit_diff");
+		subjects.add("kitaku_time_diff");
+		subjects.add("home_return_diff");
+
+		for(String subject: subjects){
+			File in = new File("/home/c-tyabe/Data/MLResults_rain9/"+subject+"_diff_ML_lineforeach.csv");
+			File out = new File("/home/c-tyabe/Data/MLResults_rain9/"+subject+"_diff_ML_lineforeach_elements.csv");
+			makeMap(in,out);
+
+		}
 
 	}
 
@@ -43,16 +54,21 @@ public class AttributeResults {
 			}
 		}
 		br.close();
-		
+
 		for(String num : res.keySet()){
 			for(String val : res.get(num)){
 				bw.write(num + "," + val);
 				bw.newLine();
 			}
 		}
-		
+
 		bw.close();
 		return res;
 	}
+
+	//	public static void soukancheck(HashMap<String,ArrayList<String>> map){
+	//		int elenum = 4;
+	//		
+	//	}
 
 }
