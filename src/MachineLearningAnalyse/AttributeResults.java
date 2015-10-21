@@ -23,8 +23,8 @@ public class AttributeResults {
 		subjects.add("home_return_diff");
 
 		for(String subject: subjects){
-			File in = new File("/home/c-tyabe/Data/MLResults_rain9/"+subject+"_diff_ML_lineforeach.csv");
-			File out = new File("/home/c-tyabe/Data/MLResults_rain9/"+subject+"_diff_ML_lineforeach_elements.csv");
+			File in = new File("/home/c-tyabe/Data/MLResults_rain9/"+subject+"_ML_lineforeach.csv");
+			File out = new File("/home/c-tyabe/Data/MLResults_rain9/"+subject+"_ML_lineforeach_elements.csv");
 			makeMap(in,out);
 
 		}
