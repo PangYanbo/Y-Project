@@ -28,7 +28,7 @@ public class AttributeResults {
 
 			for(String subject: subjects){
 				File in = new File("/home/c-tyabe/Data/MLResults_rain9/"+subject+"_ML_lineforeach.csv");
-				File out = new File("/home/c-tyabe/Data/MLResults_rain9/sosei/"+subject+"_ML_lineforeach_elements_"+args[0]+"_"+args[1]+".csv");
+				File out = new File("/home/c-tyabe/Data/MLResults_rain9/sosei/"+subject+"_ML_lineforeach_elements_"+String.valueOf(start+5*i)+"_"+String.valueOf(end+5*i)+".csv");
 				makeMap(in,out,String.valueOf(start+5*i),String.valueOf(end+5*i));
 
 			}
