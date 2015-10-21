@@ -24,14 +24,14 @@ public class AttributeResults {
 
 		for(String subject: subjects){
 			File in = new File("/home/c-tyabe/Data/MLResults_rain9/"+subject+"_ML_lineforeach.csv");
-			File out = new File("/home/c-tyabe/Data/MLResults_rain9/"+subject+"_ML_lineforeach_elements.csv");
-			makeMap(in,out);
+			File out = new File("/home/c-tyabe/Data/MLResults_rain9/sosei/"+subject+"_ML_lineforeach_elements_"+args[0]+"_"+args[1]+".csv");
+			makeMap(in,out,args[0],args[1]);
 
 		}
 
 	}
 
-	public static HashMap<String,ArrayList<String>> makeMap(File in, File out) throws IOException{
+	public static HashMap<String,ArrayList<String>> makeMap(File in, File out, String start, String end) throws IOException{
 		HashMap<String,ArrayList<String>> res = new HashMap<String,ArrayList<String>>();
 		BufferedReader br = new BufferedReader(new FileReader(in));
 		BufferedWriter bw = new BufferedWriter(new FileWriter(out));
@@ -42,13 +42,15 @@ public class AttributeResults {
 			for(String ele : tokens){
 				if(ele.split(":").length==2){
 					String elenum = ele.split(":")[0];
-					if(res.containsKey(elenum)){
-						res.get(elenum).add(val);
-					}
-					else{
-						ArrayList<String> list = new ArrayList<String>();
-						list.add(val);
-						res.put(elenum, list);
+					if((Integer.valueOf(elenum)<=Integer.valueOf(end))&&(Integer.valueOf(elenum)>=Integer.valueOf(start))){
+						if(res.containsKey(elenum)){
+							res.get(elenum).add(val);
+						}
+						else{
+							ArrayList<String> list = new ArrayList<String>();
+							list.add(val);
+							res.put(elenum, list);
+						}
 					}
 				}
 			}
