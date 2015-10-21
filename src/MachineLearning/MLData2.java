@@ -245,34 +245,34 @@ public class MLData2 {
 			//			sigmalines++;
 
 			ArrayList<String> list = new ArrayList<String>();
-			for(String l  : GetLevel.getLevel(level).split(",")){ //level (0,0,0,0 etc.)
+			for(String l  : GetLevel.getLevel(level).split(",")){ //level (0,0,0,0 etc.) 1-4
 				list.add(l);
 			}
-			for(String t  : Bins.timerange(time).split(",")){ //time of disaster 
+			for(String t  : Bins.timerange(time).split(",")){ //time of disaster 5-9
 				list.add(t);
 			}
-			for(String df : Bins.getline4Diffs(subject, normaltime).split(",")){
+			for(String df : Bins.getline4Diffs(subject, normaltime).split(",")){ //10-14
 				list.add(df);
 			}
-			for(String si : Bins.sigmaline(k*sigma).split(",")){
+			for(String si : Bins.sigmaline(k*sigma).split(",")){ //15-19
 				list.add(si);
 			}
-			for(String p  : GetPop.getpop(popmap, nowp, homep, officep).split(",")){ //pop data
+			for(String p  : GetPop.getpop(popmap, nowp, homep, officep).split(",")){ //pop data 20-24,25-29,30-34
 				list.add(p);
 			}
-			for(String la : GetLanduse.getlanduse(buildingmap, farmmap, nowp, homep, officep).split(",")){
+			for(String la : GetLanduse.getlanduse(buildingmap, farmmap, nowp, homep, officep).split(",")){ //35-39,40-44,45-49, 50-54,55-59,60-64
 				list.add(la);
 			}
-			for(String r  : GetRoadData.getroaddata(sroadmap, broadmap, allroadmap, nowp, homep, officep).split(",")){
+			for(String r  : GetRoadData.getroaddata(sroadmap, broadmap, allroadmap, nowp, homep, officep).split(",")){ //65-,70-,75-, 80-,85-,90-, 95-,100-,105-
 				list.add(r);
 			}
-			for(String st : GetTrainData.getstationpop(trainmap, nowp, homep, officep).split(",")){
+			for(String st : GetTrainData.getstationpop(trainmap, nowp, homep, officep).split(",")){ //110-,115-,120-
 				list.add(st);
 			}
-			for(String lp : GetLandPrice.getlandprice(pricemap, nowp, homep, officep).split(",")){
+			for(String lp : GetLandPrice.getlandprice(pricemap, nowp, homep, officep).split(",")){ //125-,130-,135-
 				list.add(lp);
 			}
-			for(String ds : Bins.getlineDistance(dis).split(",")){
+			for(String ds : Bins.getlineDistance(dis).split(",")){ //140-
 				list.add(ds);
 			}	
 

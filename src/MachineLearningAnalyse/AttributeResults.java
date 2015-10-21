@@ -13,20 +13,25 @@ public class AttributeResults {
 
 	public static void main(String args[]) throws IOException{
 
-		ArrayList<String> subjects = new ArrayList<String>();
-		subjects.add("home_exit_diff");
-		subjects.add("tsukin_time_diff");
-		subjects.add("office_enter_diff");
-		subjects.add("office_time_diff");
-		subjects.add("office_exit_diff");
-		subjects.add("kitaku_time_diff");
-		subjects.add("home_return_diff");
+		int start = 0;
+		int end = 4;
 
-		for(String subject: subjects){
-			File in = new File("/home/c-tyabe/Data/MLResults_rain9/"+subject+"_ML_lineforeach.csv");
-			File out = new File("/home/c-tyabe/Data/MLResults_rain9/sosei/"+subject+"_ML_lineforeach_elements_"+args[0]+"_"+args[1]+".csv");
-			makeMap(in,out,args[0],args[1]);
+		for(int i = 0; i<=34; i++){
+			ArrayList<String> subjects = new ArrayList<String>();
+			subjects.add("home_exit_diff");
+			subjects.add("tsukin_time_diff");
+			subjects.add("office_enter_diff");
+			subjects.add("office_time_diff");
+			subjects.add("office_exit_diff");
+			subjects.add("kitaku_time_diff");
+			subjects.add("home_return_diff");
 
+			for(String subject: subjects){
+				File in = new File("/home/c-tyabe/Data/MLResults_rain9/"+subject+"_ML_lineforeach.csv");
+				File out = new File("/home/c-tyabe/Data/MLResults_rain9/sosei/"+subject+"_ML_lineforeach_elements_"+args[0]+"_"+args[1]+".csv");
+				makeMap(in,out,String.valueOf(start+5*i),String.valueOf(end+5*i));
+
+			}
 		}
 
 	}
