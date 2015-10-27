@@ -45,7 +45,7 @@ public class DayChooser {
 		String year = disDate.substring(0,4);
 		String month = disDate.substring(4,6);
 		String nextmonth = String.valueOf(Integer.valueOf(month)+1);
-		String nextnmonth = String.valueOf(Integer.valueOf(month)+2);
+//		String nextnmonth = String.valueOf(Integer.valueOf(month)+2);
 		for(int i=1; i<=28; i++){
 			String day = String.valueOf(i);
 			Date d = SDF_TS.parse(year+"-"+month+"-"+day);
@@ -64,14 +64,14 @@ public class DayChooser {
 					res.add(date2);
 				}
 			}
-			Date d3 = SDF_TS.parse(year+"-"+nextnmonth+"-"+day);
-			String youbi3 = (new SimpleDateFormat("u")).format(d2);
-			if(!((youbi3.equals("6"))||(youbi3.equals("7")))){
-				if(!(DisDays.contains(d3))){
-					String date3 = SDF_TS.format(d3);
-					res.add(date3);
-				}
-			}
+//			Date d3 = SDF_TS.parse(year+"-"+nextnmonth+"-"+day);
+//			String youbi3 = (new SimpleDateFormat("u")).format(d2);
+//			if(!((youbi3.equals("6"))||(youbi3.equals("7")))){
+//				if(!(DisDays.contains(d3))){
+//					String date3 = SDF_TS.format(d3);
+//					res.add(date3);
+//				}
+//			}
 		}
 		return res;
 	}
