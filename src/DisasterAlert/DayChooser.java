@@ -79,32 +79,17 @@ public class DayChooser {
 	public static HashSet<String> getTargetDates2(String disDate) throws ParseException, IOException{
 		HashSet<String> res = new HashSet<String>();
 		String year = disDate.substring(0,4);
-		String month = disDate.substring(4,6);
-		String nextmonth = String.valueOf(Integer.valueOf(month)+1);
-		String nextnmonth = String.valueOf(Integer.valueOf(month)+2);
-		for(int i=1; i<=28; i++){
-			String day = String.valueOf(i);
-			Date d = SDF_TS.parse(year+"-"+month+"-"+day);
-			String youbi = (new SimpleDateFormat("u")).format(d);
-			if(!((youbi.equals("6"))||(youbi.equals("7")))){
-				String date = SDF_TS.format(d);
-				res.add(date);
-
+		for(int m=1; m<=12; m++){
+			String month = String.valueOf(m);
+			for(int i=1; i<=28; i++){
+				String day = String.valueOf(i);
+				Date d = SDF_TS.parse(year+"-"+month+"-"+day);
+				String youbi = (new SimpleDateFormat("u")).format(d);
+				if(!((youbi.equals("6"))||(youbi.equals("7")))){
+					String date = SDF_TS.format(d);
+					res.add(date);
+				}
 			}
-			Date d2 = SDF_TS.parse(year+"-"+nextmonth+"-"+day);
-			String youbi2 = (new SimpleDateFormat("u")).format(d2);
-			if(!((youbi2.equals("6"))||(youbi2.equals("7")))){
-				String date2 = SDF_TS.format(d2);
-				res.add(date2);
-
-			}
-//			Date d3 = SDF_TS.parse(year+"-"+nextnmonth+"-"+day);
-//			String youbi3 = (new SimpleDateFormat("u")).format(d2);
-//			if(!((youbi3.equals("6"))||(youbi3.equals("7")))){
-//				String date3 = SDF_TS.format(d3);
-//				res.add(date3);
-//
-//			}
 		}
 		return res;
 	}
