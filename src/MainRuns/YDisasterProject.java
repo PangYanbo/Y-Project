@@ -41,7 +41,7 @@ public class YDisasterProject {
 	private static final String city = "Tokyo";
 //	private static final String targetlevel = "1";
 //	private static final String targetlevel2 = "2";
-	private static final String homepath = "/home/c-tyabe/Data/"+type+city+"5/";
+	private static final String homepath = "/home/c-tyabe/Data/"+type+city+"6/";
 	private static final String GPSpath  = "/tmp/bousai_data/gps_";
 
 	public static void main(String args[]) throws IOException, NumberFormatException, ParseException{
