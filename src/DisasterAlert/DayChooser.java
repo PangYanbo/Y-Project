@@ -79,7 +79,7 @@ public class DayChooser {
 	public static HashSet<String> getTargetDates2(String disDate) throws ParseException, IOException{
 		HashSet<String> res = new HashSet<String>();
 		String year = disDate.substring(0,4);
-		for(int m=1; m<=12; m++){
+		for(int m=1; m<=7; m++){
 			String month = String.valueOf(m);
 			for(int i=1; i<=28; i++){
 				String day = String.valueOf(i);
