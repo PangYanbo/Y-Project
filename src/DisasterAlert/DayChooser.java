@@ -44,7 +44,7 @@ public class DayChooser {
 		HashSet<Date> DisDays = getDisDays(dislogs);
 		String year = disDate.substring(0,4);
 		String month = disDate.substring(4,6);
-		String nextmonth = String.valueOf(Integer.valueOf(month)+1);
+		String nextmonth = String.valueOf(Integer.valueOf(month)-1);
 //		String nextnmonth = String.valueOf(Integer.valueOf(month)+2);
 		for(int i=1; i<=28; i++){
 			String day = String.valueOf(i);
