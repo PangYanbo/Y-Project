@@ -98,13 +98,13 @@ public class DayChooser {
 				res.add(date2);
 
 			}
-			Date d3 = SDF_TS.parse(year+"-"+nextnmonth+"-"+day);
-			String youbi3 = (new SimpleDateFormat("u")).format(d2);
-			if(!((youbi3.equals("6"))||(youbi3.equals("7")))){
-				String date3 = SDF_TS.format(d3);
-				res.add(date3);
-
-			}
+//			Date d3 = SDF_TS.parse(year+"-"+nextnmonth+"-"+day);
+//			String youbi3 = (new SimpleDateFormat("u")).format(d2);
+//			if(!((youbi3.equals("6"))||(youbi3.equals("7")))){
+//				String date3 = SDF_TS.format(d3);
+//				res.add(date3);
+//
+//			}
 		}
 		return res;
 	}

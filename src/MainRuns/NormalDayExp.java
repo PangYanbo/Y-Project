@@ -18,7 +18,7 @@ import MobilityAnalyser.HomeOfficeMaps;
 
 public class NormalDayExp {
 
-	private static final String homepath = "/home/c-tyabe/Data/exp/";
+	private static final String homepath = "/home/c-tyabe/Data/exp2/";
 
 	public static void main(String args[]) throws NumberFormatException, IOException, ParseException{
 
