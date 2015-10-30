@@ -14,6 +14,9 @@ public class MinimumDayFinder {
 		
 		File in  = new File("/home/c-tyabe/Data/expALL/office_enter.csv");
 		File out = new File("/home/c-tyabe/Data/expALL/office_enter_shusokudays.csv");
+	
+//		File in = new File("c:/users/yabetaka/desktop/test.txt");
+//		File out = new File("c:/users/yabetaka/desktop/test2.txt");
 		
 		HashMap<String, HashMap<String,String>> map = sort(in);
 		
@@ -64,7 +67,7 @@ public class MinimumDayFinder {
 				count++;
 				tmp = tmp + Double.parseDouble(map.get(day));
 				tmpavg = tmp/(double)count;
-				if((count>=0)&&(Math.abs(tmpavg-avg))<1){
+				if((count>=10)&&(Math.abs(tmpavg-avg))<1){
 					score++;
 					if(score==5){
 						return count;
