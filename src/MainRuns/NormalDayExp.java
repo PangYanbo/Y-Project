@@ -8,17 +8,21 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 
+import jp.ac.ut.csis.pflow.geom.LonLat;
 import DisasterAlert.DayChooser;
 import MobilityAnalyser.HomeOfficeMaps;
 
 public class NormalDayExp {
 
-	private static final String homepath = "/home/c-tyabe/Data/expALL/";
+	private static final String homepath = "/home/c-tyabe/Data/expALL2/";
+	protected static final SimpleDateFormat SDF_TS = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//change time format
+	protected static final SimpleDateFormat SDF_MDS = new SimpleDateFormat("HH:mm:ss");//change time format
 
 	public static void main(String args[]) throws NumberFormatException, IOException, ParseException{
 
@@ -58,7 +62,7 @@ public class NormalDayExp {
 		File in = new File(infile);
 		File Office = new File(idoffice);
 
-		HashMap<String,HashMap<String,ArrayList<Integer>>> omap = HomeOfficeMaps.getLogsnearX(in,Office);
+		HashMap<String,HashMap<String,ArrayList<Integer>>> omap = getLogsnearX(in,Office);
 		System.out.println("#done getting logs near office");
 
 		HashMap<String, HashMap<String, Integer>> officeenter = officeEnterTime(omap); //System.out.println("#done getting office enter time");
@@ -99,4 +103,57 @@ public class NormalDayExp {
 		return out;
 	}
 
+	public static HashMap<String,HashMap<String,ArrayList<Integer>>> getLogsnearX(File in, File X) throws IOException, NumberFormatException, ParseException{
+		HashMap<String,LonLat> id_X = HomeOfficeMaps.getXMap(X);
+		HashMap<String,HashMap<String,ArrayList<Integer>>> res = new HashMap<String,HashMap<String,ArrayList<Integer>>>();
+		BufferedReader br = new BufferedReader(new FileReader(in));
+		String line = null;
+		while((line=br.readLine())!=null){
+			String[] tokens = line.split("\t");
+			String id = (tokens[0]);
+			
+			if(id_X.containsKey(id)){
+				Double lon = Double.parseDouble(tokens[2]);
+				Double lat = Double.parseDouble(tokens[1]);
+				LonLat point = new LonLat(lon,lat);
+				String date = tokens[3];
+				
+				String[] youso = date.split(" ");
+				String ymd = youso[0];
+				String[] youso2 = ymd.split("-");
+				String month  = youso2[1];
+				String hiniti = youso2[2];
+				String hms = youso[1];
+				String hour = hms.substring(0,2);
+
+				if(point.distance(id_X.get(id))<500){
+					Integer time = HomeOfficeMaps.converttoSecs(SDF_MDS.format(SDF_TS.parse(tokens[3])));
+					if(Integer.valueOf(hour)<3){
+						time = time + 86400;
+					}
+
+					if(res.containsKey(id)){
+						if(res.get(id).containsKey(month+"-"+hiniti)){
+							res.get(id).get(month+"-"+hiniti).add(time);
+						}
+						else{
+							ArrayList<Integer> list = new ArrayList<Integer>();
+							list.add(time);
+							res.get(id).put(month+"-"+hiniti, list);
+						}
+					}
+					else{
+						HashMap<String,ArrayList<Integer>> map = new HashMap<String,ArrayList<Integer>>();
+						ArrayList<Integer> list = new ArrayList<Integer>();
+						list.add(time);
+						map.put(month+"-"+hiniti, list);
+						res.put(id, map);
+					}
+				}
+			}
+		}		
+		br.close();
+		return res;
+	}
+	
 }
