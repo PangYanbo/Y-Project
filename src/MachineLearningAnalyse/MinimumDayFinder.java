@@ -56,14 +56,15 @@ public class MinimumDayFinder {
 	public static int shusoku(HashMap<String,String> map){
 		if(map.size()>0){
 			Double avg = 0d;
+			Double tmp = 0d;
 			Double tmpavg = 0d;
-			int count = 1;
+			int count = 0;
 			int score = 0;
 			for(String day : map.keySet()){
-				avg = avg + Double.parseDouble(map.get(day));
 				count++;
-				tmpavg = avg/(double)count;
-				if((count>=10)&&(Math.abs(tmpavg-avg))<1){
+				tmp = tmp + Double.parseDouble(map.get(day));
+				tmpavg = tmp/(double)count;
+				if((count>=0)&&(Math.abs(tmpavg-avg))<1){
 					score++;
 					if(score==5){
 						return count;
@@ -75,6 +76,7 @@ public class MinimumDayFinder {
 				else{
 					score=0;
 				}
+				avg = tmpavg;
 			}
 			return 140;
 		}
