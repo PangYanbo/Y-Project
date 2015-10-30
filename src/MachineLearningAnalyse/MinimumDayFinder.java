@@ -25,7 +25,7 @@ public class MinimumDayFinder {
 		BufferedWriter bw = new BufferedWriter(new FileWriter(out));
 		for(String id : map.keySet()){
 			int shusokudays = shusoku(map.get(id));
-			bw.write(shusokudays);
+			bw.write(String.valueOf(shusokudays));
 			bw.newLine();
 		}
 		bw.close();
