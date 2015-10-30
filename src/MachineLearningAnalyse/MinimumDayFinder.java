@@ -1,17 +1,37 @@
 package MachineLearningAnalyse;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
 
 public class MinimumDayFinder {
 
-	public static void main(String args[]){
-
+	public static void main(String args[]) throws IOException{
+		
+		File in  = new File("/home/c-tyabe/Data/expALL/office_enter.csv");
+		File out = new File("/home/c-tyabe/Data/expALL/office_enter_shusokudays.csv");
+		
+		HashMap<String, HashMap<String,String>> map = sort(in);
+		
+		writeout(map,out);
+		
 	}
 
+	public static File writeout(HashMap<String, HashMap<String,String>> map, File out) throws IOException{
+		BufferedWriter bw = new BufferedWriter(new FileWriter(out));
+		for(String id : map.keySet()){
+			int shusokudays = shusoku(map.get(id));
+			bw.write(shusokudays);
+			bw.newLine();
+		}
+		bw.close();
+		return out;
+	}
+	
 	public static HashMap<String, HashMap<String,String>> sort(File in) throws IOException{
 		BufferedReader br = new BufferedReader(new FileReader(in));
 		String line = null;
