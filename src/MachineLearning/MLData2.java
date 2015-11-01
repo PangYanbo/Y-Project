@@ -105,8 +105,11 @@ public class MLData2 {
 		for(String subject : subjects){
 			String outfile   = outdir+subject+"_ML.csv"; 
 
-			for(File typelevel : new File(dir).listFiles()){
-				String level = typelevel.getName().split("_")[1];
+			HashMap<String, ArrayList<String>> id_dates = new HashMap<String, ArrayList<String>>();
+
+			for(int l=4; l>=1; l--){
+				File typelevel = new File(dir+"rain_"+String.valueOf(l)+"/");
+				String level = String.valueOf(l);
 				for(File datetime :typelevel.listFiles()){
 					String date = datetime.getName().split("_")[0];
 					String time = datetime.getName().split("_")[1];
@@ -115,7 +118,7 @@ public class MLData2 {
 							System.out.println("#working on " + f.toString());
 							getAttributes(f,new File(outfile),level,date,time,
 									popmap,buildingmap,farmmap,sroadmap,broadmap,allroadmap,trainmap,pricemap,
-									homeexit, officeent, officeexit, dis_he, dis_oe, dis_ox, subject);
+									homeexit, officeent, officeexit, dis_he, dis_oe, dis_ox, subject, id_dates);
 						}}}}
 
 			String newoutfile   = outdir+subject+"_ML_cleaned.csv"; 
@@ -180,18 +183,11 @@ public class MLData2 {
 			HashMap<String, HashMap<String,String>> dis_he, HashMap<String, HashMap<String,String>>dis_oe, 
 			HashMap<String, HashMap<String,String>> officeent, HashMap<String, HashMap<String,String>>dis_ox, 
 			//			HashMap<String, HashMap<String,String>> motifmap, 
-			String subject) throws IOException{
+			String subject, HashMap<String,ArrayList<String>> id_date) throws IOException{
 
 		BufferedReader br = new BufferedReader(new FileReader(in));
 		BufferedWriter bw = new BufferedWriter(new FileWriter(out,true));
 		String line = null;
-
-		//		int totallines = 0;
-		//		int checkline1 = 0;
-		//		int checkline2 = 0;
-		//		int checkline3 = 0;
-		//		int checkline4 = 0;
-		//		int sigmalines = 0;
 
 		while((line=br.readLine())!=null){
 			String id = null; String diff = null; String dis = null; String normaltime = null; String disdaytime = null;
@@ -244,142 +240,289 @@ public class MLData2 {
 
 			//			sigmalines++;
 
-			ArrayList<String> list = new ArrayList<String>();
-			for(String l  : GetLevel.getLevel(level).split(",")){ //level (0,0,0,0 etc.) 1-4
-				list.add(l);
-			}
-			for(String t  : Bins.timerange(time).split(",")){ //time of disaster 5-9
-				list.add(t);
-			}
-			for(String df : Bins.getline4Diffs(subject, normaltime).split(",")){ //10-14
-				list.add(df);
-			}
-			for(String si : Bins.sigmaline(k*sigma).split(",")){ //15-19
-				list.add(si);
-			}
-			for(String p  : GetPop.getpop(popmap, nowp, homep, officep).split(",")){ //pop data 20-24,25-29,30-34
-				list.add(p);
-			}
-			for(String la : GetLanduse.getlanduse(buildingmap, farmmap, nowp, homep, officep).split(",")){ //35-39,40-44,45-49, 50-54,55-59,60-64
-				list.add(la);
-			}
-			for(String r  : GetRoadData.getroaddata(sroadmap, broadmap, allroadmap, nowp, homep, officep).split(",")){ //65-,70-,75-, 80-,85-,90-, 95-,100-,105-
-				list.add(r);
-			}
-			for(String st : GetTrainData.getstationpop(trainmap, nowp, homep, officep).split(",")){ //110-,115-,120-
-				list.add(st);
-			}
-			for(String lp : GetLandPrice.getlandprice(pricemap, nowp, homep, officep).split(",")){ //125-,130-,135-
-				list.add(lp);
-			}
-			for(String ds : Bins.getlineDistance(dis).split(",")){ //140-
-				list.add(ds);
-			}	
+			if(id_date.containsKey(id)){
+				if(!id_date.get(id).contains(date)){
+
+					ArrayList<String> list = new ArrayList<String>();
+					for(String l  : GetLevel.getLevel(level).split(",")){ //level (0,0,0,0 etc.) 1-4
+						list.add(l);
+					}
+					for(String t  : Bins.timerange(time).split(",")){ //time of disaster 5-9
+						list.add(t);
+					}
+					for(String df : Bins.getline4Diffs(subject, normaltime).split(",")){ //10-14
+						list.add(df);
+					}
+					for(String si : Bins.sigmaline(k*sigma).split(",")){ //15-19
+						list.add(si);
+					}
+					for(String p  : GetPop.getpop(popmap, nowp, homep, officep).split(",")){ //pop data 20-24,25-29,30-34
+						list.add(p);
+					}
+					for(String la : GetLanduse.getlanduse(buildingmap, farmmap, nowp, homep, officep).split(",")){ //35-39,40-44,45-49, 50-54,55-59,60-64
+						list.add(la);
+					}
+					for(String r  : GetRoadData.getroaddata(sroadmap, broadmap, allroadmap, nowp, homep, officep).split(",")){ //65-,70-,75-, 80-,85-,90-, 95-,100-,105-
+						list.add(r);
+					}
+					for(String st : GetTrainData.getstationpop(trainmap, nowp, homep, officep).split(",")){ //110-,115-,120-
+						list.add(st);
+					}
+					for(String lp : GetLandPrice.getlandprice(pricemap, nowp, homep, officep).split(",")){ //125-,130-,135-
+						list.add(lp);
+					}
+					for(String ds : Bins.getlineDistance(dis).split(",")){ //140-
+						list.add(ds);
+					}	
 
 
-			if(isEarly(time,disdaytime)==true){
-				if(!subject.equals("home_exit_diff")){
-					if(homeexit.containsKey(id)){
-						if(homeexit.get(id).containsKey(date+time+level)){
-							for(String he : Bins.h_e_line(homeexit.get(id).get(date+time+level)).split(",")){
-								list.add(he);
-								//								checkline1++;
-							}}
-						else{ for(int i = 1; i <=5 ; i++){list.add("0");}}}
-					else{ for(int i = 1; i <=5 ; i++){list.add("0");}}
-				}else{ for(int i = 1; i <=5 ; i++){list.add("0");}}
+					if(isEarly(time,disdaytime)==true){
+						if(!subject.equals("home_exit_diff")){
+							if(homeexit.containsKey(id)){
+								if(homeexit.get(id).containsKey(date+time+level)){
+									for(String he : Bins.h_e_line(homeexit.get(id).get(date+time+level)).split(",")){
+										list.add(he);
+										//								checkline1++;
+									}}
+								else{ for(int i = 1; i <=5 ; i++){list.add("0");}}}
+							else{ for(int i = 1; i <=5 ; i++){list.add("0");}}
+						}else{ for(int i = 1; i <=5 ; i++){list.add("0");}}
 
-				if(!subject.equals("home_exit_diff")){
-					if(dis_he.containsKey(id)){
-						if(dis_he.get(id).containsKey(date+time+level)){
-							for(String he2 : Bins.getline4Diffs("home_exit_diff",dis_he.get(id).get(date+time+level)).split(",")){
-								list.add(he2);
-								//								checkline2++;
-							}}						
-						else{ for(int i = 1; i <=5 ; i++){list.add("0");}}}
-					else{ for(int i = 1; i <=5 ; i++){list.add("0");}}
-				}else{ for(int i = 1; i <=5 ; i++){list.add("0");}}
+						if(!subject.equals("home_exit_diff")){
+							if(dis_he.containsKey(id)){
+								if(dis_he.get(id).containsKey(date+time+level)){
+									for(String he2 : Bins.getline4Diffs("home_exit_diff",dis_he.get(id).get(date+time+level)).split(",")){
+										list.add(he2);
+										//								checkline2++;
+									}}						
+								else{ for(int i = 1; i <=5 ; i++){list.add("0");}}}
+							else{ for(int i = 1; i <=5 ; i++){list.add("0");}}
+						}else{ for(int i = 1; i <=5 ; i++){list.add("0");}}
 
-				if(!(subject.equals("home_exit_diff"))||(subject.equals("tsukin_time_diff"))||(subject.equals("office_enter_diff"))){
-					if(officeent.containsKey(id)){
-						if(officeent.get(id).containsKey(date+time+level)){
-							for(String oe : Bins.h_e_line(officeent.get(id).get(date+time+level)).split(",")){
-								list.add(oe);
-								//								checkline3++;
-							}}
-						else{ for(int i = 1; i <=5 ; i++){list.add("0");}}}
-					else{ for(int i = 1; i <=5 ; i++){list.add("0");}}
-				}else{ for(int i = 1; i <=5 ; i++){list.add("0");}}
+						if(!(subject.equals("home_exit_diff"))||(subject.equals("tsukin_time_diff"))||(subject.equals("office_enter_diff"))){
+							if(officeent.containsKey(id)){
+								if(officeent.get(id).containsKey(date+time+level)){
+									for(String oe : Bins.h_e_line(officeent.get(id).get(date+time+level)).split(",")){
+										list.add(oe);
+										//								checkline3++;
+									}}
+								else{ for(int i = 1; i <=5 ; i++){list.add("0");}}}
+							else{ for(int i = 1; i <=5 ; i++){list.add("0");}}
+						}else{ for(int i = 1; i <=5 ; i++){list.add("0");}}
 
-				if(!(subject.equals("home_exit_diff"))||(subject.equals("tsukin_time_diff"))||(subject.equals("office_enter_diff"))){
-					if(dis_oe.containsKey(id)){
-						if(dis_oe.get(id).containsKey(date+time+level)){
-							for(String oe2 : Bins.getline4Diffs("office_enter_diff",dis_oe.get(id).get(date+time+level)).split(",")){
-								list.add(oe2);
-								//								checkline4++;
-							}}
-						else{ for(int i = 1; i <=5 ; i++){list.add("0");}}}
-					else{ for(int i = 1; i <=5 ; i++){list.add("0");}}
-				}else{ for(int i = 1; i <=5 ; i++){list.add("0");}}
+						if(!(subject.equals("home_exit_diff"))||(subject.equals("tsukin_time_diff"))||(subject.equals("office_enter_diff"))){
+							if(dis_oe.containsKey(id)){
+								if(dis_oe.get(id).containsKey(date+time+level)){
+									for(String oe2 : Bins.getline4Diffs("office_enter_diff",dis_oe.get(id).get(date+time+level)).split(",")){
+										list.add(oe2);
+										//								checkline4++;
+									}}
+								else{ for(int i = 1; i <=5 ; i++){list.add("0");}}}
+							else{ for(int i = 1; i <=5 ; i++){list.add("0");}}
+						}else{ for(int i = 1; i <=5 ; i++){list.add("0");}}
 
-				if((subject.equals("kitaku_time_diff"))||(subject.equals("home_return_diff"))){
-					if(officeexit.containsKey(id)){
-						if(officeexit.get(id).containsKey(date+time+level)){
-							for(String ox : Bins.h_e_line(officeexit.get(id).get(date+time+level)).split(",")){
-								list.add(ox);
-								//								checkline3++;
-							}}
-						else{ for(int i = 1; i <=5 ; i++){list.add("0");}}}
-					else{ for(int i = 1; i <=5 ; i++){list.add("0");}}
-				}else{ for(int i = 1; i <=5 ; i++){list.add("0");}}
+						if((subject.equals("kitaku_time_diff"))||(subject.equals("home_return_diff"))){
+							if(officeexit.containsKey(id)){
+								if(officeexit.get(id).containsKey(date+time+level)){
+									for(String ox : Bins.h_e_line(officeexit.get(id).get(date+time+level)).split(",")){
+										list.add(ox);
+										//								checkline3++;
+									}}
+								else{ for(int i = 1; i <=5 ; i++){list.add("0");}}}
+							else{ for(int i = 1; i <=5 ; i++){list.add("0");}}
+						}else{ for(int i = 1; i <=5 ; i++){list.add("0");}}
 
-				if((subject.equals("kitaku_time_diff"))||(subject.equals("home_return_diff"))){
-					if(dis_ox.containsKey(id)){
-						if(dis_ox.get(id).containsKey(date+time+level)){
-							for(String ox2 : Bins.getline4Diffs("office_exit_diff",dis_ox.get(id).get(date+time+level)).split(",")){
-								list.add(ox2);
-								//							checkline4++;
-							}}
-						else{ for(int i = 1; i <=5 ; i++){list.add("0");}}}
-					else{ for(int i = 1; i <=5 ; i++){list.add("0");}}
-				}else{ for(int i = 1; i <=5 ; i++){list.add("0");}}
+						if((subject.equals("kitaku_time_diff"))||(subject.equals("home_return_diff"))){
+							if(dis_ox.containsKey(id)){
+								if(dis_ox.get(id).containsKey(date+time+level)){
+									for(String ox2 : Bins.getline4Diffs("office_exit_diff",dis_ox.get(id).get(date+time+level)).split(",")){
+										list.add(ox2);
+										//							checkline4++;
+									}}
+								else{ for(int i = 1; i <=5 ; i++){list.add("0");}}}
+							else{ for(int i = 1; i <=5 ; i++){list.add("0");}}
+						}else{ for(int i = 1; i <=5 ; i++){list.add("0");}}
+					}
+					else{
+						for(int i = 1; i <=30 ; i++){list.add("0");}
+					}
+
+					bw.write(diff);
+
+					for(int i = 1; i<=list.size(); i++){
+						bw.write(" "+i+":"+list.get(i-1));
+					}
+
+					HashSet<String> codes = new HashSet<String>();
+					ArrayList<String> codesinorder = new ArrayList<String>();
+					String nowcode = getCode(nowp.getLon(),nowp.getLat());
+					String homecode = getCode(homep.getLon(),homep.getLat());
+					String offcode  = getCode(officep.getLon(),officep.getLat());
+
+					if(!nowcode.equals("null")){
+						codes.add(nowcode);
+					}
+					if(!homecode.equals("null")){
+						codes.add(homecode);
+					}
+					if(!offcode.equals("null")){
+						codes.add(offcode);
+					}
+					if(!codes.isEmpty()){
+						for(String code : codes){
+							codesinorder.add(code);
+						}
+						Collections.sort(codesinorder);
+						for(String c : codesinorder){
+							bw.write(" "+c+":1");
+						}
+					}
+					bw.write(" #"+diff+"A"+sigma);
+					bw.newLine();
+					id_date.get(id).add(date);
+				}
 			}
 			else{
-				for(int i = 1; i <=30 ; i++){list.add("0");}
-			}
-
-			bw.write(diff);
-
-			for(int i = 1; i<=list.size(); i++){
-				bw.write(" "+i+":"+list.get(i-1));
-			}
-
-			HashSet<String> codes = new HashSet<String>();
-			ArrayList<String> codesinorder = new ArrayList<String>();
-			String nowcode = getCode(nowp.getLon(),nowp.getLat());
-			String homecode = getCode(homep.getLon(),homep.getLat());
-			String offcode  = getCode(officep.getLon(),officep.getLat());
-
-			if(!nowcode.equals("null")){
-				codes.add(nowcode);
-			}
-			if(!homecode.equals("null")){
-				codes.add(homecode);
-			}
-			if(!offcode.equals("null")){
-				codes.add(offcode);
-			}
-			if(!codes.isEmpty()){
-				for(String code : codes){
-					codesinorder.add(code);
+				ArrayList<String> list = new ArrayList<String>();
+				for(String l  : GetLevel.getLevel(level).split(",")){ //level (0,0,0,0 etc.) 1-4
+					list.add(l);
 				}
-				Collections.sort(codesinorder);
-				for(String c : codesinorder){
-				bw.write(" "+c+":1");
+				for(String t  : Bins.timerange(time).split(",")){ //time of disaster 5-9
+					list.add(t);
 				}
+				for(String df : Bins.getline4Diffs(subject, normaltime).split(",")){ //10-14
+					list.add(df);
+				}
+				for(String si : Bins.sigmaline(k*sigma).split(",")){ //15-19
+					list.add(si);
+				}
+				for(String p  : GetPop.getpop(popmap, nowp, homep, officep).split(",")){ //pop data 20-24,25-29,30-34
+					list.add(p);
+				}
+				for(String la : GetLanduse.getlanduse(buildingmap, farmmap, nowp, homep, officep).split(",")){ //35-39,40-44,45-49, 50-54,55-59,60-64
+					list.add(la);
+				}
+				for(String r  : GetRoadData.getroaddata(sroadmap, broadmap, allroadmap, nowp, homep, officep).split(",")){ //65-,70-,75-, 80-,85-,90-, 95-,100-,105-
+					list.add(r);
+				}
+				for(String st : GetTrainData.getstationpop(trainmap, nowp, homep, officep).split(",")){ //110-,115-,120-
+					list.add(st);
+				}
+				for(String lp : GetLandPrice.getlandprice(pricemap, nowp, homep, officep).split(",")){ //125-,130-,135-
+					list.add(lp);
+				}
+				for(String ds : Bins.getlineDistance(dis).split(",")){ //140-
+					list.add(ds);
+				}	
+
+
+				if(isEarly(time,disdaytime)==true){
+					if(!subject.equals("home_exit_diff")){
+						if(homeexit.containsKey(id)){
+							if(homeexit.get(id).containsKey(date+time+level)){
+								for(String he : Bins.h_e_line(homeexit.get(id).get(date+time+level)).split(",")){
+									list.add(he);
+									//								checkline1++;
+								}}
+							else{ for(int i = 1; i <=5 ; i++){list.add("0");}}}
+						else{ for(int i = 1; i <=5 ; i++){list.add("0");}}
+					}else{ for(int i = 1; i <=5 ; i++){list.add("0");}}
+
+					if(!subject.equals("home_exit_diff")){
+						if(dis_he.containsKey(id)){
+							if(dis_he.get(id).containsKey(date+time+level)){
+								for(String he2 : Bins.getline4Diffs("home_exit_diff",dis_he.get(id).get(date+time+level)).split(",")){
+									list.add(he2);
+									//								checkline2++;
+								}}						
+							else{ for(int i = 1; i <=5 ; i++){list.add("0");}}}
+						else{ for(int i = 1; i <=5 ; i++){list.add("0");}}
+					}else{ for(int i = 1; i <=5 ; i++){list.add("0");}}
+
+					if(!(subject.equals("home_exit_diff"))||(subject.equals("tsukin_time_diff"))||(subject.equals("office_enter_diff"))){
+						if(officeent.containsKey(id)){
+							if(officeent.get(id).containsKey(date+time+level)){
+								for(String oe : Bins.h_e_line(officeent.get(id).get(date+time+level)).split(",")){
+									list.add(oe);
+									//								checkline3++;
+								}}
+							else{ for(int i = 1; i <=5 ; i++){list.add("0");}}}
+						else{ for(int i = 1; i <=5 ; i++){list.add("0");}}
+					}else{ for(int i = 1; i <=5 ; i++){list.add("0");}}
+
+					if(!(subject.equals("home_exit_diff"))||(subject.equals("tsukin_time_diff"))||(subject.equals("office_enter_diff"))){
+						if(dis_oe.containsKey(id)){
+							if(dis_oe.get(id).containsKey(date+time+level)){
+								for(String oe2 : Bins.getline4Diffs("office_enter_diff",dis_oe.get(id).get(date+time+level)).split(",")){
+									list.add(oe2);
+									//								checkline4++;
+								}}
+							else{ for(int i = 1; i <=5 ; i++){list.add("0");}}}
+						else{ for(int i = 1; i <=5 ; i++){list.add("0");}}
+					}else{ for(int i = 1; i <=5 ; i++){list.add("0");}}
+
+					if((subject.equals("kitaku_time_diff"))||(subject.equals("home_return_diff"))){
+						if(officeexit.containsKey(id)){
+							if(officeexit.get(id).containsKey(date+time+level)){
+								for(String ox : Bins.h_e_line(officeexit.get(id).get(date+time+level)).split(",")){
+									list.add(ox);
+									//								checkline3++;
+								}}
+							else{ for(int i = 1; i <=5 ; i++){list.add("0");}}}
+						else{ for(int i = 1; i <=5 ; i++){list.add("0");}}
+					}else{ for(int i = 1; i <=5 ; i++){list.add("0");}}
+
+					if((subject.equals("kitaku_time_diff"))||(subject.equals("home_return_diff"))){
+						if(dis_ox.containsKey(id)){
+							if(dis_ox.get(id).containsKey(date+time+level)){
+								for(String ox2 : Bins.getline4Diffs("office_exit_diff",dis_ox.get(id).get(date+time+level)).split(",")){
+									list.add(ox2);
+									//							checkline4++;
+								}}
+							else{ for(int i = 1; i <=5 ; i++){list.add("0");}}}
+						else{ for(int i = 1; i <=5 ; i++){list.add("0");}}
+					}else{ for(int i = 1; i <=5 ; i++){list.add("0");}}
+				}
+				else{
+					for(int i = 1; i <=30 ; i++){list.add("0");}
+				}
+
+				bw.write(diff);
+
+				for(int i = 1; i<=list.size(); i++){
+					bw.write(" "+i+":"+list.get(i-1));
+				}
+
+				HashSet<String> codes = new HashSet<String>();
+				ArrayList<String> codesinorder = new ArrayList<String>();
+				String nowcode = getCode(nowp.getLon(),nowp.getLat());
+				String homecode = getCode(homep.getLon(),homep.getLat());
+				String offcode  = getCode(officep.getLon(),officep.getLat());
+
+				if(!nowcode.equals("null")){
+					codes.add(nowcode);
+				}
+				if(!homecode.equals("null")){
+					codes.add(homecode);
+				}
+				if(!offcode.equals("null")){
+					codes.add(offcode);
+				}
+				if(!codes.isEmpty()){
+					for(String code : codes){
+						codesinorder.add(code);
+					}
+					Collections.sort(codesinorder);
+					for(String c : codesinorder){
+						bw.write(" "+c+":1");
+					}
+				}
+				bw.write(" #"+diff+"A"+sigma);
+				bw.newLine();
+				ArrayList<String> temp = new ArrayList<String>();
+				temp.add(date);
+				id_date.put(id, temp);
 			}
-			bw.write(" #"+diff+"A"+sigma);
-			bw.newLine();
 		}
 
 		//			}
@@ -392,7 +535,7 @@ public class MLData2 {
 		br.close();
 		bw.close();
 	}
-
+	
 	public static String getCode(double lon, double lat){
 		List<String> list = gchecker.listOverlaps("JCODE", lon, lat);
 		if(!list.isEmpty()){

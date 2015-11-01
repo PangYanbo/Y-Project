@@ -12,8 +12,8 @@ public class MinimumDayFinder {
 
 	public static void main(String args[]) throws IOException{
 		
-		File in  = new File("/home/c-tyabe/Data/expALL/office_enter.csv");
-		File out = new File("/home/c-tyabe/Data/expALL/office_enter_shusokudays.csv");
+		File in  = new File("/home/c-tyabe/Data/expALL2/office_enter.csv");
+		File out = new File("/home/c-tyabe/Data/expALL2/office_enter_shusokudays.csv");
 	
 //		File in = new File("c:/users/yabetaka/desktop/test.txt");
 //		File out = new File("c:/users/yabetaka/desktop/test2.txt");
