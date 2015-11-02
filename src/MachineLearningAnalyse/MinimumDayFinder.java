@@ -102,8 +102,8 @@ public class MinimumDayFinder {
 				for(int j=1; j<=i; j++){
 					list.add(times.get(j-1));
 				}
-				double bunsan = getbunsan(list);
-				bw.write(id+","+i+","+bunsan);
+				double stddev = getbunsan(list);
+				bw.write(id+","+i+","+stddev);
 				bw.newLine();
 			}
 		}
@@ -126,7 +126,7 @@ public class MinimumDayFinder {
 			tmpsum2 = tmpsum2 + Math.pow(nd2-avg, 2);
 		}
 		bunsan = tmpsum2/(double)list.size();
-		return bunsan;
+		return Math.pow(bunsan, 0.5);
 	}
 
 }
