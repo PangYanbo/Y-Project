@@ -26,13 +26,11 @@ public class MinimumDayFinder {
 	}
 
 	public static File writeout(HashMap<String, HashMap<String,String>> map, File out) throws IOException{
-		BufferedWriter bw = new BufferedWriter(new FileWriter(out,true));
 		int count = 1;
 		for(String id : map.keySet()){
 			writebunsanout(map.get(id),out, String.valueOf(count));
 			count++;
 		}
-		bw.close();
 		return out;
 	}
 
@@ -90,7 +88,7 @@ public class MinimumDayFinder {
 	}
 
 	public static void writebunsanout(HashMap<String,String> map, File out, String id) throws IOException{
-		BufferedWriter bw = new BufferedWriter(new FileWriter(out));
+		BufferedWriter bw = new BufferedWriter(new FileWriter(out,true));
 		if(map.size()>0){
 			ArrayList<String> times = new ArrayList<String>();
 			for(String m:map.keySet()){
