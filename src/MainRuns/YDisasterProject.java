@@ -37,7 +37,7 @@ public class YDisasterProject {
 
 	protected static final SimpleDateFormat SDF_TS = new SimpleDateFormat("yyyy-MM-dd");//change time format
 
-	private static final String type = "rain";
+	private static final String type = "dosha";
 	private static final String city = "Tokyo";
 //	private static final String targetlevel = "1";
 //	private static final String targetlevel2 = "2";
