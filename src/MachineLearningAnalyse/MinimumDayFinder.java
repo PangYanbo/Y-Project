@@ -101,6 +101,7 @@ public class MinimumDayFinder {
 					list.add(times.get(j-1));
 				}
 				double stddev = getbunsan(list);
+				list.clear();
 				bw.write(id+","+i+","+stddev);
 				bw.newLine();
 			}
@@ -125,6 +126,33 @@ public class MinimumDayFinder {
 		}
 		bunsan = tmpsum2/(double)list.size();
 		return Math.pow(bunsan, 0.5);
+	}
+
+	public static void modifyfile(File in, File out) throws IOException{
+		BufferedReader br = new BufferedReader(new FileReader(in));
+		BufferedWriter bw = new BufferedWriter(new FileWriter(out));
+		HashMap<String,ArrayList<String>> map = new HashMap<String,ArrayList<String>>();
+		String line = null;
+		while((line=br.readLine())!=null){
+			String[] tokens = line.split(",");
+			String id = tokens[0];
+			if(map.keySet().contains(id)){
+				map.get(id).add(tokens[2]);
+			}
+			else{
+				ArrayList<String> list = new ArrayList<String>();
+				list.add(tokens[2]);
+				map.put(id, list);
+			}
+		}	
+		br.close();
+
+		for(int j = 0; j<=120; j++){
+			for(int i = 0; i<map.keySet().size(); i++){
+				bw.write(map.get(i).get(j)+",");
+			}
+		}
+		bw.close();
 	}
 
 }

@@ -20,11 +20,11 @@ import jp.ac.ut.csis.pflow.geom.LonLat;
 public class MLData2 {
 
 	public static final String type      = "rain";
-	public static final String dir       = "/home/c-tyabe/Data/"+type+"Tokyo4/";
-	public static final String outdir    = "/home/c-tyabe/Data/MLResults_"+type+"10/";
+	public static final String dir       = "/home/c-tyabe/Data/"+type+"Tokyo6/";
+	public static final String outdir    = "/home/c-tyabe/Data/MLResults_"+type+"11/";
 	public static final String outdir2   = outdir+"forML/";
 	public static final String outdir3   = outdir+"forML/calc/";
-	public static final double k         = 1;
+	public static final double k         = 2;
 
 	public static final File popfile     = new File("/home/c-tyabe/Data/DataforML/mesh_daytimepop.csv");
 	public static final File landusefile = new File("/home/c-tyabe/Data/DataforML/landusedata.csv");

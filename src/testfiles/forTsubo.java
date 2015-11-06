@@ -19,20 +19,35 @@ public class forTsubo {
 
 	public static void main(String args[]) throws IOException{
 
-		File out = new File("");
-		
-		ArrayList<String> subjects = new ArrayList<String>();
-		subjects.add("20150601");
-		subjects.add("20150602");
-		subjects.add("20150603");
-		subjects.add("20150604");
-		subjects.add("20150605");
+		File out = new File("/home/c-tyabe/Data/dayslogs_results.csv");
+
+		ArrayList<String> subjects = getdates();
+		//		for(int i = 0; i<subjects.size(); i++){
+		//			System.out.println(subjects.get(i));
+		//		}
 
 		for(String ymd : subjects){
 			ExtractFile.extractfromcommand(ymd); System.out.println("#done uncompressing "+ymd);
 			String unzippedfile = FilePaths.deephomepath(ymd);
 			getres(unzippedfile, ymd, out);
 		}
+	}
+
+	public static ArrayList<String> getdates(){
+		ArrayList<String> subjects = new ArrayList<String>();
+		String year = "2014";
+		for(int i = 10; i<=12; i++){
+			for(int j = 1; j<=30; j++){
+				subjects.add(year+String.valueOf(i)+String.format("%02d", j));
+			}
+		}
+		year = "2015";
+		for(int i = 1; i<=7; i++){
+			for(int j = 1; j<=28; j++){
+				subjects.add(year+String.format("%02d", i)+String.format("%02d", j));
+			}
+		}
+		return subjects;
 	}
 
 	public static void getres(String file, String ymd, File out) throws IOException{

@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.HashMap;
 
 import jp.ac.ut.csis.pflow.geom.STPoint;
+import DataModify.Over8TimeSlots;
 
 public class MotifFinder3 {
 
@@ -33,9 +34,9 @@ public class MotifFinder3 {
 	protected static final SimpleDateFormat SDF_TS3 = new SimpleDateFormat("dd");//change time format
 	
 	public static void getMotif(String in) throws NumberFormatException, ParseException, IOException{
-//		File infile = new File(in);
-//		HashMap<String, ArrayList<STPoint>> alldatamap = sortintoMapY(infile);
-//		HashMap<String, ArrayList<String>> id_days = Over8TimeSlots.OKAY_id_days(in);
+		File infile = new File(in);
+		HashMap<String, ArrayList<STPoint>> alldatamap = sortintoMapY(infile);
+		HashMap<String, ArrayList<String>> id_days = Over8TimeSlots.OKAY_id_days(in);
 		
 		
 		
