@@ -65,7 +65,7 @@ public class forTsubo {
 		ArrayList<String> subjects = new ArrayList<String>();
 		String year = "2015";
 		int i = 6;
-		for(int j = 1; j<=28; j++){
+		for(int j = 1; j<=20; j++){
 			subjects.add(year+String.format("%02d", i)+String.format("%02d", j));
 		}
 		return subjects;
@@ -128,7 +128,7 @@ public class forTsubo {
 			}
 		}
 		for(String ids : set.keySet()){
-			bw.write(set.get(ids));
+			bw.write(String.valueOf(set.get(ids)));
 			bw.newLine();
 		}
 		br.close();
