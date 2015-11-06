@@ -19,10 +19,14 @@ public class deleteid {
 		BufferedReader br = new BufferedReader(new FileReader(in));
 		BufferedWriter bw = new BufferedWriter(new FileWriter(out));
 		String line = null;
+		int count = 0;
 		while((line=br.readLine())!=null){
-			String[] tokens = line.split(",");
-			bw.write(tokens[1]);
+			count++;
+			bw.write(line);
 			bw.newLine();
+			if(count==5200000){
+				break;
+			}
 		}	
 		br.close();
 		bw.close();
