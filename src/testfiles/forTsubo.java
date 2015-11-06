@@ -35,11 +35,13 @@ public class forTsubo {
 	//	}
 
 	public static void main(String[] args) throws IOException{
-		String ymd = "20150601";
 		File out = new File("/home/c-tyabe/Data/idslogs_results.csv");
-		ExtractFile.extractfromcommand(ymd); System.out.println("#done uncompressing "+ymd);
-		String unzippedfile = FilePaths.deephomepath(ymd);
-		getloghisto(unzippedfile,ymd,out);
+		ArrayList<String> subjects = getdatesshort();
+		for(String ymd:subjects){
+			ExtractFile.extractfromcommand(ymd); System.out.println("#done uncompressing "+ymd);
+			String unzippedfile = FilePaths.deephomepath(ymd);
+			getloghisto(unzippedfile,ymd,out);
+		}
 	}
 
 	public static ArrayList<String> getdates(){
@@ -59,6 +61,16 @@ public class forTsubo {
 		return subjects;
 	}
 
+	public static ArrayList<String> getdatesshort(){
+		ArrayList<String> subjects = new ArrayList<String>();
+		String year = "2015";
+		int i = 6;
+		for(int j = 1; j<=28; j++){
+			subjects.add(year+String.format("%02d", i)+String.format("%02d", j));
+		}
+		return subjects;
+	}
+
 	public static void getres(String file, String ymd, File out) throws IOException{
 		BufferedReader br = new BufferedReader(new FileReader(file));
 		BufferedWriter bw = new BufferedWriter(new FileWriter(out,true));
@@ -72,8 +84,10 @@ public class forTsubo {
 				if(tokens.length>=5){
 					if(!tokens[4].equals("null")){
 						String id = tokens[0];
-						set.add(id);
-						count++;
+						if(!id.equals("null")){
+							set.add(id);
+							count++;
+						}
 					}
 				}
 				prevline = line;
@@ -114,7 +128,7 @@ public class forTsubo {
 			}
 		}
 		for(String ids : set.keySet()){
-			bw.write(ids+","+set.get(ids));
+			bw.write(set.get(ids));
 			bw.newLine();
 		}
 		br.close();
