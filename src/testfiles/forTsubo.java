@@ -18,29 +18,29 @@ public class forTsubo {
 
 	public static final String GPSdeeppath = "/home/c-tyabe/Data/grid/0/tmp/ktsubouc/gps_";
 
-	//	public static void main(String args[]) throws IOException{
-	//
-	//		File out = new File("/home/c-tyabe/Data/dayslogs_results.csv");
-	//
-	//		ArrayList<String> subjects = getdates();
-	//		//		for(int i = 0; i<subjects.size(); i++){
-	//		//			System.out.println(subjects.get(i));
-	//		//		}
-	//
-	//		for(String ymd : subjects){
-	//			ExtractFile.extractfromcommand(ymd); System.out.println("#done uncompressing "+ymd);
-	//			String unzippedfile = FilePaths.deephomepath(ymd);
-	//			getres(unzippedfile, ymd, out);
-	//		}
-	//	}
+	public static void main(String args[]) throws IOException{
 
-	public static void main(String[] args) throws IOException{
-		String ymd = "20150601";
-		File out = new File("/home/c-tyabe/Data/idslogs_results.csv");
-		ExtractFile.extractfromcommand(ymd); System.out.println("#done uncompressing "+ymd);
-		String unzippedfile = FilePaths.deephomepath(ymd);
-		getloghisto(unzippedfile,ymd,out);
+		File out = new File("/home/c-tyabe/Data/dayslogs_results.csv");
+
+		ArrayList<String> subjects = getdates();
+		//		for(int i = 0; i<subjects.size(); i++){
+		//			System.out.println(subjects.get(i));
+		//		}
+
+		for(String ymd : subjects){
+			ExtractFile.extractfromcommand(ymd); System.out.println("#done uncompressing "+ymd);
+			String unzippedfile = FilePaths.deephomepath(ymd);
+			getres(unzippedfile, ymd, out);
+		}
 	}
+
+	//	public static void main(String[] args) throws IOException{
+	//		String ymd = "20150601";
+	//		File out = new File("/home/c-tyabe/Data/idslogs_results.csv");
+	//		ExtractFile.extractfromcommand(ymd); System.out.println("#done uncompressing "+ymd);
+	//		String unzippedfile = FilePaths.deephomepath(ymd);
+	//		getloghisto(unzippedfile,ymd,out);
+	//	}
 
 	public static ArrayList<String> getdates(){
 		ArrayList<String> subjects = new ArrayList<String>();
