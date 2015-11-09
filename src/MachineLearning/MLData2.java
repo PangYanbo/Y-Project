@@ -107,8 +107,20 @@ public class MLData2 {
 
 			HashMap<String, ArrayList<String>> id_dates = new HashMap<String, ArrayList<String>>();
 
-			for(int l=4; l>=1; l--){
-				File typelevel = new File(dir+"rain_"+String.valueOf(l)+"/");
+			int start;
+			int end;
+			if(type.equals("rain")){
+				start = 4; end = 1;
+			}
+			else if(type.equals("eq")||type.equals("heats")){
+				start = 3; end = 1;
+			}
+			else{
+				start = 10; end = 10;
+			}
+			
+			for(int l=start; l>=end; l--){
+				File typelevel = new File(dir+type+"_"+String.valueOf(l)+"/");
 				String level = String.valueOf(l);
 				for(File datetime :typelevel.listFiles()){
 					String date = datetime.getName().split("_")[0];
@@ -119,7 +131,8 @@ public class MLData2 {
 							getAttributes(f,new File(outfile),level,date,time,
 									popmap,buildingmap,farmmap,sroadmap,broadmap,allroadmap,trainmap,pricemap,
 									homeexit, officeent, officeexit, dis_he, dis_oe, dis_ox, subject, id_dates);
-						}}}}
+						}}}
+			}
 
 			String newoutfile   = outdir+subject+"_ML_cleaned.csv"; 
 			MLDataCleaner.DataClean(new File(outfile), new File(newoutfile)); //delete 0s and Es
@@ -535,7 +548,7 @@ public class MLData2 {
 		br.close();
 		bw.close();
 	}
-	
+
 	public static String getCode(double lon, double lat){
 		List<String> list = gchecker.listOverlaps("JCODE", lon, lat);
 		if(!list.isEmpty()){
