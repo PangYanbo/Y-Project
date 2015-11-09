@@ -13,7 +13,7 @@ public class MLDataDivider {
 
 	public static void main(String args[]) throws IOException{
 
-		File in = new File("/home/c-tyabe/Data/MLResults_rain8_irr/"+args[0]+"_diff_ML_cleaned.csv");
+		File in = new File("/home/c-tyabe/Data/MLResults_dosha12/"+args[0]+"_diff_ML_plusminus_lineforeach.csv");
 //		File out1 = new File("/home/c-tyabe/Data/MLResults_rain8_irr/"+args[0]+"_diff_ML_cleaned_norfast.csv");
 //		File out2 = new File("/home/c-tyabe/Data/MLResults_rain8_irr/"+args[0]+"_diff_ML_cleaned_norslow.csv");
 //
