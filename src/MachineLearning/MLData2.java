@@ -19,11 +19,6 @@ import jp.ac.ut.csis.pflow.geom.LonLat;
 
 public class MLData2 {
 
-	public static final String type      = "dosha";
-	public static final String dir       = "/home/c-tyabe/Data/"+type+"Tokyo6/";
-	public static final String outdir    = "/home/c-tyabe/Data/MLResults_"+type+"12/";
-	public static final String outdir2   = outdir+"forML/";
-	public static final String outdir3   = outdir+"forML/calc/";
 	public static final double k         = 2;
 
 	public static final File popfile     = new File("/home/c-tyabe/Data/DataforML/mesh_daytimepop.csv");
@@ -36,6 +31,12 @@ public class MLData2 {
 	static GeometryChecker gchecker = new GeometryChecker(shapedir);
 
 	public static void main(String args[]) throws IOException{
+		
+		String type      = args[0];	
+		String dir       = "/home/c-tyabe/Data/"+type+"Tokyo6/";
+		String outdir    = "/home/c-tyabe/Data/MLResults_"+type+"12/";
+		String outdir2   = outdir+"forML/";
+		String outdir3   = outdir+"forML/calc/";
 
 		File outputdir  = new File(outdir);  outputdir.mkdir();
 		File outputdir2 = new File(outdir2); outputdir2.mkdir();
@@ -49,11 +50,11 @@ public class MLData2 {
 		subjects.add("office_exit_diff");
 		subjects.add("kitaku_time_diff");
 		subjects.add("home_return_diff");
-		runMLData(subjects);
+		runMLData(subjects, dir, outdir, outdir2, outdir3, type);
 
 	}
 
-	public static void runMLData(ArrayList<String> subjects) throws IOException{
+	public static void runMLData(ArrayList<String> subjects, String dir, String outdir, String outdir2, String outdir3, String type) throws IOException{
 
 		HashMap<String, String>  popmap       = GetPop.getpopmap(popfile);
 		HashMap<String, String>  buildingmap  = GetLanduse.getmeshbuilding(landusefile);
