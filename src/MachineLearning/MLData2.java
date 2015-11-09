@@ -19,9 +19,9 @@ import jp.ac.ut.csis.pflow.geom.LonLat;
 
 public class MLData2 {
 
-	public static final String type      = "rain";
+	public static final String type      = "dosha";
 	public static final String dir       = "/home/c-tyabe/Data/"+type+"Tokyo6/";
-	public static final String outdir    = "/home/c-tyabe/Data/MLResults_"+type+"11/";
+	public static final String outdir    = "/home/c-tyabe/Data/MLResults_"+type+"12/";
 	public static final String outdir2   = outdir+"forML/";
 	public static final String outdir3   = outdir+"forML/calc/";
 	public static final double k         = 2;
