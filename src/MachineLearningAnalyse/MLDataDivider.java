@@ -50,11 +50,10 @@ public class MLDataDivider {
 		while((line=br.readLine())!= null){
 			String[] tokens = line.split(" ");
 			String val = tokens[0];
-			if(val.equals("1")){
+			Double ran = Math.random();
+			String rancon = rand(ran);
+			if(val.equals(rancon)){
 				count1++;
-			}
-			else if(val.equals("0")){
-				count0++;
 			}
 			else{
 				counti++;
@@ -62,7 +61,19 @@ public class MLDataDivider {
 			all++;
 		}
 		br.close();		
-		System.out.println((double)count1/(double)all + "," + (double)count0/(double)all + "," + (double)counti/(double)all);
+		System.out.println((double)count1/(double)all + ","+ (double)counti/(double)all);
+	}
+	
+	public static String rand(Double random){
+		if(random<0.95){
+			return "0";
+		}
+		else if (random<0.975){
+			return "1";
+		}
+		else{
+			return "-1";
+		}
 	}
 
 }
