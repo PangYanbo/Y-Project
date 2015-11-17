@@ -56,7 +56,7 @@ public class BilinearFeatures {
 
 	public static String distance(String distance){
 		Double dis = Double.parseDouble(distance);
-		if(dis.equals("null")){
+		if((dis.equals("null"))||(dis==null)){
 			return "1";
 		}
 		else{
@@ -70,7 +70,7 @@ public class BilinearFeatures {
 
 	public static String landprice(LonLat point, HashMap<LonLat, String> pricemap){
 		String price = GetLandPrice.getnearestprice(pricemap,point);
-		if(price.equals("null")){
+		if((price.equals("null"))||(price==null)){
 			return "1";
 		}
 		else{
@@ -86,7 +86,7 @@ public class BilinearFeatures {
 	public static String citypop(LonLat point, HashMap<String, String> popmap){
 		String nowm  = new Mesh(3, point.getLon(),point.getLat()).getCode();
 		String pop = popmap.get(nowm);
-		if(pop.equals("null")){
+		if((pop==null)||(pop.equals("null"))){
 			return "1";
 		}
 		else{
