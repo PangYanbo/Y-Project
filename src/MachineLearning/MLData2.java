@@ -391,6 +391,10 @@ public class MLData2 {
 							bw.write(" "+c+":1");
 						}
 					}
+					
+					String bilinearline = BilinearFeatures.bilinearline(level,time,dis,homep,officep,popmap,pricemap);
+					bw.write(bilinearline);
+					
 					bw.write(" #"+diff+"A"+sigma);
 					bw.newLine();
 					id_date.get(id).add(date);
@@ -531,6 +535,10 @@ public class MLData2 {
 						bw.write(" "+c+":1");
 					}
 				}
+				
+				String bilinearline = BilinearFeatures.bilinearline(level,time,dis,homep,officep,popmap,pricemap);
+				bw.write(bilinearline);
+				
 				bw.write(" #"+diff+"A"+sigma);
 				bw.newLine();
 				ArrayList<String> temp = new ArrayList<String>();
