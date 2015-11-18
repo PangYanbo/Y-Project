@@ -63,7 +63,7 @@ public class MLDataDivider {
 		System.out.println((double)count1/(double)all + ","+ (double)counti/(double)all);
 	}
 	
-	public static String rand(Double random){
+	public static String randheiji(Double random){
 		if(random<0.95){
 			return "0";
 		}
@@ -75,4 +75,16 @@ public class MLDataDivider {
 		}
 	}
 
+	public static String rand(Double random){
+		if(random<0.33){
+			return "0";
+		}
+		else if (random<0.66){
+			return "1";
+		}
+		else{
+			return "-1";
+		}
+	}
+	
 }
