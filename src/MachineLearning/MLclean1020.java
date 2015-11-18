@@ -13,12 +13,14 @@ import java.util.Collections;
 
 public class MLclean1020 {
 
-	public static final String type      = "rain";
-	public static final String outdir    = "/home/c-tyabe/Data/MLResults_"+type+"12/";
-	public static final String outdir2   = outdir+"forML/";
-	public static final String outdir3   = outdir+"forML/calc/";
+
 
 	public static void main(String args[]) throws IOException{
+
+		String type      = args[0];
+		String outdir    = "/home/c-tyabe/Data/MLResults_"+type+"12/";
+		String outdir2   = outdir+"forML/";
+		String outdir3   = outdir+"forML/calc/";
 
 		File outputdir  = new File(outdir);  outputdir.mkdir();
 		File outputdir2 = new File(outdir2); outputdir2.mkdir();
@@ -32,18 +34,18 @@ public class MLclean1020 {
 		subjects.add("office_exit_diff");
 		subjects.add("kitaku_time_diff");
 		subjects.add("home_return_diff");
-		run(subjects);
+		run(subjects, outdir3);
 
 	}
 
-	public static void run(ArrayList<String> subjects) throws IOException{
+	public static void run(ArrayList<String> subjects, String outdir3) throws IOException{
 
 
 		for(String subject : subjects){
 			String infile   = outdir3+subject+"_ML_plusminus_lineforeach.csv"; 
-//			String outfile   = outdir3+subject+"_ML2_plusminus_lineforeach.csv"; 
+			String outfile   = outdir3+subject+"_ML2_plusminus_lineforeach.csv"; 
 
-			count(infile,subject);
+			naosu(infile,outfile);
 		}
 	}
 
@@ -74,7 +76,7 @@ public class MLclean1020 {
 		br.close();
 		bw.close();
 	}
-	
+
 	public static void deletecomment(String infile, String outfile) throws IOException{
 
 		BufferedReader br = new BufferedReader(new FileReader(new File(infile)));
@@ -101,7 +103,7 @@ public class MLclean1020 {
 		br.close();
 		bw.close();
 	}
-	
+
 	public static void count(String infile, String subject) throws IOException{
 
 		BufferedReader br = new BufferedReader(new FileReader(new File(infile)));
@@ -110,7 +112,7 @@ public class MLclean1020 {
 		int count1 = 0;
 		int count0 = 0;
 		int counti = 0;
-		
+
 		while((line=br.readLine())!=null){
 			String[] tokens = line.split(" ");
 			if(tokens[0].equals("1")){
@@ -124,14 +126,14 @@ public class MLclean1020 {
 			}
 		}
 		br.close();
-		
+
 		double perc1 = (double)count1/(double)(count1+count0+counti);
 		double perc0 = (double)count0/(double)(count1+count0+counti);
 		double perci = (double)counti/(double)(count1+count0+counti);
-		
-		
+
+
 		System.out.println(subject+": 1:"+perc1+", 0:"+perc0+", -1:"+perci);
-		
+
 	}
 
 
