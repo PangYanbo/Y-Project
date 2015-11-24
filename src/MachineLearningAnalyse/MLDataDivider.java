@@ -19,7 +19,7 @@ public class MLDataDivider {
 //
 //		makeMLFile(in,out1,"-1");
 //		makeMLFile(in,out2,"1");
-		count(in);
+		alwaysheiji(in);
 	}
 
 	public static HashMap<String,ArrayList<String>> makeMLFile(File in, File out, String notthis) throws IOException{
@@ -51,6 +51,28 @@ public class MLDataDivider {
 			String val = tokens[0];
 			Double ran = Math.random();
 			String rancon = randheiji(ran);
+			if(val.equals(rancon)){
+				count1++;
+			}
+			else{
+				counti++;
+			}
+			all++;
+		}
+		br.close();		
+		System.out.println((double)count1/(double)all + ","+ (double)counti/(double)all);
+	}
+	
+	public static void alwaysheiji(File in) throws IOException{
+		BufferedReader br = new BufferedReader(new FileReader(in));
+		String line = null;
+		int count1 = 0;
+		int counti = 0;
+		int all = 0;
+		while((line=br.readLine())!= null){
+			String[] tokens = line.split(" ");
+			String val = tokens[0];
+			String rancon = "0";
 			if(val.equals(rancon)){
 				count1++;
 			}
