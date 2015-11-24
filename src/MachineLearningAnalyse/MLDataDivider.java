@@ -67,13 +67,18 @@ public class MLDataDivider {
 		BufferedReader br = new BufferedReader(new FileReader(in));
 		String line = null;
 		int count1 = 0;
+		int count0 = 0;
 		int counti = 0;
 		int all = 0;
 		while((line=br.readLine())!= null){
 			String[] tokens = line.split(" ");
 			String val = tokens[0];
 			String rancon = "0";
+			String one = "1";
 			if(val.equals(rancon)){
+				count0++;
+			}
+			else if (val.equals(one)){
 				count1++;
 			}
 			else{
@@ -82,7 +87,7 @@ public class MLDataDivider {
 			all++;
 		}
 		br.close();		
-		System.out.println((double)count1/(double)all + ","+ (double)counti/(double)all);
+		System.out.println((double)count1/(double)all+","+ (double)count0/(double)all + ","+ (double)counti/(double)all);
 	}
 	
 	public static String randheiji(Double random){
