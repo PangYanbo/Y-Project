@@ -50,7 +50,7 @@ public class MLDataDivider {
 			String[] tokens = line.split(" ");
 			String val = tokens[0];
 			Double ran = Math.random();
-			String rancon = rand(ran);
+			String rancon = randheiji(ran);
 			if(val.equals(rancon)){
 				count1++;
 			}
