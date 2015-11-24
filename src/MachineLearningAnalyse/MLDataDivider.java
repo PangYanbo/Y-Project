@@ -19,7 +19,7 @@ public class MLDataDivider {
 //
 //		makeMLFile(in,out1,"-1");
 //		makeMLFile(in,out2,"1");
-		alwaysheiji(in);
+		count(in);
 	}
 
 	public static HashMap<String,ArrayList<String>> makeMLFile(File in, File out, String notthis) throws IOException{
