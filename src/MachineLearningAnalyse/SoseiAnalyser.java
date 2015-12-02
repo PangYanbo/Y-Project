@@ -42,20 +42,16 @@ public class SoseiAnalyser {
 	}
 
 	public static void checkfile(String type, String subject, String para, Integer n, HashMap<String,String> map) throws IOException{
-		File in = new File("C:/Users/yabetaka/Desktop/Yahoo/soseiresults/"+type+"sosei/"+subject+"_diff_ML2_plusminus_lineforeach_word_c_"+para+"v_-1");
+		File in = new File("C:/Users/yabetaka/Desktop/soseimodel/"+type+"model/"+subject);
 		BufferedReader br = new BufferedReader(new FileReader(in));
 		String line = null;
 		HashMap<String, Double> list = new HashMap<String,Double>();
 		while((line=br.readLine())!=null){
 			String[] tokens = line.split(",");
 			String num  = tokens[0];
-			//			String desc = tokens[1];
-			String[] nums = tokens[2].split(" ");
-			Double one   = Double.parseDouble(nums[0]);
-			//			Double zero  = Double.parseDouble(nums[1]);
-			Double minus = Double.parseDouble(nums[2]);
-			Double sum   = Math.abs(one)+Math.abs(minus);
-			list.put(num, sum);
+//			String desc = tokens[1];
+			Double val   = Double.parseDouble(tokens[2]);
+			list.put(num, val);
 		}
 		br.close();
 
