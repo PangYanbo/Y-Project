@@ -7,7 +7,6 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class ActionChangesbyLevel {
 
@@ -48,7 +47,7 @@ public class ActionChangesbyLevel {
 		for(String subject : subjects){
 			String outfile   = outdir+subject+"_forexp1.csv"; 
 
-			HashMap<String, ArrayList<String>> id_dates = new HashMap<String, ArrayList<String>>();
+			ArrayList<String> done_ids = new ArrayList<String>();
 
 			int start;
 			int end;
@@ -73,7 +72,7 @@ public class ActionChangesbyLevel {
 						for(File f : datetime.listFiles()){
 							if(f.toString().contains(subject)){
 								System.out.println("#working on " + f.toString());
-								getAttributes(f,new File(outfile),level,date,time, subject, id_dates);
+								getAttributes(f,new File(outfile),level,date,time, subject, done_ids);
 							}}}
 				}
 			}
@@ -82,7 +81,7 @@ public class ActionChangesbyLevel {
 	}
 
 	public static void getAttributes(File in, File out, String level, String date, String time,
-			String subject, HashMap<String,ArrayList<String>> id_date) throws IOException{
+			String subject, ArrayList<String> done_ids) throws IOException{
 
 		BufferedReader br = new BufferedReader(new FileReader(in));
 		BufferedWriter bw = new BufferedWriter(new FileWriter(out,true));
@@ -93,34 +92,23 @@ public class ActionChangesbyLevel {
 			String id = tokens[0]; String movementtime = tokens[3];
 			String label = tokens[1];
 
+
 			//			Double saigaitime  = Double.parseDouble(time);
 			//			Double toujitutime = Double.parseDouble(movementtime);
 
 			//			if(saigaitime<toujitutime){
-			if(id_date.containsKey(id)){
-				if(!id_date.get(id).contains(date)){
-					if(label.equals("2")){
-						bw.write(id+","+level+","+movementtime);
-					}
-					else{
-						bw.write(id+",0,"+movementtime);
-					}
+
+			if(label.equals("2")){
+				bw.write(id+","+level+","+movementtime);
+				bw.newLine();
+			}
+			else{
+				if(!done_ids.contains(id)){
+					bw.write(id+",0,"+movementtime);
 					bw.newLine();
 				}
 			}
-			else{
-				if(label.equals("2")){
-					bw.write(id+","+level+","+movementtime);
-				}
-				else{
-					bw.write(id+",0,"+movementtime);
-				}
-				bw.newLine();
-
-				ArrayList<String> temp = new ArrayList<String>();
-				temp.add(date);
-				id_date.put(id, temp);
-			}
+			done_ids.add(id);
 			//			}
 		}
 
