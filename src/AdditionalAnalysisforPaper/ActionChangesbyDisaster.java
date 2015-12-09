@@ -83,6 +83,9 @@ public class ActionChangesbyDisaster {
 						bw.write(id+","+type+","+movementtime);
 						bw.newLine();
 					}
+					else{
+						System.out.println("yeah");
+					}
 					id_date_rain.add(id);
 				}
 				else{
