@@ -28,7 +28,7 @@ public class ActionChangesbyLevel {
 
 		String type      = "rain";	
 		String dir       = "/home/c-tyabe/Data/"+type+"Tokyo6/";
-		String outdir    = "/home/c-tyabe/Data/"+type+"exp1resRain/";
+		String outdir    = "/home/c-tyabe/Data/"+type+"exp1res/";
 		File outputdir  = new File(outdir);  outputdir.mkdir();
 
 		ArrayList<String> subjects = new ArrayList<String>();

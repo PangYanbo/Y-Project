@@ -24,13 +24,13 @@ public class MLclean1020 {
 		types.add("dosha");
 
 		for(String type : types){
-			String outdir    = "/home/c-tyabe/Data/MLResults_"+type+"13/";
-			String outdir2   = outdir+"forML/";
-			String outdir3   = outdir+"forML/calc/";
+			String outdir    = "/home/c-tyabe/Data/MLResults_"+type+"12/";
+//			String outdir2   = outdir+"forML/";
+//			String outdir3   = outdir+"forML/calc/";
 
 			File outputdir  = new File(outdir);  outputdir.mkdir();
-			File outputdir2 = new File(outdir2); outputdir2.mkdir();
-			File outputdir3 = new File(outdir3); outputdir3.mkdir();
+//			File outputdir2 = new File(outdir2); outputdir2.mkdir();
+//			File outputdir3 = new File(outdir3); outputdir3.mkdir();
 
 			ArrayList<String> subjects = new ArrayList<String>();
 			subjects.add("home_exit_diff");
@@ -40,7 +40,7 @@ public class MLclean1020 {
 			subjects.add("office_exit_diff");
 			subjects.add("kitaku_time_diff");
 			subjects.add("home_return_diff");
-			run(subjects, outdir3);
+			run(subjects, outdir);
 		}
 	}
 
@@ -48,8 +48,8 @@ public class MLclean1020 {
 
 
 		for(String subject : subjects){
-			String infile   = outdir3+subject+"_ML_plusminus_lineforeach.csv"; 
-			String outfile   = outdir3+subject+"_ML2_plusminus_lineforeach.csv"; 
+			String infile   = outdir3+subject+"_ML__lineforeach.csv"; 
+			String outfile   = outdir3+subject+"_ML2__lineforeach.csv"; 
 
 			naosu(infile,outfile);
 		}
