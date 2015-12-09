@@ -44,13 +44,15 @@ public class ActionChangesbyDisaster {
 
 	}
 
+	public static HashSet<String> id_dates_rain = new HashSet<String>();
+	
 	public static void run(ArrayList<String> subjects, ArrayList<String> dirs, String outdir, Double starttime, Double endtime) throws IOException{
 
 		for(String subject : subjects){
 			String outfile   = outdir+subject+"_forexp2.csv"; 
 
 			HashSet<String> id_dates = new HashSet<String>();
-			HashSet<String> id_dates_rain = new HashSet<String>();
+
 
 			for(String dir : dirs){
 				File typelevel = new File(dir);
@@ -63,11 +65,11 @@ public class ActionChangesbyDisaster {
 							if(f.toString().contains(subject)){
 								System.out.println("#working on " + f.toString());
 								String type = gettype(dir);
-								getAttributes(f,new File(outfile), type ,date,time, subject, id_dates, id_dates_rain);
+								getAttributes(f,new File(outfile), type ,date,time, subject, id_dates);
 							}}}}}}}
 
 	public static void getAttributes(File in, File out, String type, String date, String time,
-			String subject, HashSet<String> id_date, HashSet<String> id_date_rain) throws IOException{
+			String subject, HashSet<String> id_date) throws IOException{
 
 		BufferedReader br = new BufferedReader(new FileReader(in));
 		BufferedWriter bw = new BufferedWriter(new FileWriter(out,true));
@@ -79,14 +81,14 @@ public class ActionChangesbyDisaster {
 
 			if(label.equals("2")){
 				if(type.equals("1")){
-					if(!id_date_rain.contains(id)){
+					if(!id_dates_rain.contains(id)){
 						bw.write(id+","+type+","+movementtime);
 						bw.newLine();
 					}
 					else{
-						System.out.println("yeah");
+//						System.out.println("yeah");
 					}
-					id_date_rain.add(id);
+					id_dates_rain.add(id);
 				}
 				else{
 					bw.write(id+","+type+","+movementtime);
