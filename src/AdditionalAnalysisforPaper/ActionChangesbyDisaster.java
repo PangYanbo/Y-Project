@@ -27,11 +27,11 @@ public class ActionChangesbyDisaster {
 		File outputdir  = new File(outdir);  outputdir.mkdir();
 
 		ArrayList<String> subjects = new ArrayList<String>();
-//		subjects.add("home_exit.csv");
-//		subjects.add("tsukin_time.csv");
-//		subjects.add("office_enter.csv");
-//		subjects.add("office_time.csv");
-//		subjects.add("office_exit.csv");
+		//		subjects.add("home_exit.csv");
+		//		subjects.add("tsukin_time.csv");
+		//		subjects.add("office_enter.csv");
+		//		subjects.add("office_time.csv");
+		//		subjects.add("office_exit.csv");
 		subjects.add("kitaku_time.csv");
 		subjects.add("home_return.csv");
 
@@ -50,6 +50,7 @@ public class ActionChangesbyDisaster {
 			String outfile   = outdir+subject+"_forexp2.csv"; 
 
 			HashSet<String> id_dates = new HashSet<String>();
+			HashSet<String> id_dates_rain = new HashSet<String>();
 
 			for(String dir : dirs){
 				File typelevel = new File(dir);
@@ -62,11 +63,11 @@ public class ActionChangesbyDisaster {
 							if(f.toString().contains(subject)){
 								System.out.println("#working on " + f.toString());
 								String type = gettype(dir);
-								getAttributes(f,new File(outfile), type ,date,time, subject, id_dates);
+								getAttributes(f,new File(outfile), type ,date,time, subject, id_dates, id_dates_rain);
 							}}}}}}}
 
 	public static void getAttributes(File in, File out, String type, String date, String time,
-			String subject, HashSet<String> id_date) throws IOException{
+			String subject, HashSet<String> id_date, HashSet<String> id_date_rain) throws IOException{
 
 		BufferedReader br = new BufferedReader(new FileReader(in));
 		BufferedWriter bw = new BufferedWriter(new FileWriter(out,true));
@@ -77,8 +78,11 @@ public class ActionChangesbyDisaster {
 			String id = tokens[0]; String movementtime = tokens[3];	String label = tokens[1];
 
 			if(label.equals("2")){
-				bw.write(id+","+type+","+movementtime);
-				bw.newLine();
+				if(!id_date_rain.contains(id)){
+					bw.write(id+","+type+","+movementtime);
+					bw.newLine();
+				}
+				id_date_rain.add(id);
 			}
 			else{
 				if(!id_date.contains(id)){
