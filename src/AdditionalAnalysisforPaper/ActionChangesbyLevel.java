@@ -26,9 +26,9 @@ public class ActionChangesbyLevel {
 
 	public static void main(String args[]) throws IOException{
 
-		String type      = "eq";	
+		String type      = "rain";	
 		String dir       = "/home/c-tyabe/Data/"+type+"Tokyo6/";
-		String outdir    = "/home/c-tyabe/Data/"+type+"exp1res/";
+		String outdir    = "/home/c-tyabe/Data/"+type+"exp1resRain/";
 		File outputdir  = new File(outdir);  outputdir.mkdir();
 
 		ArrayList<String> subjects = new ArrayList<String>();
