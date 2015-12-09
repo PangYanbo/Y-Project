@@ -27,13 +27,13 @@ public class ActionChangesbyDisaster {
 		File outputdir  = new File(outdir);  outputdir.mkdir();
 
 		ArrayList<String> subjects = new ArrayList<String>();
-		subjects.add("home_exit_diff");
-		subjects.add("tsukin_time_diff");
-		subjects.add("office_enter_diff");
-		subjects.add("office_time_diff");
-		subjects.add("office_exit_diff");
-		subjects.add("kitaku_time_diff");
-		subjects.add("home_return_diff");
+		subjects.add("home_exit.csv");
+		subjects.add("tsukin_time.csv");
+		subjects.add("office_enter.csv");
+		subjects.add("office_time.csv");
+		subjects.add("office_exit.csv");
+		subjects.add("kitaku_time.csv");
+		subjects.add("home_return.csv");
 
 		ArrayList<String> dirs = new ArrayList<String>();
 		dirs.add("/home/c-tyabe/Data/rainTokyo6/rain_3/");
