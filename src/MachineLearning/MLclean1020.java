@@ -48,8 +48,8 @@ public class MLclean1020 {
 
 
 		for(String subject : subjects){
-			String infile   = outdir3+subject+"_ML__lineforeach.csv"; 
-			String outfile   = outdir3+subject+"_ML2__lineforeach.csv"; 
+			String infile   = outdir3+subject+"_ML_lineforeach.csv"; 
+			String outfile   = outdir3+subject+"_ML2_lineforeach.csv"; 
 
 			naosu(infile,outfile);
 		}
