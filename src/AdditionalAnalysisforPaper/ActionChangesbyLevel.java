@@ -7,6 +7,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 public class ActionChangesbyLevel {
 
@@ -47,7 +48,7 @@ public class ActionChangesbyLevel {
 		for(String subject : subjects){
 			String outfile   = outdir+subject+"_forexp1.csv"; 
 
-			ArrayList<String> done_ids = new ArrayList<String>();
+			HashSet<String> done_ids = new HashSet<String>();
 
 			int start;
 			int end;
@@ -81,7 +82,7 @@ public class ActionChangesbyLevel {
 	}
 
 	public static void getAttributes(File in, File out, String level, String date, String time,
-			String subject, ArrayList<String> done_ids) throws IOException{
+			String subject, HashSet<String> done_ids) throws IOException{
 
 		BufferedReader br = new BufferedReader(new FileReader(in));
 		BufferedWriter bw = new BufferedWriter(new FileWriter(out,true));
