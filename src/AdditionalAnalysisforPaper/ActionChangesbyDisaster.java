@@ -7,7 +7,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.HashSet;
 
 public class ActionChangesbyDisaster {
 
@@ -49,7 +49,7 @@ public class ActionChangesbyDisaster {
 		for(String subject : subjects){
 			String outfile   = outdir+subject+"_forexp2.csv"; 
 
-			HashMap<String, ArrayList<String>> id_dates = new HashMap<String, ArrayList<String>>();
+			HashSet<String> id_dates = new HashSet<String>();
 
 			for(String dir : dirs){
 				File typelevel = new File(dir);
@@ -66,7 +66,7 @@ public class ActionChangesbyDisaster {
 							}}}}}}}
 
 	public static void getAttributes(File in, File out, String type, String date, String time,
-			String subject, HashMap<String,ArrayList<String>> id_date) throws IOException{
+			String subject, HashSet<String> id_date) throws IOException{
 
 		BufferedReader br = new BufferedReader(new FileReader(in));
 		BufferedWriter bw = new BufferedWriter(new FileWriter(out,true));
@@ -76,34 +76,17 @@ public class ActionChangesbyDisaster {
 			String[] tokens = line.split(",");
 			String id = tokens[0]; String movementtime = tokens[3];	String label = tokens[1];
 
-			//			Double saigaitime  = Double.parseDouble(time);
-			//			Double toujitutime = Double.parseDouble(movementtime);
-
-			//			if(saigaitime<toujitutime){
-			if(id_date.containsKey(id)){
-				if(!id_date.get(id).contains(date)){
-					if(label.equals("2")){
-						bw.write(id+","+type+","+movementtime);
-					}
-					else{
-						bw.write(id+",0,"+movementtime);
-					}
+			if(label.equals("2")){
+				bw.write(id+","+type+","+movementtime);
+				bw.newLine();
+			}
+			else{
+				if(!id_date.contains(id)){
+					bw.write(id+",0,"+movementtime);
 					bw.newLine();
 				}
 			}
-			else{
-				if(label.equals("2")){
-					bw.write(id+","+type+","+movementtime);
-				}
-				else{
-					bw.write(id+",0,"+movementtime);
-				}
-				bw.newLine();
-
-				ArrayList<String> temp = new ArrayList<String>();
-				temp.add(date);
-				id_date.put(id, temp);
-			}
+			id_date.add(id);
 			//			}
 		}
 
