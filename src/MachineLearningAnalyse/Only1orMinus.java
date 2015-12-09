@@ -29,8 +29,8 @@ public class Only1orMinus {
 
 		for(String disaster : disasters){
 			for(String subject : subjects){
-				String in = "/home/c-tyabe/Data/MLResults_"+disaster+"12/forML/calc/"+subject+"_diff_ML2_plusminus_lineforeach.csv";
-				String out = "/home/c-tyabe/Data/MLResults_"+disaster+"12/forML/calc/"+subject+"_diff_ML2_plusminus_lineforeach_nozero.csv";
+				String in = "/home/c-tyabe/Data/MLResults_"+disaster+"13/forML/calc/"+subject+"_diff_ML2_plusminus_lineforeach.csv";
+				String out = "/home/c-tyabe/Data/MLResults_"+disaster+"13/forML/calc/"+subject+"_diff_ML2_plusminus_lineforeach_nozero.csv";
 				removezero(in,out);
 			}
 		}

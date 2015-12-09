@@ -17,25 +17,31 @@ public class MLclean1020 {
 
 	public static void main(String args[]) throws IOException{
 
-		String type      = args[0];
-		String outdir    = "/home/c-tyabe/Data/MLResults_"+type+"12/";
-		String outdir2   = outdir+"forML/";
-		String outdir3   = outdir+"forML/calc/";
+		ArrayList<String> types = new ArrayList<String>();
+		types.add("rain");
+		types.add("eq");
+		types.add("heats");
+		types.add("dosha");
 
-		File outputdir  = new File(outdir);  outputdir.mkdir();
-		File outputdir2 = new File(outdir2); outputdir2.mkdir();
-		File outputdir3 = new File(outdir3); outputdir3.mkdir();
+		for(String type : types){
+			String outdir    = "/home/c-tyabe/Data/MLResults_"+type+"13/";
+			String outdir2   = outdir+"forML/";
+			String outdir3   = outdir+"forML/calc/";
 
-		ArrayList<String> subjects = new ArrayList<String>();
-		subjects.add("home_exit_diff");
-		subjects.add("tsukin_time_diff");
-		subjects.add("office_enter_diff");
-		subjects.add("office_time_diff");
-		subjects.add("office_exit_diff");
-		subjects.add("kitaku_time_diff");
-		subjects.add("home_return_diff");
-		run(subjects, outdir3);
+			File outputdir  = new File(outdir);  outputdir.mkdir();
+			File outputdir2 = new File(outdir2); outputdir2.mkdir();
+			File outputdir3 = new File(outdir3); outputdir3.mkdir();
 
+			ArrayList<String> subjects = new ArrayList<String>();
+			subjects.add("home_exit_diff");
+			subjects.add("tsukin_time_diff");
+			subjects.add("office_enter_diff");
+			subjects.add("office_time_diff");
+			subjects.add("office_exit_diff");
+			subjects.add("kitaku_time_diff");
+			subjects.add("home_return_diff");
+			run(subjects, outdir3);
+		}
 	}
 
 	public static void run(ArrayList<String> subjects, String outdir3) throws IOException{
