@@ -96,13 +96,13 @@ public class ActionChangesbyDisaster {
 
 	public static String gettype(String dir){
 		if(dir.equals("/home/c-tyabe/Data/rainTokyo6/rain_3/")){
-			return "rain";
+			return "1";
 		}
 		else if (dir.equals("/home/c-tyabe/Data/eqTokyo6/eq_3/")){
-			return "eq";
+			return "2";
 		}
 		else{
-			return "dosha";
+			return "3";
 		}
 	}
 
