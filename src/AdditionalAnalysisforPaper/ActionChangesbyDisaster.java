@@ -78,11 +78,17 @@ public class ActionChangesbyDisaster {
 			String id = tokens[0]; String movementtime = tokens[3];	String label = tokens[1];
 
 			if(label.equals("2")){
-				if(!id_date_rain.contains(id)){
+				if(type.equals("1")){
+					if(!id_date_rain.contains(id)){
+						bw.write(id+","+type+","+movementtime);
+						bw.newLine();
+					}
+					id_date_rain.add(id);
+				}
+				else{
 					bw.write(id+","+type+","+movementtime);
 					bw.newLine();
 				}
-				id_date_rain.add(id);
 			}
 			else{
 				if(!id_date.contains(id)){
