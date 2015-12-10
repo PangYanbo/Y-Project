@@ -598,6 +598,7 @@ public class MLData2 {
 				countm++;
 			}
 		}
+		br.close();
 		
 		int min1 = Math.min(count0, count1);
 		int min = Math.min(min1, countm);
@@ -606,7 +607,9 @@ public class MLData2 {
 		Double rate1 = (double)min/(double)count1;
 		Double ratem = (double)min/(double)countm;
 		
-		while((line=br.readLine())!=null){
+		BufferedReader br2 = new BufferedReader(new FileReader(in));
+		
+		while((line=br2.readLine())!=null){
 			String val = line.split(" ")[0];
 			Double rand = Math.random();
 			if(val.equals("0")){
@@ -628,7 +631,7 @@ public class MLData2 {
 				}
 			}
 		}
-		br.close();
+		br2.close();
 		bw.close();
 		
 		return out;
