@@ -37,10 +37,12 @@ public class MLData2 {
 		String outdir    = "/home/c-tyabe/Data/MLResults_"+type+"13/";
 		String outdir2   = outdir+"forML/";
 		String outdir3   = outdir+"forML/calc/";
+		String outdir4   = outdir+"forML/calc/sameexp/";
 
 		File outputdir  = new File(outdir);  outputdir.mkdir();
 		File outputdir2 = new File(outdir2); outputdir2.mkdir();
 		File outputdir3 = new File(outdir3); outputdir3.mkdir();
+		File outputdir4 = new File(outdir4); outputdir4.mkdir();
 
 		ArrayList<String> subjects = new ArrayList<String>();
 		subjects.add("home_exit_diff");
@@ -50,11 +52,11 @@ public class MLData2 {
 		subjects.add("office_exit_diff");
 		subjects.add("kitaku_time_diff");
 		subjects.add("home_return_diff");
-		runMLData(subjects, dir, outdir, outdir2, outdir3, type);
+		runMLData(subjects, dir, outdir, outdir2, outdir3, outdir4, type);
 
 	}
 
-	public static void runMLData(ArrayList<String> subjects, String dir, String outdir, String outdir2, String outdir3, String type) throws IOException{
+	public static void runMLData(ArrayList<String> subjects, String dir, String outdir, String outdir2, String outdir3, String outdir4, String type) throws IOException{
 
 		HashMap<String, String>  popmap       = GetPop.getpopmap(popfile);
 		HashMap<String, String>  buildingmap  = GetLanduse.getmeshbuilding(landusefile);
@@ -141,9 +143,21 @@ public class MLData2 {
 
 			String multiplelines = outdir+subject+"_ML_lineforeach.csv";
 			MLDataModifier.Modify(new File(newoutfile), new File(multiplelines));
+			
+			String multiplelinesclean = outdir+subject+"_ML2_lineforeach.csv";
+			MLclean1020.naosu(multiplelines, multiplelinesclean);
 
 			String plusminus_multiplelines = outdir3+subject+"_ML_plusminus_lineforeach.csv";
 			MLDataCleaner.ytoone2(new File(multiplelines), new File(plusminus_multiplelines),k);
+			
+			String plusminus_multiplelinesclean = outdir3+subject+"_ML2_plusminus_lineforeach.csv";
+			MLclean1020.naosu(plusminus_multiplelines, plusminus_multiplelinesclean);
+			
+			/*
+			 * same number of lines between -1, 0, 1 
+			 */
+			String plusminus_multiplelinesclean_samenumlines = outdir4+subject+"_ML2_plusminus_lineforeach_same.csv";
+			samenumberoflines(new File(plusminus_multiplelinesclean), new File(plusminus_multiplelinesclean_samenumlines));
 		}
 	}
 
@@ -563,6 +577,61 @@ public class MLData2 {
 		else{
 			return false;
 		}
+	}
+	
+	public static File samenumberoflines(File in, File out) throws IOException{
+		BufferedReader br = new BufferedReader(new FileReader(in));
+		BufferedWriter bw = new BufferedWriter(new FileWriter(out));
+		String line = null;
+		int count0 = 0;
+		int count1 = 0;
+		int countm = 0;
+		while((line=br.readLine())!=null){
+			String val = line.split(" ")[0];
+			if(val.equals("0")){
+				count0++;
+			}
+			else if(val.equals("1")){
+				count1++;
+			}
+			else{
+				countm++;
+			}
+		}
+		
+		int min1 = Math.min(count0, count1);
+		int min = Math.min(min1, countm);
+		
+		Double rate0 = (double)min/(double)count0;
+		Double rate1 = (double)min/(double)count1;
+		Double ratem = (double)min/(double)countm;
+		
+		while((line=br.readLine())!=null){
+			String val = line.split(" ")[0];
+			Double rand = Math.random();
+			if(val.equals("0")){
+				if(rand<=rate0){
+					bw.write(line);
+					bw.newLine();
+				}
+			}
+			else if(val.equals("1")){
+				if(rand<=rate1){
+					bw.write(line);
+					bw.newLine();
+				}
+			}
+			else{
+				if(rand<=ratem){
+					bw.write(line);
+					bw.newLine();
+				}
+			}
+		}
+		br.close();
+		bw.close();
+		
+		return out;
 	}
 
 }

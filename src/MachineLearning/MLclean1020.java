@@ -59,7 +59,7 @@ public class MLclean1020 {
 	public static void naosu(String infile, String outfile) throws IOException{
 
 		BufferedReader br = new BufferedReader(new FileReader(new File(infile)));
-		BufferedWriter bw = new BufferedWriter(new FileWriter(new File(outfile),true));
+		BufferedWriter bw = new BufferedWriter(new FileWriter(new File(outfile)));
 		String line = null;
 
 		while((line=br.readLine())!=null){
