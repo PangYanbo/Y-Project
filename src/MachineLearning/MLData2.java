@@ -240,7 +240,11 @@ public class MLData2 {
 
 			Double saigaitime  = Double.parseDouble(time);
 			Double toujitutime = Double.parseDouble(disdaytime);
-		
+			
+			if((subject.equals("tsukin_time_diff"))||(subject.equals("office_time_diff"))||(subject.equals("kitaku_time_diff"))){
+				toujitutime = 30d;
+			}
+			
 			if(saigaitime<toujitutime){
 
 				if(id_date.containsKey(id)){

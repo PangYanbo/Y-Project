@@ -15,8 +15,8 @@ public class Only1orMinus {
 		ArrayList<String> disasters = new ArrayList<String>();
 		disasters.add("rain");
 		disasters.add("eq");
-//		disasters.add("heats");
-		disasters.add("dosha");
+		disasters.add("heats");
+//		disasters.add("dosha");
 
 		ArrayList<String> subjects = new ArrayList<String>();
 		subjects.add("home_exit");
