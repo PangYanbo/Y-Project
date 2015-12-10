@@ -282,7 +282,10 @@ public class MLData2 {
 							list.add(ds);
 						}	
 
-
+						if((subject.equals("tsukin_time_diff"))||(subject.equals("office_time_diff"))||(subject.equals("kitaku_time_diff"))){
+							disdaytime = "30";
+						}
+						
 						if(isEarly(time,disdaytime)==true){
 							if(!subject.equals("home_exit_diff")){
 								if(homeexit.containsKey(id)){
@@ -426,7 +429,10 @@ public class MLData2 {
 						list.add(ds);
 					}	
 
-
+					if((subject.equals("tsukin_time_diff"))||(subject.equals("office_time_diff"))||(subject.equals("kitaku_time_diff"))){
+						disdaytime = "30";
+					}
+					
 					if(isEarly(time,disdaytime)==true){
 						if(!subject.equals("home_exit_diff")){
 							if(homeexit.containsKey(id)){
