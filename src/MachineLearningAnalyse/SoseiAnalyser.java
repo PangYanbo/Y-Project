@@ -21,7 +21,7 @@ public class SoseiAnalyser {
 		/**@author yabetaka
 		 */
 
-		String type = "eq";
+		String type = "rain";
 
 		File soseifile = new File("/home/c-tyabe/liblinear/sosei.txt");
 		HashMap<String,String> map = getsoseimap(soseifile);
