@@ -1,8 +1,10 @@
 package MachineLearningAnalyse;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -40,6 +42,7 @@ public class SoseiAnalyser {
 
 	public static void checkfile(String type, String subject, HashMap<String,String> map) throws IOException{
 		File in = new File("/home/c-tyabe/liblinear/"+type+"model/"+subject+"_diff_ML2_plusminus_lineforeach_nozero_word_c_1v_-1");
+		File out = new File("/home/c-tyabe/liblinear/"+type+"model/"+subject+"_diff_ML2_plusminus_lineforeach_nozero_word_c_1v_-1_out");
 		BufferedReader br = new BufferedReader(new FileReader(in));
 		String line = null;
 		HashMap<String, Double> list = new HashMap<String,Double>();
@@ -54,10 +57,13 @@ public class SoseiAnalyser {
 
 		System.out.println(" ");
 		System.out.println(type+","+subject);
-		sortandshow(list,map);
+		sortandshow(list,map, out);
 	}
 
-	public static void sortandshow(HashMap<String,Double> map, HashMap<String,String> soseimap){
+	public static void sortandshow(HashMap<String,Double> map, HashMap<String,String> soseimap, File out) throws IOException{
+		
+		BufferedWriter bw = new BufferedWriter(new FileWriter(out));
+		
 		List<Map.Entry<String,Double>> entries = 
 				new ArrayList<Map.Entry<String,Double>>(map.entrySet());
 		Collections.sort(entries, new Comparator<Map.Entry<String,Double>>() {
@@ -74,12 +80,14 @@ public class SoseiAnalyser {
 			String r = numchanger(s.getKey());
 			if(!temp.contains(r)){
 				if((Integer.valueOf(s.getKey())<1000)||(Integer.valueOf(s.getKey())>=100000)){
-					System.out.println(soseimap.get(s.getKey())+","+s.getKey()+","+s.getValue());
+					bw.write(soseimap.get(s.getKey())+","+s.getKey()+","+s.getValue());
+					bw.newLine();
 //					count++;
 					temp.add(r);
 				}
 			}
 		}
+		bw.close();
 	}
 
 	public static HashMap<String,String> getsoseimap(File in) throws IOException{
