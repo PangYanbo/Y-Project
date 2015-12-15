@@ -19,11 +19,9 @@ public class SoseiAnalyser {
 		/**@author yabetaka
 		 */
 
-		String type = "rain";
-		Integer n = 100;
-		String para = "0.01";
+		String type = "heat";
 
-		File soseifile = new File("c:/users/yabetaka/desktop/Yahoo/sosei_bilinearincluded.txt");
+		File soseifile = new File("/home/c-tyabe/liblinear/sosei.txt");
 		HashMap<String,String> map = getsoseimap(soseifile);
 
 		ArrayList<String> subjects = new ArrayList<String>();
@@ -36,13 +34,12 @@ public class SoseiAnalyser {
 		subjects.add("home_return");
 
 		for(String s:subjects){
-			checkfile(type,s,para,n,map);
+			checkfile(type,s,map);
 		}
-
 	}
 
-	public static void checkfile(String type, String subject, String para, Integer n, HashMap<String,String> map) throws IOException{
-		File in = new File("C:/Users/yabetaka/Desktop/soseimodel/"+type+"model/"+subject);
+	public static void checkfile(String type, String subject, HashMap<String,String> map) throws IOException{
+		File in = new File("/home/c-tyabe/liblinear/"+type+"model/"+subject+"_ML2_plusminus_lineforeach_nozero_word_c_1v_-1");
 		BufferedReader br = new BufferedReader(new FileReader(in));
 		String line = null;
 		HashMap<String, Double> list = new HashMap<String,Double>();
@@ -57,10 +54,10 @@ public class SoseiAnalyser {
 
 		System.out.println(" ");
 		System.out.println(type+","+subject);
-		sortandshow(list,n,map);
+		sortandshow(list,map);
 	}
 
-	public static void sortandshow(HashMap<String,Double> map, Integer n, HashMap<String,String> soseimap){
+	public static void sortandshow(HashMap<String,Double> map, HashMap<String,String> soseimap){
 		List<Map.Entry<String,Double>> entries = 
 				new ArrayList<Map.Entry<String,Double>>(map.entrySet());
 		Collections.sort(entries, new Comparator<Map.Entry<String,Double>>() {
@@ -72,17 +69,14 @@ public class SoseiAnalyser {
 		});
 
 		ArrayList<String> temp = new ArrayList<String>();
-		int count = 0;
+//		int count = 0;
 		for (Entry<String,Double> s : entries) {
 			String r = numchanger(s.getKey());
 			if(!temp.contains(r)){
 				if((Integer.valueOf(s.getKey())<1000)||(Integer.valueOf(s.getKey())>=100000)){
 					System.out.println(soseimap.get(s.getKey())+","+s.getKey()+","+s.getValue());
-					count++;
+//					count++;
 					temp.add(r);
-					if(count==n){
-						break;
-					}
 				}
 			}
 		}
