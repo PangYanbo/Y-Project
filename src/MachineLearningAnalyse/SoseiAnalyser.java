@@ -39,7 +39,7 @@ public class SoseiAnalyser {
 	}
 
 	public static void checkfile(String type, String subject, HashMap<String,String> map) throws IOException{
-		File in = new File("/home/c-tyabe/liblinear/"+type+"model/"+subject+"_ML2_plusminus_lineforeach_nozero_word_c_1v_-1");
+		File in = new File("/home/c-tyabe/liblinear/"+type+"model/"+subject+"_diff_ML2_plusminus_lineforeach_nozero_word_c_1v_-1");
 		BufferedReader br = new BufferedReader(new FileReader(in));
 		String line = null;
 		HashMap<String, Double> list = new HashMap<String,Double>();
