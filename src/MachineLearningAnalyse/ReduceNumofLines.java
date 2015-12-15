@@ -29,8 +29,8 @@ public class ReduceNumofLines {
 			subjects.add("home_return_diff");
 
 			for(String subject:subjects){
-				File in = new File("/home/c-tyabe/Data/MLResults_"+dis+"13/"+subject+"_diff_ML2_lineforeach.csv");
-				File out = new File("/home/c-tyabe/Data/MLResults_"+dis+"13/"+subject+"_diff_ML2_lineforeach_short.csv");
+				File in = new File("/home/c-tyabe/Data/MLResults_"+dis+"13/"+subject+"_ML2_lineforeach.csv");
+				File out = new File("/home/c-tyabe/Data/MLResults_"+dis+"13/"+subject+"_ML2_lineforeach_short.csv");
 				BufferedReader br = new BufferedReader(new FileReader(in));
 				BufferedWriter bw = new BufferedWriter(new FileWriter(out));
 				String line = null;
