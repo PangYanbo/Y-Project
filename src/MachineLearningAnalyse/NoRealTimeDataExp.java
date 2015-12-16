@@ -34,7 +34,7 @@ public class NoRealTimeDataExp {
 				String outdir    = "/home/c-tyabe/Data/MLResults_"+type+"13/";
 				String outdir4   = outdir+"forML/calc/sameexp/";
 				String in = outdir4+subject+"_ML2_plusminus_lineforeach_same.csv";
-				String out = outdir4+subject+"_ML2_plusminus_lineforeach_same_nonrealtime_noarea.csv";
+				String out = outdir4+subject+"_ML2_plusminus_lineforeach_same_onlydisasterinfo.csv";
 				
 				deleterealtimedata(in,out);
 				
@@ -59,7 +59,7 @@ public class NoRealTimeDataExp {
 			for(int i=1; i<tokens.length-1; i++){
 				if(!tokens[i].split(":")[0].isEmpty()){
 					Integer num = Integer.valueOf(tokens[i].split(":")[0]);
-					if((num<=144)||(num>=100000)){
+					if(num<=9){
 						list.add(num);
 					}
 				}
