@@ -21,7 +21,9 @@ public class SoseiAnalyser {
 		/**@author yabetaka
 		 */
 
-		String type = "rain";
+		String type = args[0];
+		String min = args[1];
+		String max = args[2];
 
 		File soseifile = new File("/home/c-tyabe/liblinear/sosei.txt");
 		HashMap<String,String> map = getsoseimap(soseifile);
@@ -36,7 +38,7 @@ public class SoseiAnalyser {
 		subjects.add("home_return");
 
 		for(String s:subjects){
-			checkfile(type,s,map);
+			justshow(type,s,map,Integer.valueOf(min),Integer.valueOf(max));
 		}
 	}
 
@@ -46,24 +48,43 @@ public class SoseiAnalyser {
 		BufferedReader br = new BufferedReader(new FileReader(in));
 		String line = null;
 		HashMap<String, Double> list = new HashMap<String,Double>();
+		System.out.println(" ");
+		System.out.println(type+","+subject);
 		while((line=br.readLine())!=null){
 			String[] tokens = line.split(",");
 			String num  = tokens[0];
-//			String desc = tokens[1];
+			//			String desc = tokens[1];
 			Double val   = Double.parseDouble(tokens[2]);
 			list.put(num, val);
 		}
 		br.close();
 
-		System.out.println(" ");
-		System.out.println(type+","+subject);
 		sortandshow(list,map, out);
 	}
 
+	public static void justshow(String type, String subject, HashMap<String,String> map, Integer min, Integer max) throws IOException{
+		File in = new File("/home/c-tyabe/liblinear/"+type+"model/"+subject+"_diff_ML2_plusminus_lineforeach_nozero_word_c_1v_-1");
+//		File out = new File("/home/c-tyabe/liblinear/"+type+"model/"+subject+"_diff_ML2_plusminus_lineforeach_nozero_word_c_1v_-1_out");
+		BufferedReader br = new BufferedReader(new FileReader(in));
+		String line = null;
+		System.out.println(" ");
+		System.out.println(type+","+subject);
+		while((line=br.readLine())!=null){
+			String[] tokens = line.split(",");
+			String num  = tokens[0];
+			Integer n = Integer.valueOf(num);
+			if((n>=min)&&(n<=max)){
+				System.out.println(num + "," + tokens[2]);
+			}
+			br.close();
+		}
+	}
+
+
 	public static void sortandshow(HashMap<String,Double> map, HashMap<String,String> soseimap, File out) throws IOException{
-		
+
 		BufferedWriter bw = new BufferedWriter(new FileWriter(out));
-		
+
 		List<Map.Entry<String,Double>> entries = 
 				new ArrayList<Map.Entry<String,Double>>(map.entrySet());
 		Collections.sort(entries, new Comparator<Map.Entry<String,Double>>() {
@@ -75,14 +96,14 @@ public class SoseiAnalyser {
 		});
 
 		ArrayList<String> temp = new ArrayList<String>();
-//		int count = 0;
+		//		int count = 0;
 		for (Entry<String,Double> s : entries) {
 			String r = numchanger(s.getKey());
 			if(!temp.contains(r)){
 				if((Integer.valueOf(s.getKey())<1000)||(Integer.valueOf(s.getKey())>=100000)){
 					bw.write(soseimap.get(s.getKey())+","+s.getKey()+","+s.getValue());
 					bw.newLine();
-//					count++;
+					//					count++;
 					temp.add(r);
 				}
 			}
