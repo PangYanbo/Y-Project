@@ -76,8 +76,8 @@ public class SoseiAnalyser {
 			if((n>=min)&&(n<=max)){
 				System.out.println(num + "," + tokens[2]);
 			}
-			br.close();
 		}
+		br.close();
 	}
 
 
