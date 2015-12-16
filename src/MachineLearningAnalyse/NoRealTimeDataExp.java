@@ -59,7 +59,7 @@ public class NoRealTimeDataExp {
 			for(int i=1; i<tokens.length-1; i++){
 				if(!tokens[i].split(":")[0].isEmpty()){
 					Integer num = Integer.valueOf(tokens[i].split(":")[0]);
-					if(num<=144){
+					if((num<=144)||(num>=100000)){
 						list.add(num);
 					}
 				}
