@@ -34,7 +34,7 @@ public class NoRealTimeDataExp {
 				String outdir    = "/home/c-tyabe/Data/MLResults_"+type+"13/";
 				String outdir4   = outdir+"forML/calc/sameexp/";
 				String in = outdir4+subject+"_ML2_plusminus_lineforeach_same.csv";
-				String out = outdir4+subject+"_ML2_plusminus_lineforeach_same_nonrealtime.csv";
+				String out = outdir4+subject+"_ML2_plusminus_lineforeach_same_nonrealtime_noarea.csv";
 				
 				deleterealtimedata(in,out);
 				
