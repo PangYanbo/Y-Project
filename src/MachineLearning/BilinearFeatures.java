@@ -36,7 +36,7 @@ public class BilinearFeatures {
 		String res = " "+levelhpop+":1 "+levelopop+":1 "+leveltime+":1 "+levelprice+":1 "+leveldis+":1 "+timedis+":1";		
 		return res;
 	}
-
+	
 	public static String time(String time){
 		Double timerange = Double.parseDouble(time);
 		if(timerange<6){return "1";}
