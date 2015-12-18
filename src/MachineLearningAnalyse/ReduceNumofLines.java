@@ -38,7 +38,7 @@ public class ReduceNumofLines {
 				while((line=br.readLine())!=null){
 					count++;
 				}
-				Double rate = 100000d/(double)count;
+				Double rate = 30000d/(double)count;
 
 				BufferedReader br2 = new BufferedReader(new FileReader(in));
 				String line2 = null;
