@@ -17,7 +17,7 @@ import IDExtract.ID_Extract_Tools;
 public class Makedata4exp {
 
 	public static final String GPSpath  = "/tmp/bousai_data/gps_";
-	public static final String GPSdeeppath = "/home/c-tyabe/Data/grid/0/tmp/ktsubouc/gps_";
+	public static final String GPSdeeppath = "/home/t-tyabe/Data/grid/0/tmp/ktsubouc/gps_";
 
 	public static void makedata(String outpath, HashSet<String> targetdays, HashMap<String,LonLat> targetIDs) throws IOException{
 		BufferedWriter bw = new BufferedWriter(new FileWriter(new File(outpath),true));

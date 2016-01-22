@@ -20,7 +20,7 @@ public class ExtractIDbyDate {
 	//		HashSet<String> targetIDs = extractID(args[0],disasterzones);
 	//	}
 
-	static File shapedir = new File("/home/c-tyabe/Data/jpnshp");
+	static File shapedir = new File("/home/t-tyabe/Data/jpnshp");
 	static GeometryChecker gchecker = new GeometryChecker(shapedir);
 
 	//check Pref or not.! 

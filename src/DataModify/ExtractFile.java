@@ -63,7 +63,7 @@ public class ExtractFile {
 //					FileOutputStream fos = null;
 //
 //					try {
-//						fos = new FileOutputStream(new File("/home/c-tyabe/Data/"+tarEnt.getName()+".csv"));
+//						fos = new FileOutputStream(new File("/home/t-tyabe/Data/"+tarEnt.getName()+".csv"));
 //					} catch (FileNotFoundException e) {
 //						// TODO Auto-generated catch block
 //						e.printStackTrace();
@@ -96,7 +96,7 @@ public class ExtractFile {
 	public static void extractfromcommand(String date){
 		ProcessBuilder pb = new ProcessBuilder("tar", "zxvf",
 				"/tmp/bousai_data/gps_"+date+".tar.gz", 
-				"-C","/home/c-tyabe/Data/");
+				"-C","/home/t-tyabe/Data/");
 		pb.inheritIO();
 		try {
 			Process process = pb.start();
@@ -107,8 +107,8 @@ public class ExtractFile {
 			ex.printStackTrace();
 		}
 //		System.out.println("=======done=======");
-		File out = new File("/home/c-tyabe/Data/grid/0/tmp/ktsubouc/gps_"+date);
-		out.renameTo(new File("/home/c-tyabe/Data/grid/0/tmp/ktsubouc/gps_"+date+".csv"));
+		File out = new File("/home/t-tyabe/Data/grid/0/tmp/ktsubouc/gps_"+date);
+		out.renameTo(new File("/home/t-tyabe/Data/grid/0/tmp/ktsubouc/gps_"+date+".csv"));
 	}
 
 }
