@@ -71,6 +71,19 @@ public class Bins {
 		}
 	}
 	
+	public static String sigmaline(Double sigma){
+		if(sigma==null){
+			return "0,0,0,0,0";
+		}
+		else{
+			if(sigma==0d){return "1,0,0,0,0";}
+			else if ((sigma>=0d)&&(sigma<1)){return "0,1,0,0,0";}
+			else if ((sigma>=1)&&(sigma<2)){return "0,0,1,0,0";}
+			else if ((sigma>=2)&&(sigma<3)){return "0,0,0,1,0";}
+			else{return "0,0,0,0,1";}
+		}
+	}
+	
 	public static String getline4Diffs(String subject, String normaltime){
 		if((subject.equals("tsukin_time_diff"))||(subject.equals("kitaku_time_diff"))){
 			if(normaltime==null){

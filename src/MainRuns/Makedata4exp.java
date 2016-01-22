@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -38,6 +39,49 @@ public class Makedata4exp {
 						if(!tokens[4].equals("null")){
 							String id = tokens[0];
 							if(targetIDs.keySet().contains(id)){
+								String lat = tokens[2];
+								String lon = tokens[3];
+								String time = converttime(tokens[4]);
+								bw.write(id + "\t" + lat + "\t" + lon + "\t" + time);
+								bw.newLine();
+								count++;
+//								daa++;
+							}
+						}
+					}
+					prevline = line;
+				}
+			}
+			br.close();
+//			System.out.println("done " + d +" ... " + daa +" lines");
+			File i = new File(GPSdeeppath+ymd+".csv");
+			i.delete();
+		}
+
+		bw.close();
+		System.out.println("#the size of data for exp is "+ count);
+	}
+	
+	public static void makedata2(String outpath, HashSet<String> targetdays, ArrayList<String> targetIDs) throws IOException{
+		BufferedWriter bw = new BufferedWriter(new FileWriter(new File(outpath),true));
+		int count = 0;
+		for(String d : targetdays){
+//			int daa = 0;
+			String[] youso = d.split("-");
+			String ymd = youso[0]+youso[1]+youso[2];
+//			String GPS = GPSpath+ymd+".tar.gz"; //ymd=yyyymmdd‚ÌŒ`‚É‚È‚Á‚Ä‚¢‚é
+			ExtractFile.extractfromcommand(ymd);
+
+			BufferedReader br = new BufferedReader(new FileReader(new File(GPSdeeppath+ymd+".csv")));
+			String line = null;
+			String prevline = null;
+			while((line=br.readLine())!=null){
+				if(ID_Extract_Tools.SameLogCheck(line,prevline)==true){
+					String[] tokens = line.split("\t");
+					if(tokens.length>=5){
+						if(!tokens[4].equals("null")){
+							String id = tokens[0];
+							if(targetIDs.contains(id)){
 								String lat = tokens[2];
 								String lon = tokens[3];
 								String time = converttime(tokens[4]);
