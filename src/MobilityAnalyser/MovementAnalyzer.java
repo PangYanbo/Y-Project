@@ -24,7 +24,7 @@ public class MovementAnalyzer {
 		System.out.println(x);
 	}
 
-	static File shapedir = new File("/home/c-tyabe/Data/jpnshp");
+	static File shapedir = new File("/home/t-tyabe/Data/jpnshp");
 	static GeometryChecker gchecker = new GeometryChecker(shapedir);
 
 	public static void executeAnalyser

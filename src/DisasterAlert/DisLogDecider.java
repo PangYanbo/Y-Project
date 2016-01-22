@@ -16,13 +16,13 @@ public class DisLogDecider {
 	protected static final SimpleDateFormat YMD = new SimpleDateFormat("yyyy-MM-dd");//change time format
 
 	public static void main(String args[]) throws IOException, ParseException{
-//		File in = new File("c:/users/c-tyabe/desktop/DisasterDataLogs/DisasterAlertData.csv");
+//		File in = new File("c:/users/t-tyabe/desktop/DisasterDataLogs/DisasterAlertData.csv");
 		File in = new File(args[0]);
 		
-//		File out = new File("c:/users/c-tyabe/desktop/DisasterDataLogs/DisasterAlertData_shutoken_eq.csv");
+//		File out = new File("c:/users/t-tyabe/desktop/DisasterDataLogs/DisasterAlertData_shutoken_eq.csv");
 		File out = new File(args[1]);
 		
-//		File jiscodes = new File("c:/users/c-tyabe/desktop/ShutokenSHP/JIScodes_pref.csv");
+//		File jiscodes = new File("c:/users/t-tyabe/desktop/ShutokenSHP/JIScodes_pref.csv");
 		File jiscodes = new File(args[2]);
 		
 //		choosebyAreaDateType(in,out,jiscodes,"emg1","2014-10-21","2015-08-17");		

@@ -8,17 +8,17 @@ public class FilePaths {
 	}
 	
 	public static String deephomepath(String x){
-		String res = "/home/c-tyabe/Data/grid/0/tmp/ktsubouc/gps_" + x +".csv";
+		String res = "/home/t-tyabe/Data/grid/0/tmp/ktsubouc/gps_" + x +".csv";
 		return res;
 	}
 
 	public static String homepath(String x){
-		String res = "/home/c-tyabe/Data/" + x + ".csv";
+		String res = "/home/t-tyabe/Data/" + x + ".csv";
 		return res;
 	}
 	
 	public static String homedir(String x){
-		String res = "/home/c-tyabe/Data/" + x;
+		String res = "/home/t-tyabe/Data/" + x;
 		return res;
 	}
 	

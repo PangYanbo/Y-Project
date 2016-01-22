@@ -134,7 +134,7 @@ public class HomeDetector {
 		return res;
 	}
 
-	static File shapedir = new File("/home/c-tyabe/Data/jpnshp");
+	static File shapedir = new File("/home/t-tyabe/Data/jpnshp");
 	static GeometryChecker gchecker = new GeometryChecker(shapedir);
 
 }
