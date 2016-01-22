@@ -41,19 +41,19 @@ public class YDisasterProject {
 	private static final String city = "Tokyo";
 //	private static final String targetlevel = "1";
 //	private static final String targetlevel2 = "2";
-	private static final String homepath = "/home/c-tyabe/Data/"+type+city+"6/";
+	private static final String homepath = "/home/t-tyabe/Data/"+type+city+"6/";
 	private static final String GPSpath  = "/tmp/bousai_data/gps_";
 
 	public static void main(String args[]) throws IOException, NumberFormatException, ParseException{
 		File dir = new File(homepath);
 		dir.mkdir();
 
-		File in = new File("/home/c-tyabe/Data/DisasterLogs/DisasterAlertData.csv");
-		File out = new File("/home/c-tyabe/Data/DisasterLogs/DisasterAlertData_shutoken_"+type+".csv");
-		File jiscodes = new File("/home/c-tyabe/Data/ShutokenSHP/JIScodes.csv");
+		File in = new File("/home/t-tyabe/Data/DisasterLogs/DisasterAlertData.csv");
+		File out = new File("/home/t-tyabe/Data/DisasterLogs/DisasterAlertData_shutoken_"+type+".csv");
+		File jiscodes = new File("/home/t-tyabe/Data/ShutokenSHP/JIScodes.csv");
 		DisLogDecider.choosebyAreaDateType(in,out,jiscodes,type,"2014-10-21","2015-08-17");		
 
-		String disasterlogfile = "/home/c-tyabe/Data/DisasterLogs/DisasterAlertData_shutoken_"+type+".csv";
+		String disasterlogfile = "/home/t-tyabe/Data/DisasterLogs/DisasterAlertData_shutoken_"+type+".csv";
 		runforallevents(disasterlogfile);
 	}
 
