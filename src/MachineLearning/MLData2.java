@@ -21,20 +21,20 @@ public class MLData2 {
 
 	public static final double k         = 2;
 
-	public static final File popfile     = new File("/home/c-tyabe/Data/DataforML/mesh_daytimepop.csv");
-	public static final File landusefile = new File("/home/c-tyabe/Data/DataforML/landusedata.csv");
-	public static final File roadfile    = new File("/home/c-tyabe/Data/DataforML/roadnetworkdata.csv");
-	public static final File trainfile   = new File("/home/c-tyabe/Data/DataforML/railnodedata.csv");
-	public static final File pricefile   = new File("/home/c-tyabe/Data/DataforML/landpricedata.csv");
+	public static final File popfile     = new File("/home/t-tyabe/Data/DataforML/mesh_daytimepop.csv");
+	public static final File landusefile = new File("/home/t-tyabe/Data/DataforML/landusedata.csv");
+	public static final File roadfile    = new File("/home/t-tyabe/Data/DataforML/roadnetworkdata.csv");
+	public static final File trainfile   = new File("/home/t-tyabe/Data/DataforML/railnodedata.csv");
+	public static final File pricefile   = new File("/home/t-tyabe/Data/DataforML/landpricedata.csv");
 
-	static File shapedir = new File("/home/c-tyabe/Data/jpnshp");
+	static File shapedir = new File("/home/t-tyabe/Data/jpnshp");
 	static GeometryChecker gchecker = new GeometryChecker(shapedir);
 
 	public static void main(String args[]) throws IOException{
 
-		String type      = args[0];	
-		String dir       = "/home/c-tyabe/Data/"+type+"Tokyo6/";
-		String outdir    = "/home/c-tyabe/Data/MLResults_"+type+"13/";
+		String type      = "rain";	
+		String dir       = "/home/t-tyabe/Data/"+type+"Tokyo7/";
+		String outdir    = "/home/t-tyabe/Data/MLResults_"+type+"14/";
 		String outdir2   = outdir+"forML/";
 		String outdir3   = outdir+"forML/calc/";
 		String outdir4   = outdir+"forML/calc/sameexp/";
