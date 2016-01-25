@@ -217,7 +217,7 @@ public class MLData2 {
 
 		while((line=br.readLine())!=null){
 			String id = null; String diff = null; String dis = null; String normaltime = null; String disdaytime = null;
-			LonLat nowp = null; LonLat homep = null; LonLat officep = null; Double sigma = 0d;
+			LonLat nowp = null; LonLat homep = null; LonLat officep = null; Double sigma = 0d; String norlogs = null; String dislogs = null;
 
 			String[] tokens = line.split(",");
 			if(tokens[5].contains("(")){ // output version 1 
@@ -227,6 +227,7 @@ public class MLData2 {
 				officep = new LonLat(Double.parseDouble(tokens[9].replace("(","")),Double.parseDouble(tokens[10].replace(")","")));
 				disdaytime = tokens[11]; normaltime = tokens[12]; 
 				sigma = Double.parseDouble(tokens[13]);
+				norlogs = tokens[14]; dislogs = tokens[15];
 				dis = String.valueOf(homep.distance(officep)/100000);
 			}
 			else{ // output version 2
@@ -235,6 +236,7 @@ public class MLData2 {
 				homep = new LonLat(Double.parseDouble(tokens[7]),Double.parseDouble(tokens[8]));
 				officep = new LonLat(Double.parseDouble(tokens[9]),Double.parseDouble(tokens[10]));
 				disdaytime = tokens[11]; normaltime = tokens[12]; sigma = Double.parseDouble(tokens[13]);
+				norlogs = tokens[14]; dislogs = tokens[15];
 				dis = String.valueOf(homep.distance(officep)/100000);
 			}
 
@@ -391,7 +393,7 @@ public class MLData2 {
 						String bilinearline = BilinearFeatures.bilinearline(level,time,dis,homep,officep,popmap,pricemap);
 						bw.write(bilinearline);
 
-						bw.write(" #"+diff+"A"+sigma);
+						bw.write(" #"+norlogs+"_"+dislogs);
 						bw.newLine();
 						id_date.get(id).add(date);
 					}
@@ -538,7 +540,7 @@ public class MLData2 {
 					String bilinearline = BilinearFeatures.bilinearline(level,time,dis,homep,officep,popmap,pricemap);
 					bw.write(bilinearline);
 
-					bw.write(" #"+diff+"A"+sigma);
+					bw.write(" #"+norlogs+"_"+dislogs);
 					bw.newLine();
 					ArrayList<String> temp = new ArrayList<String>();
 					temp.add(date);

@@ -29,7 +29,8 @@ public class MovementAnalyzer {
 
 	public static void executeAnalyser
 	(String infile, String idhome, String idoffice, String outputpath, 
-			String disasterday, HashMap<String,LonLat> id_area, HashMap<String,String> id_homecode) throws NumberFormatException, IOException, ParseException{
+			String disasterday, HashMap<String,LonLat> id_area, HashMap<String,String> id_homecode, 
+			HashMap<String, Integer> id_norlogs, HashMap<String, Integer> id_dislogs) throws NumberFormatException, IOException, ParseException{
 		File in = new File(infile);
 		File Home = new File(idhome);
 		File Office = new File(idoffice);
@@ -48,25 +49,25 @@ public class MovementAnalyzer {
 		HashMap<String, HashMap<String, Integer>> officetime  = officeStayTimes(officeenter, officeexit); //System.out.println("#done getting time at office");
 
 		System.out.println("#writing everything out...");
-		writeout(officeenter, outputpath, "office_enter.csv", disasterday, id_area, id_homecode);
-		writeout(officeexit,  outputpath, "office_exit.csv" , disasterday, id_area, id_homecode);
-		writeout(homeexit,    outputpath, "home_exit.csv"   , disasterday, id_area, id_homecode);
-		writeout(homereturn,  outputpath, "home_return.csv" , disasterday, id_area, id_homecode);
-		writeout(tsukintime,  outputpath, "tsukin_time.csv" , disasterday, id_area, id_homecode);
-		writeout(kitakutime,  outputpath, "kitaku_time.csv" , disasterday, id_area, id_homecode);
-		writeout(officetime,  outputpath, "office_time.csv" , disasterday, id_area, id_homecode);
+		writeout(officeenter, outputpath, "office_enter.csv", disasterday, id_area, id_homecode, id_norlogs, id_dislogs);
+		writeout(officeexit,  outputpath, "office_exit.csv" , disasterday, id_area, id_homecode, id_norlogs, id_dislogs);
+		writeout(homeexit,    outputpath, "home_exit.csv"   , disasterday, id_area, id_homecode, id_norlogs, id_dislogs);
+		writeout(homereturn,  outputpath, "home_return.csv" , disasterday, id_area, id_homecode, id_norlogs, id_dislogs);
+		writeout(tsukintime,  outputpath, "tsukin_time.csv" , disasterday, id_area, id_homecode, id_norlogs, id_dislogs);
+		writeout(kitakutime,  outputpath, "kitaku_time.csv" , disasterday, id_area, id_homecode, id_norlogs, id_dislogs);
+		writeout(officetime,  outputpath, "office_time.csv" , disasterday, id_area, id_homecode, id_norlogs, id_dislogs);
 		//		System.out.println("#done everything");
 
 		HashMap<String,LonLat> id_Home = HomeOfficeMaps.getXMap(Home);
 		HashMap<String,LonLat> id_Office = HomeOfficeMaps.getXMap(Office);
 		//		System.out.println("#writing everything out...");
-		writeoutDiff(officeenter, outputpath, "office_enter_diff.csv", disasterday, id_area, id_homecode, id_Home, id_Office);
-		writeoutDiff(officeexit,  outputpath, "office_exit_diff.csv" , disasterday, id_area, id_homecode, id_Home, id_Office);
-		writeoutDiff(homeexit,    outputpath, "home_exit_diff.csv"   , disasterday, id_area, id_homecode, id_Home, id_Office);
-		writeoutDiff(homereturn,  outputpath, "home_return_diff.csv" , disasterday, id_area, id_homecode, id_Home, id_Office);
-		writeoutDiff(tsukintime,  outputpath, "tsukin_time_diff.csv" , disasterday, id_area, id_homecode, id_Home, id_Office);
-		writeoutDiff(kitakutime,  outputpath, "kitaku_time_diff.csv" , disasterday, id_area, id_homecode, id_Home, id_Office);
-		writeoutDiff(officetime,  outputpath, "office_time_diff.csv" , disasterday, id_area, id_homecode, id_Home, id_Office);
+		writeoutDiff(officeenter, outputpath, "office_enter_diff.csv", disasterday, id_area, id_homecode, id_Home, id_Office, id_norlogs, id_dislogs);
+		writeoutDiff(officeexit,  outputpath, "office_exit_diff.csv" , disasterday, id_area, id_homecode, id_Home, id_Office, id_norlogs, id_dislogs);
+		writeoutDiff(homeexit,    outputpath, "home_exit_diff.csv"   , disasterday, id_area, id_homecode, id_Home, id_Office, id_norlogs, id_dislogs);
+		writeoutDiff(homereturn,  outputpath, "home_return_diff.csv" , disasterday, id_area, id_homecode, id_Home, id_Office, id_norlogs, id_dislogs);
+		writeoutDiff(tsukintime,  outputpath, "tsukin_time_diff.csv" , disasterday, id_area, id_homecode, id_Home, id_Office, id_norlogs, id_dislogs);
+		writeoutDiff(kitakutime,  outputpath, "kitaku_time_diff.csv" , disasterday, id_area, id_homecode, id_Home, id_Office, id_norlogs, id_dislogs);
+		writeoutDiff(officetime,  outputpath, "office_time_diff.csv" , disasterday, id_area, id_homecode, id_Home, id_Office, id_norlogs, id_dislogs);
 		System.out.println("#done everything");
 	}
 
@@ -233,7 +234,8 @@ public class MovementAnalyzer {
 
 	public static File writeout
 	(HashMap<String, HashMap<String, Integer>> map, String path, String name, String disasterday, 
-			HashMap<String,LonLat> id_area, HashMap<String,String> id_homecode) throws IOException{
+			HashMap<String,LonLat> id_area, HashMap<String,String> id_homecode, 
+			HashMap<String, Integer> id_norlogs, HashMap<String, Integer> id_dislogs) throws IOException{
 		File out = new File(path+name);
 		BufferedWriter bw = new BufferedWriter(new FileWriter(out));
 		for(String id : map.keySet()){
@@ -246,7 +248,8 @@ public class MovementAnalyzer {
 					z = "2";
 					day = "99";
 				}
-				bw.write(id + "," + z + "," + day + "," + x + "," + id_area.get(id) + "," + id_homecode.get(id));
+				bw.write(id + "," + z + "," + day + "," + x + "," + id_area.get(id) + "," + id_homecode.get(id)
+						+ "," + id_norlogs.get(id) + "," + id_dislogs.get(id));
 				bw.newLine();
 			}
 		}
@@ -256,7 +259,9 @@ public class MovementAnalyzer {
 
 	public static File writeoutDiff
 	(HashMap<String, HashMap<String, Integer>> map, String path, String name, String disasterday, 
-			HashMap<String,LonLat> id_area, HashMap<String,String> id_homecode, HashMap<String,LonLat> id_home, HashMap<String,LonLat> id_office) throws IOException{
+			HashMap<String,LonLat> id_area, HashMap<String,String> id_homecode, 
+			HashMap<String,LonLat> id_home, HashMap<String,LonLat> id_office, 
+			HashMap<String, Integer> id_norlogs, HashMap<String, Integer> id_dislogs) throws IOException{
 		File out = new File(path+name);
 		BufferedWriter bw = new BufferedWriter(new FileWriter(out));
 		for(String id : map.keySet()){
@@ -291,7 +296,8 @@ public class MovementAnalyzer {
 							+ "," + id_area.get(id).getLon() + "," + id_area.get(id).getLat() 
 							+ "," + id_home.get(id).getLon() + "," + id_home.get(id).getLat() 
 							+ "," + id_office.get(id).getLon() + "," + id_office.get(id).getLat()
-							+ "," + saigai+ "," + heiji + "," + sigma(temp));
+							+ "," + saigai+ "," + heiji + "," + sigma(temp)
+							+ "," + id_norlogs.get(id) + "," + id_dislogs.get(id));
 					bw.newLine();
 				}
 			}
