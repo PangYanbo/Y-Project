@@ -235,7 +235,7 @@ public class DataMaker {
 						bw.write(offcode+",");
 					}
 					bw.newLine();
-					id_date.get(id).add(date);	
+//					id_date.get(id).add(date);	
 			}
 		}
 		br.close();
