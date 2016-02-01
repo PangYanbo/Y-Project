@@ -187,7 +187,7 @@ public class DataMaker {
 
 		while((line=br.readLine())!=null){
 			String id = null; String diff = null; String dis = null; String normaltime = null; String disdaytime = null;
-			LonLat nowp = null; LonLat homep = null; LonLat officep = null; Double sigma = 0d; String norlogs = null; String dislogs = null;
+			LonLat nowp = null; LonLat homep = null; LonLat officep = null; Double sigma = 0d; //String norlogs = null; String dislogs = null;
 
 			String[] tokens = line.split(",");
 			if(tokens[5].contains("(")){ // output version 1 
@@ -215,8 +215,6 @@ public class DataMaker {
 
 			if(saigaitime<toujitutime){
 
-				if((!(id_date.containsKey(id)))||((id_date.containsKey(id))&&(!id_date.get(id).contains(date)))){
-
 					bw.write(diff+","+level+","+time+","+normaltime+","+sigma+","+disdaytime+","+dis+","+
 							homeexit.get(id).get(date+time+level)+","+officeent.get(id).get(date+time+level)+",");
 
@@ -234,9 +232,7 @@ public class DataMaker {
 						bw.write(offcode+",");
 					}
 					bw.newLine();
-					id_date.get(id).add(date);
-				}
-
+					id_date.get(id).add(date);	
 			}
 		}
 		br.close();
