@@ -15,7 +15,6 @@ import DisasterAlert.DisLogDecider;
 import DisasterAlert.DisasterLogs;
 import DisasterAlert.ExtractIDbyDate;
 import MobilityAnalyser.MovementAnalyzer;
-import Motif.MotifFinder2;
 import StayPointDetection.HomeDetector;
 import StayPointDetection.OfficeSchoolDetection;
 
@@ -42,7 +41,7 @@ public class YDisasterProject {
 //	private static final String targetlevel = "1";
 //	private static final String targetlevel2 = "2";
 
-	private static final String homepath = "/home/t-tyabe/Data/"+type+city+"6/";
+	private static final String homepath = "/home/t-tyabe/Data/"+type+city+"7/";
 	private static final String GPSpath  = "/tmp/bousai_data/gps_";
 
 	public static void main(String args[]) throws IOException, NumberFormatException, ParseException{
@@ -120,13 +119,17 @@ public class YDisasterProject {
 				HashSet<String> targetdays = DayChooser.getTargetDates(ymd, dislog); System.out.println("#the number of days are " + targetdays.size());
 				Makedata4exp.makedata(dataforexp, targetdays, targetIDs_code); System.out.println("#successfully made data for exp");
 
+				//count number of logs for each ID in both normaldays & disasterday
+				HashMap<String, Integer> id_norlogs = CountLogs.CountNorLogs(new File(dataforexp), ymd);
+				HashMap<String, Integer> id_dislogs = CountLogs.CountDisLogs(new File(dataforexp), ymd);
+				
 				HomeDetector.getHome(dataforexp, workpath);
 				HashMap<String,String> id_homecode = HomeDetector.gethomecode(workpath+"id_home.csv");
 				OfficeSchoolDetection.getOfficeSchool(dataforexp, workpath);
 
 				MovementAnalyzer.executeAnalyser
 				(dataforexp, FilePaths.dirfile(workpath,"id_home.csv"), FilePaths.dirfile(workpath,"id_office.csv"), 
-						workpath, disasterday, targetIDs_code, id_homecode);
+						workpath, disasterday, targetIDs_code, id_homecode, id_norlogs, id_dislogs);
 //				MotifFinder2.executeMotif(dataforexp, workpath, disasterday, targetIDs_code, id_homecode,500,300);
 				
 				File data = new File(dataforexp); data.delete();

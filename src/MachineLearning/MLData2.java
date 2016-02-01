@@ -21,20 +21,20 @@ public class MLData2 {
 
 	public static final double k         = 2;
 
-	public static final File popfile     = new File("/home/c-tyabe/Data/DataforML/mesh_daytimepop.csv");
-	public static final File landusefile = new File("/home/c-tyabe/Data/DataforML/landusedata.csv");
-	public static final File roadfile    = new File("/home/c-tyabe/Data/DataforML/roadnetworkdata.csv");
-	public static final File trainfile   = new File("/home/c-tyabe/Data/DataforML/railnodedata.csv");
-	public static final File pricefile   = new File("/home/c-tyabe/Data/DataforML/landpricedata.csv");
+	public static final File popfile     = new File("/home/t-tyabe/Data/DataforML/mesh_daytimepop.csv");
+	public static final File landusefile = new File("/home/t-tyabe/Data/DataforML/landusedata.csv");
+	public static final File roadfile    = new File("/home/t-tyabe/Data/DataforML/roadnetworkdata.csv");
+	public static final File trainfile   = new File("/home/t-tyabe/Data/DataforML/railnodedata.csv");
+	public static final File pricefile   = new File("/home/t-tyabe/Data/DataforML/landpricedata.csv");
 
-	static File shapedir = new File("/home/c-tyabe/Data/jpnshp");
+	static File shapedir = new File("/home/t-tyabe/Data/jpnshp");
 	static GeometryChecker gchecker = new GeometryChecker(shapedir);
 
 	public static void main(String args[]) throws IOException{
 
-		String type      = args[0];	
-		String dir       = "/home/c-tyabe/Data/"+type+"Tokyo6/";
-		String outdir    = "/home/c-tyabe/Data/MLResults_"+type+"13/";
+		String type      = "rain";	
+		String dir       = "/home/t-tyabe/Data/"+type+"Tokyo7/";
+		String outdir    = "/home/t-tyabe/Data/MLResults_"+type+"14/";
 		String outdir2   = outdir+"forML/";
 		String outdir3   = outdir+"forML/calc/";
 		String outdir4   = outdir+"forML/calc/sameexp/";
@@ -217,7 +217,7 @@ public class MLData2 {
 
 		while((line=br.readLine())!=null){
 			String id = null; String diff = null; String dis = null; String normaltime = null; String disdaytime = null;
-			LonLat nowp = null; LonLat homep = null; LonLat officep = null; Double sigma = 0d;
+			LonLat nowp = null; LonLat homep = null; LonLat officep = null; Double sigma = 0d; String norlogs = null; String dislogs = null;
 
 			String[] tokens = line.split(",");
 			if(tokens[5].contains("(")){ // output version 1 
@@ -227,6 +227,7 @@ public class MLData2 {
 				officep = new LonLat(Double.parseDouble(tokens[9].replace("(","")),Double.parseDouble(tokens[10].replace(")","")));
 				disdaytime = tokens[11]; normaltime = tokens[12]; 
 				sigma = Double.parseDouble(tokens[13]);
+				norlogs = tokens[14]; dislogs = tokens[15];
 				dis = String.valueOf(homep.distance(officep)/100000);
 			}
 			else{ // output version 2
@@ -235,6 +236,7 @@ public class MLData2 {
 				homep = new LonLat(Double.parseDouble(tokens[7]),Double.parseDouble(tokens[8]));
 				officep = new LonLat(Double.parseDouble(tokens[9]),Double.parseDouble(tokens[10]));
 				disdaytime = tokens[11]; normaltime = tokens[12]; sigma = Double.parseDouble(tokens[13]);
+				norlogs = tokens[14]; dislogs = tokens[15];
 				dis = String.valueOf(homep.distance(officep)/100000);
 			}
 
@@ -391,7 +393,7 @@ public class MLData2 {
 						String bilinearline = BilinearFeatures.bilinearline(level,time,dis,homep,officep,popmap,pricemap);
 						bw.write(bilinearline);
 
-						bw.write(" #"+diff+"A"+sigma);
+						bw.write(" #"+norlogs+"_"+dislogs);
 						bw.newLine();
 						id_date.get(id).add(date);
 					}
@@ -538,7 +540,7 @@ public class MLData2 {
 					String bilinearline = BilinearFeatures.bilinearline(level,time,dis,homep,officep,popmap,pricemap);
 					bw.write(bilinearline);
 
-					bw.write(" #"+diff+"A"+sigma);
+					bw.write(" #"+norlogs+"_"+dislogs);
 					bw.newLine();
 					ArrayList<String> temp = new ArrayList<String>();
 					temp.add(date);
