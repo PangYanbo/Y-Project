@@ -215,8 +215,7 @@ public class DataMaker {
 
 			if(saigaitime<toujitutime){
 
-
-				if((id_date.containsKey(id))&&(!id_date.get(id).contains(date))){
+				if((!(id_date.containsKey(id)))||((id_date.containsKey(id))&&(!id_date.get(id).contains(date)))){
 
 					bw.write(diff+","+level+","+time+","+normaltime+","+sigma+","+disdaytime+","+dis+","+
 							homeexit.get(id).get(date+time+level)+","+officeent.get(id).get(date+time+level)+",");
