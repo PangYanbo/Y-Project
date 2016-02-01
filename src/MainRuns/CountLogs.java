@@ -15,8 +15,9 @@ public class CountLogs {
 		while((line=br.readLine())!=null){
 			String[] tokens = line.split("\t");
 			String id = tokens[0];
-			String date = tokens[3]; //yyyymmdd 
-			if(!date.equals(disdate)){
+			String date = tokens[3]; //yyyy-mm-ddTHH:MM:SS:ss 
+			String yyyymmdd = getonlydate(date);
+			if(!yyyymmdd.equals(disdate)){
 				if(res.containsKey(id)){
 					int count = res.get(id) + 1;
 					res.put(id, count);
@@ -37,8 +38,9 @@ public class CountLogs {
 		while((line=br.readLine())!=null){
 			String[] tokens = line.split("\t");
 			String id = tokens[0];
-			String date = tokens[3]; //yyyymmdd 
-			if(date.equals(disdate)){
+			String date = tokens[3]; //yyyy-mm-ddTHH:MM:SS:ss 
+			String yyyymmdd = getonlydate(date);
+			if(!yyyymmdd.equals(disdate)){
 				if(res.containsKey(id)){
 					int count = res.get(id) + 1;
 					res.put(id, count);
@@ -50,6 +52,13 @@ public class CountLogs {
 		}
 		br.close();
 		return res;
+	}
+	
+	public static String getonlydate(String t){
+		String[] x = t.split("T");
+		String res = x[0];
+		String date = res.split("-")[0]+res.split("-")[1]+res.split("-")[2];
+		return date;
 	}
 	
 }
