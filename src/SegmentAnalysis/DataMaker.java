@@ -215,8 +215,11 @@ public class DataMaker {
 
 			if(saigaitime<toujitutime){
 
-					bw.write(diff+","+level+","+time+","+normaltime+","+sigma+","+disdaytime+","+dis+","+
-							homeexit.get(id).get(date+time+level)+","+officeent.get(id).get(date+time+level)+",");
+					bw.write(diff+","+level+","+time+","+normaltime+","+sigma+","+disdaytime+","+dis+","
+							/*
+							 * +homeexit.get(id).get(date+time+level)+","+officeent.get(id).get(date+time+level)+",");
+							 */
+							);
 
 					String nowcode = getCode(nowp.getLon(),nowp.getLat());
 					String homecode = getCode(homep.getLon(),homep.getLat());
