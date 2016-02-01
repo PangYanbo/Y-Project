@@ -34,8 +34,8 @@ public class DataMaker {
 	public static void main(String args[]) throws IOException{
 
 		String type      = args[0];	
-		String dir       = "/home/t-tyabe/Data/"+type+"Tokyo6/";
-		String outdir    = "/home/t-tyabe/Data/segmentexp_"+type+"14/";
+		String dir       = "/home/t-tyabe/Data/AnalysisResults/"+type+"Tokyo6/";
+		String outdir    = "/home/t-tyabe/Data/segmentexp_"+type+"1/";
 
 		File outputdir  = new File(outdir);  outputdir.mkdir();
 
@@ -218,7 +218,7 @@ public class DataMaker {
 
 				if((id_date.containsKey(id))&&(!id_date.get(id).contains(date))){
 
-					bw.write(diff+","+level+","+time+","+normaltime+","+sigma+","+dis+","+
+					bw.write(diff+","+level+","+time+","+normaltime+","+sigma+","+disdaytime+","+dis+","+
 							homeexit.get(id).get(date+time+level)+","+officeent.get(id).get(date+time+level)+","+norlogs+","+dislogs+",");
 
 					String nowcode = getCode(nowp.getLon(),nowp.getLat());
