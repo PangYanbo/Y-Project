@@ -197,7 +197,7 @@ public class DataMaker {
 				officep = new LonLat(Double.parseDouble(tokens[9].replace("(","")),Double.parseDouble(tokens[10].replace(")","")));
 				disdaytime = tokens[11]; normaltime = tokens[12]; 
 				sigma = Double.parseDouble(tokens[13]);
-				norlogs = tokens[14]; dislogs = tokens[15];
+//				norlogs = tokens[14]; dislogs = tokens[15];
 				dis = String.valueOf(homep.distance(officep)/100000);
 			}
 			else{ // output version 2
@@ -206,7 +206,7 @@ public class DataMaker {
 				homep = new LonLat(Double.parseDouble(tokens[7]),Double.parseDouble(tokens[8]));
 				officep = new LonLat(Double.parseDouble(tokens[9]),Double.parseDouble(tokens[10]));
 				disdaytime = tokens[11]; normaltime = tokens[12]; sigma = Double.parseDouble(tokens[13]);
-				norlogs = tokens[14]; dislogs = tokens[15];
+//				norlogs = tokens[14]; dislogs = tokens[15];
 				dis = String.valueOf(homep.distance(officep)/100000);
 			}
 
@@ -219,7 +219,7 @@ public class DataMaker {
 				if((id_date.containsKey(id))&&(!id_date.get(id).contains(date))){
 
 					bw.write(diff+","+level+","+time+","+normaltime+","+sigma+","+disdaytime+","+dis+","+
-							homeexit.get(id).get(date+time+level)+","+officeent.get(id).get(date+time+level)+","+norlogs+","+dislogs+",");
+							homeexit.get(id).get(date+time+level)+","+officeent.get(id).get(date+time+level)+",");
 
 					String nowcode = getCode(nowp.getLon(),nowp.getLat());
 					String homecode = getCode(homep.getLon(),homep.getLat());
