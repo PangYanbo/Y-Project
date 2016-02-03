@@ -38,7 +38,7 @@ public class DataMaker {
 
 		String type      = args[0];	
 		String dir       = "/home/t-tyabe/Data/AnalysisResults/"+type+"Tokyo6/";
-		String outdir    = "/home/t-tyabe/Data/segmentexp_"+type+"1/";
+		String outdir    = "/home/t-tyabe/Data/segmentexp_2/";
 
 		File outputdir  = new File(outdir);  outputdir.mkdir();
 
@@ -51,8 +51,6 @@ public class DataMaker {
 		//		subjects.add("kitaku_time_diff");
 		//		subjects.add("home_return_diff");
 		runMLData(subjects, dir, outdir, type);
-
-		
 		
 	}
 
@@ -168,7 +166,8 @@ public class DataMaker {
 		//		System.out.println("#motif map size : " + motifmap.size());
 
 		for(String subject : subjects){
-			String outfile   = outdir+subject+"_ML.csv"; 
+
+			String outfile   = outdir+subject+"_"+type+".csv"; 
 
 			int start;
 			int end;
@@ -196,6 +195,11 @@ public class DataMaker {
 										homeexit, officeent, officeexit, dis_he, dis_oe, dis_ox, subject);
 							}}}
 			}
+			
+			File out1 = new File(outdir+subject+"_"+type+".csv");
+			File out2 = new File(outdir+subject+"_"+type+"_clean.csv");
+			clean(out1,out2);
+			
 		}
 	}
 
