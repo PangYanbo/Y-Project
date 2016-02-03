@@ -36,7 +36,7 @@ public class TotalMovementLength {
 
 	public static void main(String args[]) throws IOException, NumberFormatException, ParseException{
 
-		String type = args[0];
+		String type = args[0]; //rain,heats,emg1
 
 		File dir = new File(homepath);
 		dir.mkdir();
