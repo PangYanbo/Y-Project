@@ -8,6 +8,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 import jp.ac.ut.csis.pflow.geom.GeometryChecker;
@@ -40,13 +41,13 @@ public class DataMaker {
 		File outputdir  = new File(outdir);  outputdir.mkdir();
 
 		ArrayList<String> subjects = new ArrayList<String>();
-//		subjects.add("home_exit_diff");
-//		subjects.add("tsukin_time_diff");
-//		subjects.add("office_enter_diff");
-//		subjects.add("office_time_diff");
+		//		subjects.add("home_exit_diff");
+		//		subjects.add("tsukin_time_diff");
+		//		subjects.add("office_enter_diff");
+		//		subjects.add("office_time_diff");
 		subjects.add("office_exit_diff");
-//		subjects.add("kitaku_time_diff");
-//		subjects.add("home_return_diff");
+		//		subjects.add("kitaku_time_diff");
+		//		subjects.add("home_return_diff");
 		runMLData(subjects, dir, outdir, type);
 
 	}
@@ -101,6 +102,7 @@ public class DataMaker {
 			String outfile   = outdir+subject+"_ML.csv"; 
 
 			HashMap<String, ArrayList<String>> id_dates = new HashMap<String, ArrayList<String>>();
+			HashSet<String> disasterdates = new HashSet<String>(); 
 
 			int start;
 			int end;
@@ -120,13 +122,15 @@ public class DataMaker {
 				for(File datetime :typelevel.listFiles()){
 					String date = datetime.getName().split("_")[0];
 					String time = datetime.getName().split("_")[1];
-					for(File f : datetime.listFiles()){
-						if(f.toString().contains(subject)){
-							System.out.println("#working on " + f.toString());
-							getAttributes(f,new File(outfile),level,date,time,
-									popmap,buildingmap,farmmap,sroadmap,broadmap,allroadmap,trainmap,pricemap,
-									homeexit, officeent, officeexit, dis_he, dis_oe, dis_ox, subject, id_dates);
-						}}}
+					if(!disasterdates.contains(date)){
+						disasterdates.add(date);
+						for(File f : datetime.listFiles()){
+							if(f.toString().contains(subject)){
+								System.out.println("#working on " + f.toString());
+								getAttributes(f,new File(outfile),level,date,time,
+										popmap,buildingmap,farmmap,sroadmap,broadmap,allroadmap,trainmap,pricemap,
+										homeexit, officeent, officeexit, dis_he, dis_oe, dis_ox, subject, id_dates);
+							}}}}
 			}
 		}
 	}
@@ -186,27 +190,27 @@ public class DataMaker {
 		String line = null;
 
 		while((line=br.readLine())!=null){
-			String id = null; String diff = null; String dis = null; String normaltime = null; String disdaytime = null;
+			/*String id = null;*/ String diff = null; String dis = null; String normaltime = null; String disdaytime = null;
 			LonLat nowp = null; LonLat homep = null; LonLat officep = null; Double sigma = 0d; //String norlogs = null; String dislogs = null;
 
 			String[] tokens = line.split(",");
 			if(tokens[5].contains("(")){ // output version 1 
-				id = tokens[0]; diff = tokens[1]; dis = tokens[4];
+				/*id = tokens[0];*/ diff = tokens[1]; dis = tokens[4];
 				nowp = new LonLat(Double.parseDouble(tokens[5].replace("(","")),Double.parseDouble(tokens[6].replace(")","")));
 				homep = new LonLat(Double.parseDouble(tokens[7].replace("(","")),Double.parseDouble(tokens[8].replace(")","")));
 				officep = new LonLat(Double.parseDouble(tokens[9].replace("(","")),Double.parseDouble(tokens[10].replace(")","")));
 				disdaytime = tokens[11]; normaltime = tokens[12]; 
 				sigma = Double.parseDouble(tokens[13]);
-//				norlogs = tokens[14]; dislogs = tokens[15];
+				//				norlogs = tokens[14]; dislogs = tokens[15];
 				dis = String.valueOf(homep.distance(officep)/100000);
 			}
 			else{ // output version 2
-				id = tokens[0]; diff = tokens[1]; dis = tokens[4];
+				/*id = tokens[0];*/ diff = tokens[1]; dis = tokens[4];
 				nowp = new LonLat(Double.parseDouble(tokens[5]),Double.parseDouble(tokens[6]));
 				homep = new LonLat(Double.parseDouble(tokens[7]),Double.parseDouble(tokens[8]));
 				officep = new LonLat(Double.parseDouble(tokens[9]),Double.parseDouble(tokens[10]));
 				disdaytime = tokens[11]; normaltime = tokens[12]; sigma = Double.parseDouble(tokens[13]);
-//				norlogs = tokens[14]; dislogs = tokens[15];
+				//				norlogs = tokens[14]; dislogs = tokens[15];
 				dis = String.valueOf(homep.distance(officep)/100000);
 			}
 
@@ -215,27 +219,27 @@ public class DataMaker {
 
 			if(saigaitime<toujitutime){
 
-					bw.write(diff+","+level+","+time+","+normaltime+","+sigma+","+disdaytime+","+dis+","
-							/*
-							 * +homeexit.get(id).get(date+time+level)+","+officeent.get(id).get(date+time+level)+",");
-							 */
-							);
+				bw.write(diff+","+level+","+time+","+normaltime+","+sigma+","+disdaytime+","+dis+","
+						/*
+						 * +homeexit.get(id).get(date+time+level)+","+officeent.get(id).get(date+time+level)+",");
+						 */
+						);
 
-					String nowcode = getCode(nowp.getLon(),nowp.getLat());
-					String homecode = getCode(homep.getLon(),homep.getLat());
-					String offcode  = getCode(officep.getLon(),officep.getLat());
+				String nowcode = getCode(nowp.getLon(),nowp.getLat());
+				String homecode = getCode(homep.getLon(),homep.getLat());
+				String offcode  = getCode(officep.getLon(),officep.getLat());
 
-					if(!nowcode.equals("null")){
-						bw.write(nowcode+",");
-					}
-					if(!homecode.equals("null")){
-						bw.write(homecode+",");
-					}
-					if(!offcode.equals("null")){
-						bw.write(offcode+",");
-					}
-					bw.newLine();
-//					id_date.get(id).add(date);	
+				if(!nowcode.equals("null")){
+					bw.write(nowcode+",");
+				}
+				if(!homecode.equals("null")){
+					bw.write(homecode+",");
+				}
+				if(!offcode.equals("null")){
+					bw.write(offcode+",");
+				}
+				bw.newLine();
+				//					id_date.get(id).add(date);	
 			}
 		}
 		br.close();
