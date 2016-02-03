@@ -7,9 +7,11 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
+import java.util.Map.Entry;
 
 import jp.ac.ut.csis.pflow.geom.GeometryChecker;
 import jp.ac.ut.csis.pflow.geom.LonLat;
@@ -50,8 +52,75 @@ public class DataMaker {
 		//		subjects.add("home_return_diff");
 		runMLData(subjects, dir, outdir, type);
 
+		
+		
 	}
 
+	public static void clean(File in, File out) throws IOException{
+		BufferedReader br = new BufferedReader(new FileReader(in));
+		BufferedWriter bw = new BufferedWriter(new FileWriter(out));
+		String line = null;
+
+		HashMap<String, HashMap<Integer,String>> res = new HashMap<String, HashMap<Integer,String>>();
+
+		while((line=br.readLine())!=null){
+			String[] tokens = line.split(",");
+			String id = tokens[0];
+			String ymd = tokens[2];
+			Integer level = Integer.valueOf(tokens[3]);
+			if(res.containsKey(id)){
+				res.get(id).put(level, ymd);
+			}
+			else{
+				HashMap<Integer,String> temp = new HashMap<Integer,String>();
+				temp.put(level, ymd);
+				res.put(id, temp);
+			}
+		}
+		br.close();
+
+		HashMap<String, HashMap<String,Integer>> res2 = new HashMap<String, HashMap<String,Integer>>();
+
+		for(String id : res.keySet()){
+			List<Entry<Integer, String>> entries = new ArrayList<Entry<Integer, String>>(res.get(id).entrySet());
+			Collections.sort(entries, new Comparator<Entry<Integer, String>>() {
+				//î‰ärä÷êî
+				@Override
+				public int compare(Entry<Integer, String> o1, Entry<Integer, String> o2) {
+					return o1.getKey().compareTo(o2.getKey());  
+				}
+			});
+
+			for (Entry<Integer, String> e : entries) {
+				if(res2.containsKey(id)){
+					if(!res2.containsValue(e.getValue())){
+						res2.get(id).put(e.getValue(),e.getKey());
+					}
+				}
+				else{
+					HashMap<String,Integer> temp = new HashMap<String,Integer>();
+					temp.put(e.getValue(),e.getKey());
+					res2.put(id, temp);
+				}
+			}
+		}
+
+		BufferedReader br2 = new BufferedReader(new FileReader(in));
+		String line2 = null;
+		while((line2=br2.readLine())!=null){
+			String[] tokens2 = line2.split(",");
+			String id = tokens2[0];
+			String ymd2 = tokens2[2];
+			Integer level2 = Integer.valueOf(tokens2[3]);
+			if(res2.get(id).get(ymd2)==level2){
+				bw.write(line2);
+				bw.newLine();
+			}
+		}
+		br2.close();
+		bw.close();
+	}
+	
 	public static void runMLData(ArrayList<String> subjects, String dir, String outdir, String type) throws IOException{
 
 		HashMap<String, String>  popmap       = GetPop.getpopmap(popfile);
@@ -101,9 +170,6 @@ public class DataMaker {
 		for(String subject : subjects){
 			String outfile   = outdir+subject+"_ML.csv"; 
 
-			HashMap<String, ArrayList<String>> id_dates = new HashMap<String, ArrayList<String>>();
-			HashSet<String> disasterdates = new HashSet<String>(); 
-
 			int start;
 			int end;
 			if(type.equals("rain")){
@@ -122,15 +188,13 @@ public class DataMaker {
 				for(File datetime :typelevel.listFiles()){
 					String date = datetime.getName().split("_")[0];
 					String time = datetime.getName().split("_")[1];
-					if(!disasterdates.contains(date)){
-						disasterdates.add(date);
 						for(File f : datetime.listFiles()){
 							if(f.toString().contains(subject)){
 								System.out.println("#working on " + f.toString());
 								getAttributes(f,new File(outfile),level,date,time,
 										popmap,buildingmap,farmmap,sroadmap,broadmap,allroadmap,trainmap,pricemap,
-										homeexit, officeent, officeexit, dis_he, dis_oe, dis_ox, subject, id_dates);
-							}}}}
+										homeexit, officeent, officeexit, dis_he, dis_oe, dis_ox, subject);
+							}}}
 			}
 		}
 	}
@@ -183,19 +247,19 @@ public class DataMaker {
 			HashMap<String, HashMap<String,String>> dis_he, HashMap<String, HashMap<String,String>>dis_oe, 
 			HashMap<String, HashMap<String,String>> officeent, HashMap<String, HashMap<String,String>>dis_ox, 
 			//			HashMap<String, HashMap<String,String>> motifmap, 
-			String subject, HashMap<String,ArrayList<String>> id_date) throws IOException{
+			String subject) throws IOException{
 
 		BufferedReader br = new BufferedReader(new FileReader(in));
 		BufferedWriter bw = new BufferedWriter(new FileWriter(out,true));
 		String line = null;
 
 		while((line=br.readLine())!=null){
-			/*String id = null;*/ String diff = null; String dis = null; String normaltime = null; String disdaytime = null;
+			String id = null; String diff = null; String dis = null; String normaltime = null; String disdaytime = null;
 			LonLat nowp = null; LonLat homep = null; LonLat officep = null; Double sigma = 0d; //String norlogs = null; String dislogs = null;
 
 			String[] tokens = line.split(",");
 			if(tokens[5].contains("(")){ // output version 1 
-				/*id = tokens[0];*/ diff = tokens[1]; dis = tokens[4];
+				id = tokens[0]; diff = tokens[1]; dis = tokens[4];
 				nowp = new LonLat(Double.parseDouble(tokens[5].replace("(","")),Double.parseDouble(tokens[6].replace(")","")));
 				homep = new LonLat(Double.parseDouble(tokens[7].replace("(","")),Double.parseDouble(tokens[8].replace(")","")));
 				officep = new LonLat(Double.parseDouble(tokens[9].replace("(","")),Double.parseDouble(tokens[10].replace(")","")));
@@ -205,7 +269,7 @@ public class DataMaker {
 				dis = String.valueOf(homep.distance(officep)/100000);
 			}
 			else{ // output version 2
-				/*id = tokens[0];*/ diff = tokens[1]; dis = tokens[4];
+				id = tokens[0]; diff = tokens[1]; dis = tokens[4];
 				nowp = new LonLat(Double.parseDouble(tokens[5]),Double.parseDouble(tokens[6]));
 				homep = new LonLat(Double.parseDouble(tokens[7]),Double.parseDouble(tokens[8]));
 				officep = new LonLat(Double.parseDouble(tokens[9]),Double.parseDouble(tokens[10]));
@@ -219,7 +283,7 @@ public class DataMaker {
 
 			if(saigaitime<toujitutime){
 
-				bw.write(diff+","+level+","+time+","+normaltime+","+sigma+","+disdaytime+","+dis+","
+				bw.write(id+","+diff+","+date+","+level+","+time+","+normaltime+","+sigma+","+disdaytime+","+dis+","
 						/*
 						 * +homeexit.get(id).get(date+time+level)+","+officeent.get(id).get(date+time+level)+",");
 						 */
@@ -264,75 +328,6 @@ public class DataMaker {
 		Double lat = Double.parseDouble(slat);
 		LonLat p = new LonLat(lon,lat);
 		return p;
-	}
-
-	public static boolean isEarly(String disastertime, String disdayactiontime){
-		Double disaster = Double.parseDouble(disastertime);
-		Double disdayaction = Double.parseDouble(disdayactiontime);
-		if(disdayaction<disaster){
-			return true;
-		}
-		else{
-			return false;
-		}
-	}
-
-	public static File samenumberoflines(File in, File out) throws IOException{
-		BufferedReader br = new BufferedReader(new FileReader(in));
-		BufferedWriter bw = new BufferedWriter(new FileWriter(out));
-		String line = null;
-		int count0 = 0;
-		int count1 = 0;
-		int countm = 0;
-		while((line=br.readLine())!=null){
-			String val = line.split(" ")[0];
-			if(val.equals("0")){
-				count0++;
-			}
-			else if(val.equals("1")){
-				count1++;
-			}
-			else{
-				countm++;
-			}
-		}
-		br.close();
-
-		int min1 = Math.min(count0, count1);
-		int min = Math.min(min1, countm);
-
-		Double rate0 = (double)min/(double)count0;
-		Double rate1 = (double)min/(double)count1;
-		Double ratem = (double)min/(double)countm;
-
-		BufferedReader br2 = new BufferedReader(new FileReader(in));
-
-		while((line=br2.readLine())!=null){
-			String val = line.split(" ")[0];
-			Double rand = Math.random();
-			if(val.equals("0")){
-				if(rand<=rate0){
-					bw.write(line);
-					bw.newLine();
-				}
-			}
-			else if(val.equals("1")){
-				if(rand<=rate1){
-					bw.write(line);
-					bw.newLine();
-				}
-			}
-			else{
-				if(rand<=ratem){
-					bw.write(line);
-					bw.newLine();
-				}
-			}
-		}
-		br2.close();
-		bw.close();
-
-		return out;
 	}
 
 }

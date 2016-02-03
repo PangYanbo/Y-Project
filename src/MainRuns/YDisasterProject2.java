@@ -33,7 +33,7 @@
 //	 */
 //
 //	// for disasters with 県コード（2桁）！(prefecture codes!)
-//	
+//
 //	protected static final SimpleDateFormat SDF_TS = new SimpleDateFormat("yyyy-MM-dd");//change time format
 //
 //	private static final String type = "eq";
@@ -65,13 +65,13 @@
 //			for(String time : dislogs.get(ymd).keySet()){
 //				for(String level : dislogs.get(ymd).get(time).keySet()){
 //					if(filedoublechecker(ymd,time,type,level,city)==true){
-////						if(ymd.equals("20150521")){
-//							System.out.println("#starting run for " + ymd +", time: "+ time + ", level:" +level);
-//							ArrayList<String> codes = dislogs.get(ymd).get(time).get(level);
-//							run(codes, ymd, time, level, dislog);
-//							System.out.println("------------------done " + count + " disasters------------------");
-//							System.out.println("                ");
-////						}
+//						//						if(ymd.equals("20150521")){
+//						System.out.println("#starting run for " + ymd +", time: "+ time + ", level:" +level);
+//						ArrayList<String> codes = dislogs.get(ymd).get(time).get(level);
+//						run(codes, ymd, time, level, dislog);
+//						System.out.println("------------------done " + count + " disasters------------------");
+//						System.out.println("                ");
+//						//						}
 //					}
 //					count++;
 //				}
@@ -121,13 +121,13 @@
 //				MotifFinder2.executeMotif(dataforexp, workpath, disasterday, targetIDs_code, id_homecode,500,300);
 //
 //				File data = new File(dataforexp); data.delete();
-////				File home = new File(workpath+"id_home.csv"); home.delete();
-////				File office = new File(workpath+"id_office.csv"); office.delete();
+//				//				File home = new File(workpath+"id_home.csv"); home.delete();
+//				//				File office = new File(workpath+"id_office.csv"); office.delete();
 //			}
 //
-////			if(!(new File(workpath+"home_exit.csv").exists())){
-////				File emptydir = new File(workpath); emptydir.delete();
-////			}
+//			//			if(!(new File(workpath+"home_exit.csv").exists())){
+//			//				File emptydir = new File(workpath); emptydir.delete();
+//			//			}
 //
 //		}
 //	}
