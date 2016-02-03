@@ -60,39 +60,58 @@ public class TotalMovementLength {
 		BufferedWriter bw = new BufferedWriter(new FileWriter(out));
 		String line = null;
 
-		HashMap<Integer,String> res = new HashMap<Integer,String>();
+		HashMap<String, HashMap<Integer,String>> res = new HashMap<String, HashMap<Integer,String>>();
 
 		while((line=br.readLine())!=null){
 			String[] tokens = line.split(",");
-			String ymd = tokens[0];
-			Integer level = Integer.valueOf(tokens[1]);
-			res.put(level, ymd);
+			String id = tokens[0];
+			String ymd = tokens[1];
+			Integer level = Integer.valueOf(tokens[2]);
+			if(res.containsKey(id)){
+				res.get(id).put(level, ymd);
+			}
+			else{
+				HashMap<Integer,String> temp = new HashMap<Integer,String>();
+				temp.put(level, ymd);
+				res.put(id, temp);
+			}
 		}
 		br.close();
-		
-		List<Entry<Integer, String>> entries = new ArrayList<Entry<Integer, String>>(res.entrySet());
-		Collections.sort(entries, new Comparator<Entry<Integer, String>>() {
-			//î‰ärä÷êî
-			@Override
-			public int compare(Entry<Integer, String> o1, Entry<Integer, String> o2) {
-				return o1.getKey().compareTo(o2.getKey());  
-			}
-		});
-		
-		HashMap<String,Integer> res2 = new HashMap<String,Integer>();
-		for (Entry<Integer, String> e : entries) {
-			if(!res2.containsValue(e.getValue())){
-				res2.put(e.getValue(),e.getKey());
+
+		HashMap<String, HashMap<String,Integer>> res2 = new HashMap<String, HashMap<String,Integer>>();
+
+		for(String id : res.keySet()){
+			List<Entry<Integer, String>> entries = new ArrayList<Entry<Integer, String>>(res.get(id).entrySet());
+			Collections.sort(entries, new Comparator<Entry<Integer, String>>() {
+				//î‰ärä÷êî
+				@Override
+				public int compare(Entry<Integer, String> o1, Entry<Integer, String> o2) {
+					return o1.getKey().compareTo(o2.getKey());  
+				}
+			});
+
+			for (Entry<Integer, String> e : entries) {
+				if(res2.containsKey(id)){
+					if(!res2.containsValue(e.getValue())){
+						res2.get(id).put(e.getValue(),e.getKey());
+					}
+				}
+				else{
+					HashMap<String,Integer> temp = new HashMap<String,Integer>();
+					temp.put(e.getValue(),e.getKey());
+					res2.put(id, temp);
+				}
 			}
 		}
-		
+
 		BufferedReader br2 = new BufferedReader(new FileReader(in));
 		String line2 = null;
 		while((line2=br2.readLine())!=null){
 			String[] tokens2 = line2.split(",");
-			String ymd2 = tokens2[0];
-			Integer level2 = Integer.valueOf(tokens2[1]);
-			if(res2.get(ymd2)==level2){
+			String id = tokens2[0];
+			String ymd2 = tokens2[1];
+			Integer level2 = Integer.valueOf(tokens2[2]);
+			if(res2.get(id).get(ymd2)==level2){
 				bw.write(line2);
 				bw.newLine();
 			}
@@ -162,7 +181,7 @@ public class TotalMovementLength {
 				for(String id : id_data.keySet()){
 					Double distance = calculateLength(id_data.get(id));
 					String strdis = String.valueOf(distance);
-					bw.write(ymd + "," + level + "," + strdis);
+					bw.write(id + "," + ymd + "," + level + "," + strdis);
 					bw.newLine();
 				}
 
