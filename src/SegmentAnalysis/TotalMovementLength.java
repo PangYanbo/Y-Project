@@ -190,7 +190,7 @@ public class TotalMovementLength {
 		}
 		bw.close();
 	}
-
+	
 	public static Double calculateLength(HashMap<Integer,LonLat> map){ //return km
 
 		List<Entry<Integer, LonLat>> entries = new ArrayList<Entry<Integer, LonLat>>(map.entrySet());
