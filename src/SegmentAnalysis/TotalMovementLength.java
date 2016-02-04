@@ -34,6 +34,11 @@ public class TotalMovementLength {
 	private static final String homepath = "/home/t-tyabe/Data/TotalLengthCheck/";
 	private static final String GPSpath  = "/tmp/bousai_data/gps_";
 
+	public static int level1count = 0;
+	public static int level2count = 0;	
+	public static int level3count = 0;
+	public static int level4count = 0;
+
 	public static void main(String args[]) throws IOException, NumberFormatException, ParseException{
 
 		String type = args[0]; //rain,heats,emg1
@@ -139,11 +144,13 @@ public class TotalMovementLength {
 			for(String time : dislogs.get(ymd).keySet()){
 				for(String level : dislogs.get(ymd).get(time).keySet()){
 					if(filedoublechecker(ymd,time,type,level)==true){
-						System.out.println("#starting run for " + ymd +", time: "+ time + ", level:" +level);
-						ArrayList<String> codes = dislogs.get(ymd).get(time).get(level);
-						run(codes, ymd, time, level, dislog, type, out);
-						System.out.println("------------------done " + count + " disasters------------------");
-						System.out.println(" ");
+						if(level3count<10000){
+							System.out.println("#starting run for " + ymd +", time: "+ time + ", level:" +level);
+							ArrayList<String> codes = dislogs.get(ymd).get(time).get(level);
+							run(codes, ymd, time, level, dislog, type, out);
+							System.out.println("------------------done " + count + " disasters------------------");
+							System.out.println(" ");
+						}
 					}
 					count++;
 				}
@@ -173,16 +180,20 @@ public class TotalMovementLength {
 			String unzippedfile = FilePaths.deephomepath(ymd);
 
 			HashSet<String> targetIDs = new HashSet<String>();
-			targetIDs = extractID(unzippedfile,time,zones,5, type); //0: minimum logs
+			targetIDs = extractID(unzippedfile,time,zones,5, type); //5: minimum logs
 			System.out.println("#the number of IDs for " + ymd+time+ " is " + targetIDs.size());
 
 			if(targetIDs.size()>10){ //ëŒè€êlêîÇ≈çiÇÈ
 				HashMap<String, HashMap<Integer,LonLat>> id_data = getallData(new File(unzippedfile),targetIDs);
 				for(String id : id_data.keySet()){
 					Double distance = calculateLength(id_data.get(id));
+					String points = String.valueOf(id_data.get(id).size());
 					String strdis = String.valueOf(distance);
-					bw.write(id + "," + ymd + "," + level + "," + strdis);
+					bw.write(id + "," + ymd + "," + level + "," + strdis + "," + points);
 					bw.newLine();
+					if(level.equals("3")){
+						level3count++;
+					}
 				}
 
 			}
@@ -190,7 +201,7 @@ public class TotalMovementLength {
 		}
 		bw.close();
 	}
-	
+
 	public static Double calculateLength(HashMap<Integer,LonLat> map){ //return km
 
 		List<Entry<Integer, LonLat>> entries = new ArrayList<Entry<Integer, LonLat>>(map.entrySet());
@@ -202,6 +213,7 @@ public class TotalMovementLength {
 			}
 		});
 
+		System.out.println(entries);
 		LonLat prevpoint = new LonLat(0,0);
 		Double lengthsum = 0d;
 		for (Entry<Integer, LonLat> e : entries) {
@@ -213,6 +225,8 @@ public class TotalMovementLength {
 				prevpoint = e.getValue();
 			}
 		}
+		String res = String.valueOf(lengthsum/1000d);
+		System.out.println("total length: "+ res);
 		return lengthsum/1000d;
 	}
 
