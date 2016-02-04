@@ -38,8 +38,6 @@ public class YDisasterProject {
 
 	private static final String type = "rain";
 	private static final String city = "Tokyo";
-//	private static final String targetlevel = "1";
-//	private static final String targetlevel2 = "2";
 	private static final String homepath = "/home/t-tyabe/Data/"+type+city+"7/";
 	private static final String GPSpath  = "/tmp/bousai_data/gps_";
 
@@ -50,7 +48,7 @@ public class YDisasterProject {
 		File in = new File("/home/t-tyabe/Data/DisasterLogs/DisasterAlertData.csv");
 		File out = new File("/home/t-tyabe/Data/DisasterLogs/DisasterAlertData_shutoken_"+type+".csv");
 		File jiscodes = new File("/home/t-tyabe/Data/ShutokenSHP/JIScodes.csv");
-		DisLogDecider.choosebyAreaDateType(in,out,jiscodes,type,"2014-10-21","2015-08-17");		
+		DisLogDecider.choosebyAreaDateType(in,out,jiscodes,type,"2014-10-21","2015-11-07");		
 
 		String disasterlogfile = "/home/t-tyabe/Data/DisasterLogs/DisasterAlertData_shutoken_"+type+".csv";
 		runforallevents(disasterlogfile);
@@ -98,7 +96,8 @@ public class YDisasterProject {
 
 	public static void run(ArrayList<String> zones, String ymd, String time, String level, String dislog) throws IOException, NumberFormatException, ParseException{
 		System.out.println("start run for " + zones.size() +" zones"); System.out.println("zones are " + zones);
-		String disasterday = ymd.substring(4,6);
+		String disasterday = ymd.substring(6,8);
+		System.out.println(ymd + ", disasterday : " + disasterday);
 
 		String wpath = homepath+"/"+type+"_"+level+"/"; File dir2 = new File(wpath); dir2.mkdir();
 		String workpath = homepath+"/"+type+"_"+level+"/"+ymd+"_"+time+"/"; File dir = new File(workpath); dir.mkdir();
@@ -109,17 +108,24 @@ public class YDisasterProject {
 			ExtractFile.extractfromcommand(ymd); System.out.println("#done uncompressing " + disGPS);
 
 			String unzippedfile = FilePaths.deephomepath(ymd);
-			HashMap<String,LonLat> targetIDs_code = ExtractIDbyDate.extractID(unzippedfile,time,zones,0); //0: minimum logs
+			HashMap<String,LonLat> targetIDs_code = ExtractIDbyDate.extractID(unzippedfile,time,zones,0,type); //0: minimum logs
 			System.out.println("#the number of IDs for " + ymd+time+ " is " + targetIDs_code.size());
 			File i = new File(unzippedfile); i.delete();
 
-			if(targetIDs_code.size()>10){ //ëŒè€êlêîÇ≈çiÇÈ
+			if(targetIDs_code.size()>1000){ //ëŒè€êlêîÇ≈çiÇÈ
 				String dataforexp = workpath+"dataforexp.csv";
 				HashSet<String> targetdays = DayChooser.getTargetDates(ymd, dislog); System.out.println("#the number of days are " + targetdays.size());
+				String disasterdate = ymd.substring(0,4)+"-"+ymd.substring(4,6)+"-"+ymd.substring(6,8);
+				targetdays.add(disasterdate);
 				Makedata4exp.makedata(dataforexp, targetdays, targetIDs_code); System.out.println("#successfully made data for exp");
 
 				//count number of logs for each ID in both normaldays & disasterday
 				HashMap<String, Integer> id_norlogs = CountLogs.CountNorLogs(new File(dataforexp), ymd);
+				int sum = 0;
+				for(String id : id_norlogs.keySet()){
+					sum = sum + id_norlogs.get(id);
+				}
+				System.out.println("total number of normal logs: " + sum);
 				HashMap<String, Integer> id_dislogs = CountLogs.CountDisLogs(new File(dataforexp), ymd);
 				
 				HomeDetector.getHome(dataforexp, workpath);

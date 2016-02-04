@@ -27,7 +27,7 @@ public class DayChooser {
 			String day = d_t[0];
 
 			Date d = SDF_TS.parse("2014-10-20");
-			Date d2 = SDF_TS.parse("2015-06-19");
+			Date d2 = SDF_TS.parse("2015-11-07");
 			Date date = SDF_TS.parse(year+"-"+month+"-"+day);
 			if((date.after(d))&&(date.before(d2))){
 				res.add(date);
@@ -44,7 +44,7 @@ public class DayChooser {
 		HashSet<Date> DisDays = getDisDays(dislogs);
 		String year = disDate.substring(0,4);
 		String month = disDate.substring(4,6);
-		String nextmonth = String.valueOf(Integer.valueOf(month)-1);
+//		String nextmonth = String.valueOf(Integer.valueOf(month)-1);
 //		String nextnmonth = String.valueOf(Integer.valueOf(month)+2);
 		for(int i=1; i<=28; i++){
 			String day = String.valueOf(i);
@@ -56,14 +56,14 @@ public class DayChooser {
 					res.add(date);
 				}
 			}
-			Date d2 = SDF_TS.parse(year+"-"+nextmonth+"-"+day);
-			String youbi2 = (new SimpleDateFormat("u")).format(d2);
-			if(!((youbi2.equals("6"))||(youbi2.equals("7")))){
-				if(!(DisDays.contains(d2))){
-					String date2 = SDF_TS.format(d2);
-					res.add(date2);
-				}
-			}
+//			Date d2 = SDF_TS.parse(year+"-"+nextmonth+"-"+day);
+//			String youbi2 = (new SimpleDateFormat("u")).format(d2);
+//			if(!((youbi2.equals("6"))||(youbi2.equals("7")))){
+//				if(!(DisDays.contains(d2))){
+//					String date2 = SDF_TS.format(d2);
+//					res.add(date2);
+//				}
+//			}
 //			Date d3 = SDF_TS.parse(year+"-"+nextnmonth+"-"+day);
 //			String youbi3 = (new SimpleDateFormat("u")).format(d2);
 //			if(!((youbi3.equals("6"))||(youbi3.equals("7")))){
