@@ -27,10 +27,11 @@ public class HomeDetector {
 
 	public static void main(String args[]) throws IOException, NumberFormatException, ParseException{
 
-		//		File in = new File(args[0]);
-		//		File res = new File (args[1]);
-//		File in = new File("c:/users/yabetaka/desktop/dataforexp.csv");
-
+//		File in = new File(args[0]);
+//		File res = new File (args[1]);
+		String in = "c:/users/t-tyabe/desktop/dataforexp.csv";
+		String out = "c:/users/t-tyabe/desktop/";
+		getHome(in,out);
 
 
 	}

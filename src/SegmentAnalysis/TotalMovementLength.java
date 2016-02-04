@@ -191,14 +191,14 @@ public class TotalMovementLength {
 			for(String time : dislogs.get(ymd).keySet()){
 				for(String level : dislogs.get(ymd).get(time).keySet()){
 					if(filedoublechecker(ymd,time,type,level)==true){
-						if(levelLimit(level).equals("no")){
+//						if(levelLimit(level).equals("no")){
 							System.out.println("#starting run for " + ymd +", time: "+ time + ", level:" +level);
 							ArrayList<String> codes = dislogs.get(ymd).get(time).get(level);
 							run(codes, ymd, time, level, dislog, type, out);
 							System.out.println("------------------done " + count + " disasters------------------");
 							System.out.println(" ");
 						}
-					}
+//					}
 					count++;
 				}
 			}
