@@ -41,26 +41,33 @@ public class TotalMovementLength {
 
 	public static void main(String args[]) throws IOException, NumberFormatException, ParseException{
 
-		String type = args[0]; //rain,heats,emg1
+		//		String type = args[0]; //rain,heats,emg1
 
-		File dir = new File(homepath);
-		dir.mkdir();
+		ArrayList<String> types      = new ArrayList<String>();
+		types.add("rain");
+		types.add("emg1");
+		types.add("heats");
 
-		File in = new File("/home/t-tyabe/Data/DisasterLogs/DisasterAlertData.csv");
-		File out = new File("/home/t-tyabe/Data/DisasterLogs/DisasterAlertData_shutoken_"+type+".csv");
-		File jiscodes = new File("/home/t-tyabe/Data/ShutokenSHP/JIScodes.csv");
-		DisLogDecider.choosebyAreaDateType(in,out,jiscodes,type,"2014-10-21","2015-09-30");		
+		for(String type : types){
 
-		String disasterlogfile = "/home/t-tyabe/Data/DisasterLogs/DisasterAlertData_shutoken_"+type+".csv";
-		runforallevents(disasterlogfile, type);
+			File dir = new File(homepath);
+			dir.mkdir();
 
-		File res = new File(homepath+type+"_length.csv");
-		File cleanres = new File(homepath+type+"_length_clean.csv");
-		getHighestLevelData(res,cleanres);
-		
-		File finalout = new File(homepath+type+"_length_final.csv");
-		removeOverlap(cleanres,finalout);
+			File in = new File("/home/t-tyabe/Data/DisasterLogs/DisasterAlertData.csv");
+			File out = new File("/home/t-tyabe/Data/DisasterLogs/DisasterAlertData_shutoken_"+type+".csv");
+			File jiscodes = new File("/home/t-tyabe/Data/ShutokenSHP/JIScodes.csv");
+			DisLogDecider.choosebyAreaDateType(in,out,jiscodes,type,"2014-10-21","2015-09-30");		
 
+			String disasterlogfile = "/home/t-tyabe/Data/DisasterLogs/DisasterAlertData_shutoken_"+type+".csv";
+			runforallevents(disasterlogfile, type);
+
+			File res = new File(homepath+type+"_length.csv");
+			File cleanres = new File(homepath+type+"_length_clean.csv");
+			getHighestLevelData(res,cleanres);
+
+			File finalout = new File(homepath+type+"_length_final.csv");
+			removeOverlap(cleanres,finalout);
+		}
 	}
 
 	public static void getHighestLevelData(File in, File out) throws IOException{
@@ -111,7 +118,7 @@ public class TotalMovementLength {
 				}
 			}
 		}
-		
+
 
 		BufferedReader br2 = new BufferedReader(new FileReader(in));
 		String line2 = null;
@@ -128,7 +135,7 @@ public class TotalMovementLength {
 		br2.close();
 		bw.close();
 	}
-	
+
 	public static void removeOverlap(File in, File out) throws NumberFormatException, IOException{
 		BufferedReader br = new BufferedReader(new FileReader(in));
 		BufferedWriter bw = new BufferedWriter(new FileWriter(out));
@@ -178,7 +185,7 @@ public class TotalMovementLength {
 			for(String time : dislogs.get(ymd).keySet()){
 				for(String level : dislogs.get(ymd).get(time).keySet()){
 					if(filedoublechecker(ymd,time,type,level)==true){
-						if(level3count<10000){
+						if(levelLimit(level).equals("no")){
 							System.out.println("#starting run for " + ymd +", time: "+ time + ", level:" +level);
 							ArrayList<String> codes = dislogs.get(ymd).get(time).get(level);
 							run(codes, ymd, time, level, dislog, type, out);
@@ -188,6 +195,41 @@ public class TotalMovementLength {
 					}
 					count++;
 				}
+			}
+		}
+	}
+
+	public static String levelLimit(String level){
+		if(level.equals("4")){
+			if(level4count>10000){
+				return "go";
+			}
+			else{
+				return "no";
+			}
+		}
+		else if(level.equals("3")){
+			if(level3count>10000){
+				return "go";
+			}
+			else{
+				return "no";
+			}
+		}
+		else if(level.equals("2")){
+			if(level2count>10000){
+				return "go";
+			}
+			else{
+				return "no";
+			}
+		}		
+		else{
+			if(level1count>10000){
+				return "go";
+			}
+			else{
+				return "no";
 			}
 		}
 	}
@@ -228,6 +270,15 @@ public class TotalMovementLength {
 					if(level.equals("3")){
 						level3count++;
 					}
+					else if(level.equals("2")){
+						level2count++;
+					}
+					else if(level.equals("4")){
+						level4count++;
+					}
+					else{
+						level1count++;
+					}
 				}
 
 			}
@@ -247,7 +298,7 @@ public class TotalMovementLength {
 			}
 		});
 
-//		System.out.println(entries);
+		//		System.out.println(entries);
 		LonLat prevpoint = new LonLat(0,0);
 		Double lengthsum = 0d;
 		for (Entry<Integer, LonLat> e : entries) {
@@ -259,8 +310,8 @@ public class TotalMovementLength {
 				prevpoint = e.getValue();
 			}
 		}
-//		String res = String.valueOf(lengthsum/1000d);
-//		System.out.println("total length: "+ res);
+		//		String res = String.valueOf(lengthsum/1000d);
+		//		System.out.println("total length: "+ res);
 		return lengthsum/1000d;
 	}
 
