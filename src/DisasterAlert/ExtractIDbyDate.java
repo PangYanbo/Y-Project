@@ -25,7 +25,7 @@ public class ExtractIDbyDate {
 
 	//check Pref or not.! 
 
-	public static HashMap<String,LonLat> extractID(String in, String t, ArrayList<String> JIScodes, int minimumlogs){
+	public static HashMap<String,LonLat> extractID(String in, String t, ArrayList<String> JIScodes, int minimumlogs, String type){
 		HashMap<String,LonLat> map = new HashMap<String,LonLat>();
 		File infile = new File(in);
 		BufferedReader br = null;
@@ -52,9 +52,17 @@ public class ExtractIDbyDate {
 										Double lat = Double.parseDouble(tokens[2]);
 										Double lon = Double.parseDouble(tokens[3]);
 										LonLat p = new LonLat(lon,lat);
-										String JIScode = AreaOverlap(p,JIScodes);
-										if(!JIScode.equals("null")){
-											map.put(id,p);
+										if(type.equals("emg1")){
+											String JIScode = AreaOverlapPref(p,JIScodes);
+											if(!JIScode.equals("null")){
+												map.put(id, p);
+											}	
+										}
+										else{
+											String JIScode = AreaOverlap(p,JIScodes);
+											if(!JIScode.equals("null")){
+												map.put(id,p);
+											}
 										}
 									}
 								}

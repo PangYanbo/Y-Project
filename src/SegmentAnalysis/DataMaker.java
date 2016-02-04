@@ -297,7 +297,7 @@ public class DataMaker {
 
 		while((line=br.readLine())!=null){
 			String id = null; String diff = null; String dis = null; String normaltime = null; String disdaytime = null;
-			LonLat nowp = null; LonLat homep = null; LonLat officep = null; Double sigma = 0d; //String norlogs = null; String dislogs = null;
+			LonLat nowp = null; LonLat homep = null; LonLat officep = null; Double sigma = 0d; String norlogs = null; String dislogs = null;
 
 			String[] tokens = line.split(",");
 			if(tokens[5].contains("(")){ // output version 1 
@@ -307,7 +307,7 @@ public class DataMaker {
 				officep = new LonLat(Double.parseDouble(tokens[9].replace("(","")),Double.parseDouble(tokens[10].replace(")","")));
 				disdaytime = tokens[11]; normaltime = tokens[12]; 
 				sigma = Double.parseDouble(tokens[13]);
-				//				norlogs = tokens[14]; dislogs = tokens[15];
+								norlogs = tokens[14]; dislogs = tokens[15];
 				dis = String.valueOf(homep.distance(officep)/100000);
 			}
 			else{ // output version 2
@@ -316,7 +316,7 @@ public class DataMaker {
 				homep = new LonLat(Double.parseDouble(tokens[7]),Double.parseDouble(tokens[8]));
 				officep = new LonLat(Double.parseDouble(tokens[9]),Double.parseDouble(tokens[10]));
 				disdaytime = tokens[11]; normaltime = tokens[12]; sigma = Double.parseDouble(tokens[13]);
-				//				norlogs = tokens[14]; dislogs = tokens[15];
+								norlogs = tokens[14]; dislogs = tokens[15];
 				dis = String.valueOf(homep.distance(officep)/100000);
 			}
 
@@ -345,7 +345,7 @@ public class DataMaker {
 						+ GetLandPrice.getnearestprice(pricemap, nowp) + ","
 						+ GetLandPrice.getnearestprice(pricemap, homep) + ","
 						+ GetLandPrice.getnearestprice(pricemap, officep) + ","
-
+						+ norlogs + "," + dislogs + ","
 						);
 
 				String nowcode = getCode(nowp.getLon(),nowp.getLat());

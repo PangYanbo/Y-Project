@@ -61,4 +61,10 @@ public class CountLogs {
 		return date;
 	}
 	
+	public static void main(String args[]){
+		String line = "2011-04-12 12:11:10";
+		String res = getonlydate(line);
+		System.out.println(res);
+	}
+	
 }
