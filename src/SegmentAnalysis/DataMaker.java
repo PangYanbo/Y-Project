@@ -250,7 +250,6 @@ public class DataMaker {
 			HashMap<String, HashMap<String,String>> homeexit, HashMap<String, HashMap<String,String>>officeexit, 
 			HashMap<String, HashMap<String,String>> dis_he, HashMap<String, HashMap<String,String>>dis_oe, 
 			HashMap<String, HashMap<String,String>> officeent, HashMap<String, HashMap<String,String>>dis_ox, 
-			//			HashMap<String, HashMap<String,String>> motifmap, 
 			String subject) throws IOException{
 
 		BufferedReader br = new BufferedReader(new FileReader(in));

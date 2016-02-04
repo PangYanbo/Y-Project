@@ -293,7 +293,7 @@ public class TotalMovementLength {
 										Double lat = Double.parseDouble(tokens[2]);
 										Double lon = Double.parseDouble(tokens[3]);
 										LonLat p = new LonLat(lon,lat);
-										if(type.equals("eq")){
+										if(type.equals("emg1")){
 											String JIScode = AreaOverlapPref(p,JIScodes);
 											if(!JIScode.equals("null")){
 												map.add(id);
