@@ -213,7 +213,7 @@ public class TotalMovementLength {
 			}
 		});
 
-		System.out.println(entries);
+//		System.out.println(entries);
 		LonLat prevpoint = new LonLat(0,0);
 		Double lengthsum = 0d;
 		for (Entry<Integer, LonLat> e : entries) {
@@ -225,8 +225,8 @@ public class TotalMovementLength {
 				prevpoint = e.getValue();
 			}
 		}
-		String res = String.valueOf(lengthsum/1000d);
-		System.out.println("total length: "+ res);
+//		String res = String.valueOf(lengthsum/1000d);
+//		System.out.println("total length: "+ res);
 		return lengthsum/1000d;
 	}
 
