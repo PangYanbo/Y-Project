@@ -40,7 +40,7 @@ public class CountLogs {
 			String id = tokens[0];
 			String date = tokens[3]; //yyyy-mm-ddTHH:MM:SS:ss 
 			String yyyymmdd = getonlydate(date);
-			if(!yyyymmdd.equals(disdate)){
+			if(yyyymmdd.equals(disdate)){
 				if(res.containsKey(id)){
 					int count = res.get(id) + 1;
 					res.put(id, count);
