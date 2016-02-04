@@ -15,6 +15,7 @@ import java.util.Map.Entry;
 
 import jp.ac.ut.csis.pflow.geom.GeometryChecker;
 import jp.ac.ut.csis.pflow.geom.LonLat;
+import jp.ac.ut.csis.pflow.geom.Mesh;
 import MachineLearning.GetLandPrice;
 import MachineLearning.GetLanduse;
 import MachineLearning.GetPop;
@@ -36,22 +37,27 @@ public class DataMaker {
 
 	public static void main(String args[]) throws IOException{
 
-		String type      = args[0];	
-		String dir       = "/home/t-tyabe/Data/AnalysisResults/"+type+"Tokyo6/";
-		String outdir    = "/home/t-tyabe/Data/segmentexp_2/";
+		ArrayList<String> types      = new ArrayList<String>();
+		types.add("rain");
+		types.add("eq");
+		types.add("heats");
 
-		File outputdir  = new File(outdir);  outputdir.mkdir();
+		for(String type : types){
+			String dir       = "/home/t-tyabe/Data/AnalysisResults/"+type+"Tokyo6/";
+			String outdir    = "/home/t-tyabe/Data/segmentexp_3/";
 
-		ArrayList<String> subjects = new ArrayList<String>();
-		//		subjects.add("home_exit_diff");
-		//		subjects.add("tsukin_time_diff");
-		//		subjects.add("office_enter_diff");
-		//		subjects.add("office_time_diff");
-		subjects.add("office_exit_diff");
-		//		subjects.add("kitaku_time_diff");
-		//		subjects.add("home_return_diff");
-		runMLData(subjects, dir, outdir, type);
-		
+			File outputdir  = new File(outdir);  outputdir.mkdir();
+
+			ArrayList<String> subjects = new ArrayList<String>();
+			//		subjects.add("home_exit_diff");
+			//		subjects.add("tsukin_time_diff");
+			//		subjects.add("office_enter_diff");
+			//		subjects.add("office_time_diff");
+			subjects.add("office_exit_diff");
+			//		subjects.add("kitaku_time_diff");
+			//		subjects.add("home_return_diff");
+			runMLData(subjects, dir, outdir, type);
+		}
 	}
 
 	public static void clean(File in, File out) throws IOException{
@@ -118,7 +124,7 @@ public class DataMaker {
 		br2.close();
 		bw.close();
 	}
-	
+
 	public static void runMLData(ArrayList<String> subjects, String dir, String outdir, String type) throws IOException{
 
 		HashMap<String, String>  popmap       = GetPop.getpopmap(popfile);
@@ -187,20 +193,53 @@ public class DataMaker {
 				for(File datetime :typelevel.listFiles()){
 					String date = datetime.getName().split("_")[0];
 					String time = datetime.getName().split("_")[1];
-						for(File f : datetime.listFiles()){
-							if(f.toString().contains(subject)){
-								System.out.println("#working on " + f.toString());
-								getAttributes(f,new File(outfile),level,date,time,
-										popmap,buildingmap,farmmap,sroadmap,broadmap,allroadmap,trainmap,pricemap,
-										homeexit, officeent, officeexit, dis_he, dis_oe, dis_ox, subject);
-							}}}
+					for(File f : datetime.listFiles()){
+						if(f.toString().contains(subject)){
+							System.out.println("#working on " + f.toString());
+							getAttributes(f,new File(outfile),level,date,time,
+									popmap,buildingmap,farmmap,sroadmap,broadmap,allroadmap,trainmap,pricemap,
+									homeexit, officeent, officeexit, dis_he, dis_oe, dis_ox, subject);
+						}}}
 			}
-			
+
 			File out1 = new File(outdir+subject+"_"+type+".csv");
 			File out2 = new File(outdir+subject+"_"+type+"_clean.csv");
 			clean(out1,out2);
-			
+
+			File out3 = new File(outdir+subject+"_"+type+"_final.csv");
+			removeOverlap(out2,out3);
+
 		}
+	}
+
+	public static void removeOverlap(File in, File out) throws NumberFormatException, IOException{
+		BufferedReader br = new BufferedReader(new FileReader(in));
+		BufferedWriter bw = new BufferedWriter(new FileWriter(out));
+		String line = null;
+
+		HashMap<String, ArrayList<String>> map = new HashMap<String, ArrayList<String>>();
+
+		while((line=br.readLine())!=null){
+			String[] tokens = line.split(",");
+			String id = tokens[0];
+			String ymd = tokens[2];
+			if(map.containsKey(id)){
+				if(!map.get(id).contains(ymd)){
+					bw.write(line);
+					bw.newLine();
+					map.get(id).add(ymd);
+				}
+			}
+			else{
+				bw.write(line);
+				bw.newLine();
+				ArrayList<String> temp = new ArrayList<String>();
+				temp.add(ymd);
+				map.put(id,temp);
+			}
+		}
+		br.close();
+		bw.close();
 	}
 
 	public static void getActionMap(File in, String level, String datetime,HashMap<String, HashMap<String,String>> res) throws IOException{
@@ -287,9 +326,26 @@ public class DataMaker {
 			if(saigaitime<toujitutime){
 
 				bw.write(id+","+diff+","+date+","+level+","+time+","+normaltime+","+sigma+","+disdaytime+","+dis+","
-						/*
-						 * +homeexit.get(id).get(date+time+level)+","+officeent.get(id).get(date+time+level)+",");
-						 */
+
+						+ popmap.get(new Mesh(3, nowp.getLon(),nowp.getLat()).getCode()) + ","
+						+ popmap.get(new Mesh(3, homep.getLon(),homep.getLat()).getCode()) + ","
+						+ popmap.get(new Mesh(3, officep.getLon(),officep.getLat()).getCode()) + ","
+						+ buildingmap.get(new Mesh(3, nowp.getLon(),nowp.getLat()).getCode()) + ","
+						+ buildingmap.get(new Mesh(3, homep.getLon(),homep.getLat()).getCode()) + ","
+						+ buildingmap.get(new Mesh(3, officep.getLon(),officep.getLat()).getCode()) + ","
+						+ farmmap.get(new Mesh(3, officep.getLon(),officep.getLat()).getCode()) + ","
+						+ farmmap.get(new Mesh(3, homep.getLon(),homep.getLat()).getCode()) + ","
+						+ farmmap.get(new Mesh(3, officep.getLon(),officep.getLat()).getCode()) + ","
+						+ allroadmap.get(new Mesh(3, officep.getLon(),officep.getLat()).getCode()) + ","
+						+ allroadmap.get(new Mesh(3, homep.getLon(),homep.getLat()).getCode()) + ","
+						+ allroadmap.get(new Mesh(3, officep.getLon(),officep.getLat()).getCode()) + ","
+						+ GetTrainData.getpopofnearestStation(trainmap, nowp) + ","
+						+ GetTrainData.getpopofnearestStation(trainmap, homep) + ","
+						+ GetTrainData.getpopofnearestStation(trainmap, officep) + ","
+						+ GetLandPrice.getnearestprice(pricemap, nowp) + ","
+						+ GetLandPrice.getnearestprice(pricemap, homep) + ","
+						+ GetLandPrice.getnearestprice(pricemap, officep) + ","
+
 						);
 
 				String nowcode = getCode(nowp.getLon(),nowp.getLat());

@@ -56,11 +56,14 @@ public class TotalMovementLength {
 
 		File res = new File(homepath+type+"_length.csv");
 		File cleanres = new File(homepath+type+"_length_clean.csv");
-		clean(res,cleanres);
+		getHighestLevelData(res,cleanres);
+		
+		File finalout = new File(homepath+type+"_length_final.csv");
+		removeOverlap(cleanres,finalout);
 
 	}
 
-	public static void clean(File in, File out) throws IOException{
+	public static void getHighestLevelData(File in, File out) throws IOException{
 		BufferedReader br = new BufferedReader(new FileReader(in));
 		BufferedWriter bw = new BufferedWriter(new FileWriter(out));
 		String line = null;
@@ -108,6 +111,7 @@ public class TotalMovementLength {
 				}
 			}
 		}
+		
 
 		BufferedReader br2 = new BufferedReader(new FileReader(in));
 		String line2 = null;
@@ -122,6 +126,36 @@ public class TotalMovementLength {
 			}
 		}
 		br2.close();
+		bw.close();
+	}
+	
+	public static void removeOverlap(File in, File out) throws NumberFormatException, IOException{
+		BufferedReader br = new BufferedReader(new FileReader(in));
+		BufferedWriter bw = new BufferedWriter(new FileWriter(out));
+		String line = null;
+
+		HashMap<String, ArrayList<String>> map = new HashMap<String, ArrayList<String>>();
+
+		while((line=br.readLine())!=null){
+			String[] tokens = line.split(",");
+			String id = tokens[0];
+			String ymd = tokens[1];
+			if(map.containsKey(id)){
+				if(!map.get(id).contains(ymd)){
+					bw.write(line);
+					bw.newLine();
+					map.get(id).add(ymd);
+				}
+			}
+			else{
+				bw.write(line);
+				bw.newLine();
+				ArrayList<String> temp = new ArrayList<String>();
+				temp.add(ymd);
+				map.put(id,temp);
+			}
+		}
+		br.close();
 		bw.close();
 	}
 
@@ -139,7 +173,7 @@ public class TotalMovementLength {
 		}
 		System.out.println("#successfully sorted out disaster info logs... there are " + c);
 
-		int count = 0;
+		int count = 1;
 		for(String ymd : dislogs.keySet()){
 			for(String time : dislogs.get(ymd).keySet()){
 				for(String level : dislogs.get(ymd).get(time).keySet()){
