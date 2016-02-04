@@ -13,8 +13,10 @@ public class CleanOnly {
 		
 		File res = new File(homepath+type+"distance_temp.csv");
 		File cleanres = new File(homepath+type+"distance_clean.csv");
-		TotalMovementLength.clean(res,cleanres);
+		TotalMovementLength.getHighestLevelData(res,cleanres);
 
 	}
+	
+	
 	
 }
