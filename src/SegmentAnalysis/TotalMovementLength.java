@@ -44,9 +44,9 @@ public class TotalMovementLength {
 		//		String type = args[0]; //rain,heats,emg1
 
 		ArrayList<String> types      = new ArrayList<String>();
-		types.add("rain");
+		//		types.add("rain");
 		types.add("emg1");
-		types.add("heats");
+		//		types.add("heats");
 
 		for(String type : types){
 
@@ -55,7 +55,13 @@ public class TotalMovementLength {
 
 			File in = new File("/home/t-tyabe/Data/DisasterLogs/DisasterAlertData.csv");
 			File out = new File("/home/t-tyabe/Data/DisasterLogs/DisasterAlertData_shutoken_"+type+".csv");
-			File jiscodes = new File("/home/t-tyabe/Data/ShutokenSHP/JIScodes.csv");
+			File jiscodes = null;
+			if(type.equals("emg1")){
+				jiscodes = new File("/home/t-tyabe/Data/ShutokenSHP/JIScodes_pref.csv");
+			}
+			else{
+				jiscodes = new File("/home/t-tyabe/Data/ShutokenSHP/JIScodes.csv");
+			}
 			DisLogDecider.choosebyAreaDateType(in,out,jiscodes,type,"2014-10-21","2015-09-30");		
 
 			String disasterlogfile = "/home/t-tyabe/Data/DisasterLogs/DisasterAlertData_shutoken_"+type+".csv";
