@@ -29,8 +29,8 @@ public class HomeDetector {
 
 //		File in = new File(args[0]);
 //		File res = new File (args[1]);
-		String in = "c:/users/t-tyabe/desktop/dataforexp.csv";
-		String out = "c:/users/t-tyabe/desktop/";
+		String in = "/home/t-tyabe/Data/dataforexp.csv";
+		String out = "/home/t-tyabe/Data/";
 		getHome(in,out);
 
 
