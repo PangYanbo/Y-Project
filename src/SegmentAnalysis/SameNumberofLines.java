@@ -24,7 +24,7 @@ public class SameNumberofLines {
 		int count1 = 0;
 		int count3 = 0;
 		while((line=br.readLine())!=null){
-			String val = line.split(" ")[0];
+			String val = line.split(",")[0];
 			if(val.equals("0")){
 				count0++;
 			}
@@ -50,7 +50,7 @@ public class SameNumberofLines {
 		BufferedReader br2 = new BufferedReader(new FileReader(in));
 		
 		while((line=br2.readLine())!=null){
-			String val = line.split(" ")[2];
+			String val = line.split(",")[2];
 			Double rand = Math.random();
 //			if(val.equals("1")){
 //				if(rand<=rate0){
