@@ -20,7 +20,7 @@ public class SameNumberofLines {
 		BufferedReader br = new BufferedReader(new FileReader(in));
 		BufferedWriter bw = new BufferedWriter(new FileWriter(out));
 		String line = null;
-		int count0 = 0;
+		int count0 = 1000000;
 		int count1 = 0;
 		int count3 = 0;
 		while((line=br.readLine())!=null){
