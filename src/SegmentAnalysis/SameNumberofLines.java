@@ -20,13 +20,13 @@ public class SameNumberofLines {
 		BufferedReader br = new BufferedReader(new FileReader(in));
 		BufferedWriter bw = new BufferedWriter(new FileWriter(out));
 		String line = null;
-		int count0 = 1000000;
+//		int count0 = 1000000;
 		int count1 = 0;
 		int count3 = 0;
 		while((line=br.readLine())!=null){
-			String val = line.split(",")[0];
+			String val = line.split(",")[2];
 			if(val.equals("0")){
-				count0++;
+//				count0++;
 			}
 			else if(val.equals("1")){
 				count1++;
@@ -40,10 +40,10 @@ public class SameNumberofLines {
 		}
 		br.close();
 		
-		int min1 = Math.min(count0, count1);
-		int min = Math.min(min1, count3);
+//		int min1 = Math.min(count0, count1);
+		int min = Math.min(count1, count3);
 		
-		Double rate0 = (double)min/(double)count0;
+//		Double rate0 = (double)min/(double)count0;
 		Double rate1 = (double)min/(double)count1;
 		Double rate3 = (double)min/(double)count3;
 		
