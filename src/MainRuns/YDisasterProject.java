@@ -75,7 +75,7 @@ public class YDisasterProject {
 		for(String ymd : dislogs.keySet()){
 			for(String time : dislogs.get(ymd).keySet()){
 				for(String level : dislogs.get(ymd).get(time).keySet()){
-//					if((level.equals(targetlevel))||level.equals(targetlevel2)){
+					if((level.equals("4"))||(level.equals("3"))){
 						if(filedoublechecker(ymd,time,type,level,city)==true){
 							System.out.println("#starting run for " + ymd +", time: "+ time + ", level:" +level);
 							ArrayList<String> codes = dislogs.get(ymd).get(time).get(level);
@@ -84,7 +84,7 @@ public class YDisasterProject {
 							System.out.println(" ");
 						}
 						count++;
-//					}
+					}
 				}
 			}
 		}
