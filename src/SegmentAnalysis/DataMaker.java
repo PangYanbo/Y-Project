@@ -44,7 +44,7 @@ public class DataMaker {
 
 		for(String type : types){
 			String dir       = "/home/t-tyabe/Data/"+type+"Tokyo7/";
-			String outdir    = "/home/t-tyabe/Data/segmentexp_4/";
+			String outdir    = "/home/t-tyabe/Data/segmentexp_5/";
 
 			File outputdir  = new File(outdir);  outputdir.mkdir();
 
@@ -323,7 +323,7 @@ public class DataMaker {
 			Double saigaitime  = Double.parseDouble(time);
 			Double toujitutime = Double.parseDouble(disdaytime);
 
-			if(saigaitime<toujitutime){
+//			if(saigaitime<toujitutime){
 
 				bw.write(id+","+diff+","+date+","+level+","+time+","+normaltime+","+sigma+","+disdaytime+","+dis+","
 
@@ -363,7 +363,7 @@ public class DataMaker {
 				}
 				bw.newLine();
 				//					id_date.get(id).add(date);	
-			}
+//			}
 		}
 		br.close();
 		bw.close();
