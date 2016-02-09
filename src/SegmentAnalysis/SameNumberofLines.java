@@ -55,7 +55,7 @@ public class SameNumberofLines {
 		BufferedReader br2 = new BufferedReader(new FileReader(in));
 		
 		while((line=br2.readLine())!=null){
-			String val = line.split(",")[2];
+			String val = line.split(",")[0];
 			Double rand = Math.random();
 			if(val.equals("1")){
 				if(rand<=rate1){
