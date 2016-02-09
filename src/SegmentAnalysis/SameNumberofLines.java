@@ -27,7 +27,7 @@ public class SameNumberofLines {
 		int count4 = 0;
 		
 		while((line=br.readLine())!=null){
-			String val = line.split(",")[2];
+			String val = line.split(",")[0];
 			if(val.equals("1")){
 				count1++;
 			}
