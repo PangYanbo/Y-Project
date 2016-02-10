@@ -38,9 +38,9 @@ public class DataMaker {
 	public static void main(String args[]) throws IOException{
 
 		ArrayList<String> types      = new ArrayList<String>();
-//		types.add("rain");
+		//		types.add("rain");
 		types.add("emg1");
-//		types.add("heats");
+		//		types.add("heats");
 
 		for(String type : types){
 			String dir       = "/home/t-tyabe/Data/"+type+"Tokyo7/";
@@ -193,13 +193,15 @@ public class DataMaker {
 				for(File datetime :typelevel.listFiles()){
 					String date = datetime.getName().split("_")[0];
 					String time = datetime.getName().split("_")[1];
-					for(File f : datetime.listFiles()){
-						if(f.toString().contains(subject)){
-							System.out.println("#working on " + f.toString());
-							getAttributes(f,new File(outfile),level,date,time,
-									popmap,buildingmap,farmmap,sroadmap,broadmap,allroadmap,trainmap,pricemap,
-									homeexit, officeent, officeexit, dis_he, dis_oe, dis_ox, subject);
-						}}}
+					Double t = Double.parseDouble(time);
+					if((17<=t)&&(t<=22)){
+						for(File f : datetime.listFiles()){
+							if(f.toString().contains(subject)){
+								System.out.println("#working on " + f.toString());
+								getAttributes(f,new File(outfile),level,date,time,
+										popmap,buildingmap,farmmap,sroadmap,broadmap,allroadmap,trainmap,pricemap,
+										homeexit, officeent, officeexit, dis_he, dis_oe, dis_ox, subject);
+							}}}}
 			}
 
 			File out1 = new File(outdir+subject+"_"+type+".csv");
@@ -307,7 +309,7 @@ public class DataMaker {
 				officep = new LonLat(Double.parseDouble(tokens[9].replace("(","")),Double.parseDouble(tokens[10].replace(")","")));
 				disdaytime = tokens[11]; normaltime = tokens[12]; 
 				sigma = Double.parseDouble(tokens[13]);
-								norlogs = tokens[14]; dislogs = tokens[15];
+				norlogs = tokens[14]; dislogs = tokens[15];
 				dis = String.valueOf(homep.distance(officep)/100000);
 			}
 			else{ // output version 2
@@ -316,16 +318,16 @@ public class DataMaker {
 				homep = new LonLat(Double.parseDouble(tokens[7]),Double.parseDouble(tokens[8]));
 				officep = new LonLat(Double.parseDouble(tokens[9]),Double.parseDouble(tokens[10]));
 				disdaytime = tokens[11]; normaltime = tokens[12]; sigma = Double.parseDouble(tokens[13]);
-								norlogs = tokens[14]; dislogs = tokens[15];
+				norlogs = tokens[14]; dislogs = tokens[15];
 				dis = String.valueOf(homep.distance(officep)/100000);
 			}
 
 			Double saigaitime  = Double.parseDouble(time);
 			Double toujitutime = Double.parseDouble(disdaytime);
 
-//			if(saigaitime<toujitutime){
+			//			if(saigaitime<toujitutime){
 
-				bw.write(id+","+diff+","+date+","+level+","+time+","+normaltime+","+sigma+","+disdaytime+","+dis+","
+			bw.write(id+","+diff+","+date+","+level+","+time+","+normaltime+","+sigma+","+disdaytime+","+dis+","
 
 						+ popmap.get(new Mesh(3, nowp.getLon(),nowp.getLat()).getCode()) + ","
 						+ popmap.get(new Mesh(3, homep.getLon(),homep.getLat()).getCode()) + ","
@@ -346,24 +348,24 @@ public class DataMaker {
 						+ GetLandPrice.getnearestprice(pricemap, homep) + ","
 						+ GetLandPrice.getnearestprice(pricemap, officep) + ","
 						+ norlogs + "," + dislogs + ","
-						);
+					);
 
-				String nowcode = getCode(nowp.getLon(),nowp.getLat());
-				String homecode = getCode(homep.getLon(),homep.getLat());
-				String offcode  = getCode(officep.getLon(),officep.getLat());
+			String nowcode = getCode(nowp.getLon(),nowp.getLat());
+			String homecode = getCode(homep.getLon(),homep.getLat());
+			String offcode  = getCode(officep.getLon(),officep.getLat());
 
-				if(!nowcode.equals("null")){
-					bw.write(nowcode+",");
-				}
-				if(!homecode.equals("null")){
-					bw.write(homecode+",");
-				}
-				if(!offcode.equals("null")){
-					bw.write(offcode+",");
-				}
-				bw.newLine();
-				//					id_date.get(id).add(date);	
-//			}
+			if(!nowcode.equals("null")){
+				bw.write(nowcode+",");
+			}
+			if(!homecode.equals("null")){
+				bw.write(homecode+",");
+			}
+			if(!offcode.equals("null")){
+				bw.write(offcode+",");
+			}
+			bw.newLine();
+			//					id_date.get(id).add(date);	
+			//			}
 		}
 		br.close();
 		bw.close();
