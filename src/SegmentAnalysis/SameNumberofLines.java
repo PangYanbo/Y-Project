@@ -63,7 +63,7 @@ public class SameNumberofLines {
 					bw.newLine();
 				}
 			}
-			if(val.equals("2")){
+			else if(val.equals("2")){
 				if(rand<=rate2){
 					bw.write(line);
 					bw.newLine();

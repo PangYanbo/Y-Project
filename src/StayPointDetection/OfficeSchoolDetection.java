@@ -53,7 +53,7 @@ public class OfficeSchoolDetection {
 
 		HashMap<String,HashMap<LonLat,Integer>> id_SP_visitcount = ExcludeLowFrequentSPsbyNumberofPoints(SPmap,idhome,numberofDays,0.5);
 
-		HashMap<String,LonLat> resmap = getOfficePoints(id_SP_visitcount,idhome,1000);
+		HashMap<String,LonLat> resmap = getOfficePoints(id_SP_visitcount,idhome,10000);
 		writeOut(resmap, result);
 		return result;
 	}
