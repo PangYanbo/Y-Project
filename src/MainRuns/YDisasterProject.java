@@ -71,19 +71,22 @@ public class YDisasterProject {
 		}
 		System.out.println("#successfully sorted out disaster info logs... there are " + c);
 
-		int count = 0;
+		int count = 1;
 		for(String ymd : dislogs.keySet()){
 			for(String time : dislogs.get(ymd).keySet()){
 				for(String level : dislogs.get(ymd).get(time).keySet()){
 					if(level.equals("4")){
-						if(filedoublechecker(ymd,time,type,level,city)==true){
-							System.out.println("#starting run for " + ymd +", time: "+ time + ", level:" +level);
-							ArrayList<String> codes = dislogs.get(ymd).get(time).get(level);
-							run(codes, ymd, time, level, dislog);
-							System.out.println("------------------done " + count + " disasters------------------");
-							System.out.println(" ");
+						Double t = Double.parseDouble(time);
+						if((17<=t)&&(t<=22)){
+							if(filedoublechecker(ymd,time,type,level,city)==true){
+								System.out.println("#starting run for " + ymd +", time: "+ time + ", level:" +level);
+								ArrayList<String> codes = dislogs.get(ymd).get(time).get(level);
+								run(codes, ymd, time, level, dislog);
+								System.out.println("------------------done " + count + " disasters------------------");
+								System.out.println(" ");
+							}
+							count++;
 						}
-						count++;
 					}
 				}
 			}
@@ -133,7 +136,7 @@ public class YDisasterProject {
 				}
 				System.out.println("total number of normal logs: " + sum);
 				HashMap<String, Integer> id_dislogs = CountLogs.CountDisLogs(new File(dataforexp), ymd);
-				
+
 				HomeDetector.getHome(dataforexp, workpath);
 				HashMap<String,String> id_homecode = HomeDetector.gethomecode(workpath+"id_home.csv");
 				OfficeSchoolDetection.getOfficeSchool(dataforexp, workpath);
@@ -141,8 +144,8 @@ public class YDisasterProject {
 				MovementAnalyzer.executeAnalyser
 				(dataforexp, FilePaths.dirfile(workpath,"id_home.csv"), FilePaths.dirfile(workpath,"id_office.csv"), 
 						workpath, disasterday, targetIDs_code, id_homecode, id_norlogs, id_dislogs);
-//				MotifFinder2.executeMotif(dataforexp, workpath, disasterday, targetIDs_code, id_homecode,500,300);
-				
+				//				MotifFinder2.executeMotif(dataforexp, workpath, disasterday, targetIDs_code, id_homecode,500,300);
+
 				File data = new File(dataforexp); data.delete();
 				//				File home = new File(workpath+"id_home.csv"); home.delete();
 				//				File office = new File(workpath+"id_office.csv"); office.delete();
