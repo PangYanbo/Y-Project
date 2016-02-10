@@ -35,10 +35,10 @@ public class OfficeSchoolDetection {
 	public static File getOfficeSchool(String inpath, String path) throws NumberFormatException, ParseException, IOException{
 		File in = new File(inpath);
 		File result = new File (path+"id_office.csv");
-		HashMap<String,HashMap<LonLat,ArrayList<STPoint>>> SPmap = StayPointGetter.getSPs(in,"08:00:00", "18:00:00", 5, 500, 300);
+		HashMap<String,HashMap<LonLat,ArrayList<STPoint>>> SPmap = StayPointGetter.getSPs(in,"12:00:00", "18:00:00", 5, 500, 300);
 
 		HashMap<String, ArrayList<STPoint>> alldatamap = StayPointGetter.sortintoMapY(in);
-		HashMap<String, ArrayList<STPoint>> targetmap = StayPointGetter.getTargetMap(alldatamap,"08:00:00","18:00:00");
+		HashMap<String, ArrayList<STPoint>> targetmap = StayPointGetter.getTargetMap(alldatamap,"12:00:00","18:00:00");
 		
 		HashMap<String,Integer> numberofDays = new HashMap<String,Integer>();
 		for(String id : targetmap.keySet()){
