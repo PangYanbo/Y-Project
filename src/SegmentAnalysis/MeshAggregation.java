@@ -42,6 +42,7 @@ public class MeshAggregation {
 		File out = new File("/home/t-tyabe/Data/"+ymd+"_raw_onlyshutoken.csv");
 
 		extractID(unzippedfile,out,ymd);
+		
 
 		}
 		
