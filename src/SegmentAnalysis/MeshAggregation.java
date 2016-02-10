@@ -11,7 +11,6 @@ import java.util.List;
 
 import jp.ac.ut.csis.pflow.geom.GeometryChecker;
 import jp.ac.ut.csis.pflow.geom.LonLat;
-import DataModify.ExtractFile;
 import DisasterAlert.DisasterLogs;
 import IDExtract.ID_Extract_Tools;
 import MainRuns.FilePaths;
@@ -37,7 +36,7 @@ public class MeshAggregation {
 		
 		
 		for(String ymd : ymds){
-		ExtractFile.extractfromcommand(ymd); 
+//		ExtractFile.extractfromcommand(ymd); 
 		String unzippedfile = FilePaths.deephomepath(ymd);
 
 		File out = new File("/home/t-tyabe/Data/"+ymd+"_raw_onlyshutoken.csv");
@@ -88,7 +87,7 @@ public class MeshAggregation {
 	}
 
 	public static String AreaOverlap(LonLat point){
-		List<String> zonecodeList = gchecker.listOverlaps("JCODE",point.getLon(),point.getLat());
+		List<String> zonecodeList = gchecker.listOverlaps("A03_001",point.getLon(),point.getLat());
 		if(zonecodeList == null || zonecodeList.isEmpty()) {
 			return "null";
 		}
