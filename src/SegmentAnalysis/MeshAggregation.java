@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import jp.ac.ut.csis.pflow.geom.GeometryChecker;
@@ -28,14 +29,22 @@ public class MeshAggregation {
 		 * 
 		 */
 
-		String ymd = args[0];
+		ArrayList<String> ymds = new ArrayList<String>();
+		ymds.add("20150512");
+		ymds.add("20150522");
+		ymds.add("20150511");
+		ymds.add("20150521");
+		
+		
+		for(String ymd : ymds){
 		ExtractFile.extractfromcommand(ymd); 
 		String unzippedfile = FilePaths.deephomepath(ymd);
 
-		File out = new File("/home/t-tyabe/Data/"+ymd+"_raw.csv");
+		File out = new File("/home/t-tyabe/Data/"+ymd+"_raw_onlyshutoken.csv");
 
 		extractID(unzippedfile,out,ymd);
 
+		}
 		
 		
 	}
