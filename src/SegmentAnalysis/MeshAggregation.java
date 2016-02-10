@@ -31,8 +31,8 @@ public class MeshAggregation {
 		ArrayList<String> ymds = new ArrayList<String>();
 		ymds.add("20150512");
 //		ymds.add("20150522");
-		ymds.add("20150511");
-//		ymds.add("20150521");
+//		ymds.add("20150511");
+		ymds.add("20150521");
 		
 		
 		for(String ymd : ymds){
