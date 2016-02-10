@@ -55,6 +55,8 @@ public class MeshAggregation {
 		BufferedWriter bw = new BufferedWriter(new FileWriter(out));
 		String line = null;
 		String prevline = null;
+		int count1 = 0;
+//		int count2 = 0;
 		while((line=br.readLine())!=null){
 			if(ID_Extract_Tools.SameLogCheck(line,prevline)==true){
 				String[] tokens = line.split("\t");
@@ -66,9 +68,11 @@ public class MeshAggregation {
 								String tz = tokens[4].substring(11,19);
 								String time = DisasterLogs.converttime(tz);
 								if(time.equals(t)){
+									count1++;
 									Double lat = Double.parseDouble(tokens[2]);
 									Double lon = Double.parseDouble(tokens[3]);
 									LonLat p = new LonLat(lon,lat);
+									System.out.println(p);
 									String yesno = AreaOverlap(p);
 									if(yesno.equals("yep")){
 										bw.write(id+"\t"+lon+"\t"+lat);
@@ -85,6 +89,7 @@ public class MeshAggregation {
 		}
 		br.close();
 		bw.close();
+		System.out.println(count1);
 	}
 
 	public static String AreaOverlap(LonLat point){
