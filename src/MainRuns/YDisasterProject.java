@@ -118,7 +118,7 @@ public class YDisasterProject {
 			System.out.println("#the number of IDs for " + ymd+time+ " is " + targetIDs_code.size());
 			File i = new File(unzippedfile); i.delete();
 
-			if(targetIDs_code.size()>1000){ //‘ÎÛl”‚Åi‚é
+			if(targetIDs_code.size()>100){ //‘ÎÛl”‚Åi‚é
 				String dataforexp = workpath+"dataforexp.csv";
 				HashSet<String> targetdays = DayChooser.getTargetDates(ymd, dislog); System.out.println("#the number of days are " + targetdays.size());
 				String disasterdate = ymd.substring(0,4)+"-"+ymd.substring(4,6)+"-"+ymd.substring(6,8);
