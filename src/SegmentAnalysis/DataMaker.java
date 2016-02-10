@@ -38,13 +38,13 @@ public class DataMaker {
 	public static void main(String args[]) throws IOException{
 
 		ArrayList<String> types      = new ArrayList<String>();
-		types.add("rain");
-//		types.add("emg1");
+//		types.add("rain");
+		types.add("emg1");
 //		types.add("heats");
 
 		for(String type : types){
 			String dir       = "/home/t-tyabe/Data/"+type+"Tokyo7/";
-			String outdir    = "/home/t-tyabe/Data/segmentexp_5/";
+			String outdir    = "/home/t-tyabe/Data/segmentexp_emg1/";
 
 			File outputdir  = new File(outdir);  outputdir.mkdir();
 
