@@ -180,7 +180,7 @@ public class DataMaker {
 			if(type.equals("rain")){
 				start = 4; end = 1;
 			}
-			else if(type.equals("eq")||type.equals("heats")){
+			else if(type.equals("emg1")||type.equals("heats")){
 				start = 3; end = 1;
 			}
 			else{
