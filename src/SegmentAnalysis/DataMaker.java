@@ -43,8 +43,8 @@ public class DataMaker {
 		//		types.add("heats");
 
 		for(String type : types){
-			String dir       = "/home/t-tyabe/Data/"+type+"Tokyo7/";
-			String outdir    = "/home/t-tyabe/Data/segmentexp_emg1/";
+			String dir       = "/home/t-tyabe/Data/"+type+"Tokyoonlylevel3/";
+			String outdir    = "/home/t-tyabe/Data/segmentexp_emg1_onlylevel3/";
 
 			File outputdir  = new File(outdir);  outputdir.mkdir();
 

@@ -36,6 +36,8 @@ public class MeshAggregation {
 
 		extractID(unzippedfile,out,ymd);
 
+		
+		
 	}
 
 	public static void extractID(String in, File out, String t) throws IOException{
