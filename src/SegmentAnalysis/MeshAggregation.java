@@ -67,6 +67,7 @@ public class MeshAggregation {
 							if(tokens[4].length()>=18){
 								String tz = tokens[4].substring(11,19);
 								String time = DisasterLogs.converttime(tz);
+								System.out.println(tz + "," + time);
 								if(time.equals(t)){
 									count1++;
 									Double lat = Double.parseDouble(tokens[2]);
