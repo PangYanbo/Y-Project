@@ -36,9 +36,9 @@ public class YDisasterProject {
 
 	protected static final SimpleDateFormat SDF_TS = new SimpleDateFormat("yyyy-MM-dd");//change time format
 
-	private static final String type = "rain";
+	private static final String type = "emg1";
 	private static final String city = "Tokyo";
-	private static final String homepath = "/home/t-tyabe/Data/"+type+city+"onlylevel4/";
+	private static final String homepath = "/home/t-tyabe/Data/"+type+city+"onlylevel3/";
 	private static final String GPSpath  = "/tmp/bousai_data/gps_";
 
 	public static void main(String args[]) throws IOException, NumberFormatException, ParseException{
@@ -75,7 +75,7 @@ public class YDisasterProject {
 		for(String ymd : dislogs.keySet()){
 			for(String time : dislogs.get(ymd).keySet()){
 				for(String level : dislogs.get(ymd).get(time).keySet()){
-					if(level.equals("4")){
+					if(level.equals("3")){
 						Double t = Double.parseDouble(time);
 						if((17<=t)&&(t<=22)){
 							if(filedoublechecker(ymd,time,type,level,city)==true){
