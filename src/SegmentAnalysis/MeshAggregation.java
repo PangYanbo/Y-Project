@@ -41,7 +41,7 @@ public class MeshAggregation {
 
 		File out = new File("/home/t-tyabe/Data/"+ymd+"_raw_onlyshutoken.csv");
 
-		extractID(unzippedfile,out,"22");
+		extractID(unzippedfile,out,"22.0");
 		
 
 		}
@@ -67,13 +67,13 @@ public class MeshAggregation {
 							if(tokens[4].length()>=18){
 								String tz = tokens[4].substring(11,19);
 								String time = DisasterLogs.converttime(tz);
-								System.out.println(tz + "," + time);
+//								System.out.println(tz + "," + time);
 								if(time.equals(t)){
-									count1++;
+//									count1++;
 									Double lat = Double.parseDouble(tokens[2]);
 									Double lon = Double.parseDouble(tokens[3]);
 									LonLat p = new LonLat(lon,lat);
-									System.out.println(p);
+//									System.out.println(p);
 									String yesno = AreaOverlap(p);
 									if(yesno.equals("yep")){
 										bw.write(id+"\t"+lon+"\t"+lat);
