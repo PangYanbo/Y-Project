@@ -11,6 +11,7 @@ import java.util.List;
 
 import jp.ac.ut.csis.pflow.geom.GeometryChecker;
 import jp.ac.ut.csis.pflow.geom.LonLat;
+import DataModify.ExtractFile;
 import DisasterAlert.DisasterLogs;
 import IDExtract.ID_Extract_Tools;
 import MainRuns.FilePaths;
@@ -29,14 +30,14 @@ public class MeshAggregation {
 		 */
 
 		ArrayList<String> ymds = new ArrayList<String>();
-		ymds.add("20150512");
-//		ymds.add("20150522");
-//		ymds.add("20150511");
-		ymds.add("20150521");
+//		ymds.add("20150512");
+		ymds.add("20150522");
+		ymds.add("20150511");
+//		ymds.add("20150521");
 		
 		
 		for(String ymd : ymds){
-//		ExtractFile.extractfromcommand(ymd); 
+		ExtractFile.extractfromcommand(ymd); 
 		String unzippedfile = FilePaths.deephomepath(ymd);
 
 		File out = new File("/home/t-tyabe/Data/"+ymd+"_raw_onlyshutoken.csv");
