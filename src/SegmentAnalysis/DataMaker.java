@@ -178,10 +178,10 @@ public class DataMaker {
 			int start;
 			int end;
 			if(type.equals("rain")){
-				start = 4; end = 1;
+				start = 4; end = 4;
 			}
 			else if(type.equals("emg1")||type.equals("heats")){
-				start = 3; end = 1;
+				start = 3; end = 3;
 			}
 			else{
 				continue;
