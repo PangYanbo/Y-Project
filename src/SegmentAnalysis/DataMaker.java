@@ -39,12 +39,12 @@ public class DataMaker {
 
 		ArrayList<String> types      = new ArrayList<String>();
 		//		types.add("rain");
-		types.add("rain");
+		types.add("emg1");
 		//		types.add("heats");
 
 		for(String type : types){
-			String dir       = "/home/t-tyabe/Data/"+type+"Tokyoonlylevel4/";
-			String outdir    = "/home/t-tyabe/Data/segmentexp_"+type+"_onlylevel4/";
+			String dir       = "/home/t-tyabe/Data/"+type+"Tokyoonlylevel3/";
+			String outdir    = "/home/t-tyabe/Data/segmentexp_"+type+"_onlylevel3/";
 
 			File outputdir  = new File(outdir);  outputdir.mkdir();
 
