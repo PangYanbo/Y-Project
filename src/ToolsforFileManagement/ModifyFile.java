@@ -24,7 +24,7 @@ public class ModifyFile {
 			String abs_diff = tokens[3];
 			Integer normallogs = Integer.valueOf(tokens[4]);
 			Integer disasterlogs = Integer.valueOf(tokens[5]);
-			temp.put(abs_diff, normallogs);
+			temp.put(abs_diff, disasterlogs);
 		}
 		br.close();
 		
@@ -34,14 +34,15 @@ public class ModifyFile {
 			Double tempsum = 0d;
 			int count = 0;
 			for(String diff : temp.keySet()){
-				if(temp.get(diff)>=(i*10)){
+				if(temp.get(diff)>=(i)){
 					count++;
 					tempsum = tempsum + Double.parseDouble(diff);
 				}
 			}
 			Double avgerror = tempsum/(double)count;
 //			res.put(String.valueOf(i), String.valueOf(avgerror));
-			bw.write(String.valueOf(i)+","+String.valueOf(avgerror)+","+String.valueOf(count));
+			bw.write(String.valueOf(i)+","+String.valueOf(avgerror)
+					+","+String.valueOf(count)+","+String.valueOf(tempsum));
 			bw.newLine();
 		}
 		
