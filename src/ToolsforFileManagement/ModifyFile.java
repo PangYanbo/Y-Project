@@ -30,11 +30,11 @@ public class ModifyFile {
 		
 //		HashMap<String,String> res = new HashMap<String,String>();
 		
-		for(int i=0; i<=200; i++){
+		for(int i=0; i<=100; i++){
 			Double tempsum = 0d;
 			int count = 0;
 			for(String diff : temp.keySet()){
-				if((temp.get(diff)>=((i)*10))&&(temp.get(diff)<=((i+1)*10))){
+				if((temp.get(diff)>=i)&&(temp.get(diff)<=(i+1))){
 					count++;
 					tempsum = tempsum + Double.parseDouble(diff);
 				}
