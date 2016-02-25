@@ -34,14 +34,14 @@ public class ModifyFile {
 			Double tempsum = 0d;
 			int count = 0;
 			for(String diff : temp.keySet()){
-				if(temp.get(diff)>=(i)){
+				if((temp.get(diff)>=(i))&&(temp.get(diff)<=(i+10))){
 					count++;
 					tempsum = tempsum + Double.parseDouble(diff);
 				}
 			}
 			Double avgerror = tempsum/(double)count;
 //			res.put(String.valueOf(i), String.valueOf(avgerror));
-			bw.write(String.valueOf(i)+","+String.valueOf(avgerror)
+			bw.write(String.valueOf(i)+" to "+String.valueOf(i+10)+","+String.valueOf(avgerror)
 					+","+String.valueOf(count)+","+String.valueOf(tempsum));
 			bw.newLine();
 		}
