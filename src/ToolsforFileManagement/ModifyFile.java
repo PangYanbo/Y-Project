@@ -23,8 +23,8 @@ public class ModifyFile {
 			String[] tokens = line.split(",");
 			String abs_diff = tokens[3];
 			Integer normallogs = Integer.valueOf(tokens[4]);
-			Integer disasterlogs = Integer.valueOf(tokens[5]);
-			temp.put(abs_diff, disasterlogs);
+//			Integer disasterlogs = Integer.valueOf(tokens[5]);
+			temp.put(abs_diff, normallogs);
 		}
 		br.close();
 		
@@ -34,7 +34,7 @@ public class ModifyFile {
 			Double tempsum = 0d;
 			int count = 0;
 			for(String diff : temp.keySet()){
-				if((temp.get(diff)>=(i))&&(temp.get(diff)<=(i+10))){
+				if((temp.get(diff)>=((i)*10))&&(temp.get(diff)<=((i+1)*10))){
 					count++;
 					tempsum = tempsum + Double.parseDouble(diff);
 				}
