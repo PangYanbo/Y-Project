@@ -6,26 +6,45 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.HashMap;
 
 public class ModifyFile {
 	
 	public static void main(String args[]) throws IOException{
 		
-		File infile  = new File("C:/users/t-tyabe/desktop/xxx.csv");
-		File outfile = new File("C:/users/t-tyabe/desktop/xxx2.csv");
+		File infile  = new File("C:/users/t-tyabe/desktop/rgr_result.csv");
+		File outfile = new File("C:/users/t-tyabe/desktop/rgr_result_analysis.csv");
 		
+		HashMap<String,Integer> temp = new HashMap<String,Integer>();
 		BufferedReader br = new BufferedReader(new FileReader(infile));
 		BufferedWriter bw = new BufferedWriter(new FileWriter(outfile));
 		String line = null;
 		while((line=br.readLine())!=null){
-			String endpart = line.split("#")[1];
-			String normallogs = endpart.split("_")[0];
-			String disasterlogs = endpart.split("_")[1].split("A")[0];
-			
-			bw.write(normallogs+","+disasterlogs);
-			bw.newLine();
+			String[] tokens = line.split(",");
+			String abs_diff = tokens[3];
+			Integer disasterlogs = Integer.valueOf(tokens[5]);
+			temp.put(abs_diff, disasterlogs);
 		}
 		br.close();
+		
+//		HashMap<String,String> res = new HashMap<String,String>();
+		
+		for(int i=0; i<=200; i++){
+			Double tempsum = 0d;
+			int count = 0;
+			for(String diff : temp.keySet()){
+				if(temp.get(diff)>=i){
+					count++;
+					tempsum = tempsum + Double.parseDouble(diff);
+				}
+			}
+			Double avgerror = tempsum/(double)count;
+//			res.put(String.valueOf(i), String.valueOf(avgerror));
+			bw.write(String.valueOf(i)+","+String.valueOf(avgerror));
+			bw.newLine();
+		}
+		
+		
 		bw.close();
 	}
 
