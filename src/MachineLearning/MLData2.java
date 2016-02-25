@@ -393,7 +393,7 @@ public class MLData2 {
 						String bilinearline = BilinearFeatures.bilinearline(level,time,dis,homep,officep,popmap,pricemap);
 						bw.write(bilinearline);
 
-						bw.write(" #"+norlogs+"_"+dislogs);
+						bw.write(" #"+norlogs+"_"+dislogs+"A"+String.valueOf(sigma));
 						bw.newLine();
 						id_date.get(id).add(date);
 					}
@@ -540,7 +540,7 @@ public class MLData2 {
 					String bilinearline = BilinearFeatures.bilinearline(level,time,dis,homep,officep,popmap,pricemap);
 					bw.write(bilinearline);
 
-					bw.write(" #"+norlogs+"_"+dislogs);
+					bw.write(" #"+norlogs+"_"+dislogs+"A"+String.valueOf(sigma));
 					bw.newLine();
 					ArrayList<String> temp = new ArrayList<String>();
 					temp.add(date);
