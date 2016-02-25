@@ -40,7 +40,7 @@ public class ModifyFile {
 			}
 			Double avgerror = tempsum/(double)count;
 //			res.put(String.valueOf(i), String.valueOf(avgerror));
-			bw.write(String.valueOf(i)+","+String.valueOf(avgerror));
+			bw.write(String.valueOf(i)+","+String.valueOf(avgerror)+","+String.valueOf(count));
 			bw.newLine();
 		}
 		
